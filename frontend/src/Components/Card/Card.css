@@ -1,11 +1,14 @@
 .card {
-    max-width: 300px;
+    /* max-width: 300px; */
     min-width: 300px;
     padding: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    margin: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 50px;
+    margin-left: 50px;
     cursor: pointer;
-    min-height: 200px;
+    min-height: 400px;
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -17,4 +20,7 @@
 }
 .card p {
     font-size: 18px;
+}
+.card img {
+    width: 100%;
 }
