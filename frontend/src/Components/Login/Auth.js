@@ -10,39 +10,72 @@ export default function (props) {
     setAuthMode(authMode === "signin" ? "signup" : "signin")
   }
 
-  const inputRefUser = useRef();
-	const inputRefPassword = useRef();
+  // const inputRefUser = useRef();
+	// const inputRefPassword = useRef();
 
-  const handleSubmit = (e) => {
-		e.preventDefault();
-		console.log("Non utilisateur : ", inputRefUser.current.value);
-		console.log("Password : ", inputRefPassword.current.value);
+  // const handleSubmit = (e) => {
+	// 	e.preventDefault();
+	// 	console.log("Non utilisateur : ", inputRefUser.current.value);
+	// 	console.log("Password : ", inputRefPassword.current.value);
 
-    // création de l'envoi
-    const bodyEnvoie = {
-    email: inputRefUser.current.value,
-    password : inputRefPassword.current.value
-  }
+  //   // création de l'envoi
+  //   const bodyEnvoie = {
+  //   email: inputRefUser.current.value,
+  //   password : inputRefPassword.current.value
+  //   }
 
-  // requête API
-  fetch('http://localhost:4200/api/auth/login', {
-    method: "POST",
-    body: JSON.stringify(bodyEnvoie),
-    headers: {
-      'Content-Type': 'application/json'
-    }        
-  })
-  .then((res) => res.json())
-  .then((data) => {
-    // const orderId = data.orderId
-    console.log("data", data)
-    // window.location.href = "../html/confirmation.html" + "?orderId=" + orderId
-  })
-  .catch((err) => console.log(err))
-  }
+  //   // requête API
+  //   fetch('http://localhost:4200/api/auth/login', {
+  //     method: "POST",
+  //     body: JSON.stringify(bodyEnvoie),
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }        
+  //   })
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     // const orderId = data.orderId
+  //     console.log("data", data)
+  //     // window.location.href = "../html/confirmation.html" + "?orderId=" + orderId
+  //   })
+  //   .catch((err) => console.log(err))
 
+  // }
 
   if (authMode === "signin") {
+
+    const inputRefUser = useRef();
+    const inputRefPassword = useRef();
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log("Non utilisateur : ", inputRefUser.current.value);
+      console.log("Password : ", inputRefPassword.current.value);
+  
+      // création de l'envoi
+      const bodyEnvoie = {
+      email: inputRefUser.current.value,
+      password : inputRefPassword.current.value
+      }
+  
+      // requête API
+      fetch('http://localhost:4200/api/auth/login', {
+        method: "POST",
+        body: JSON.stringify(bodyEnvoie),
+        headers: {
+          'Content-Type': 'application/json'
+        }        
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        // const orderId = data.orderId
+        console.log("data", data)
+        // window.location.href = "../html/confirmation.html" + "?orderId=" + orderId
+      })
+      .catch((err) => console.log(err))
+  
+    }
+
     return (
       <div className="Auth-form-container">
         <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/>
@@ -85,56 +118,89 @@ export default function (props) {
         </form>
       </div>
     )
-  }
+  } else if (authMode === "signup") {
 
-  return (
-    <div className="Auth-form-container">
-      <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/>
-      <form onSubmit={handleSubmit} className="Auth-form">
-        <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign In</h3>
-          <div className="text-center">
-            Already registered?{" "}
-            <span className="link-primary" onClick={changeAuthMode}>
-              Sign In
-            </span>
+    const inputRefUser = useRef();
+    const inputRefPassword = useRef();
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log("Non utilisateur : ", inputRefUser.current.value);
+      console.log("Password : ", inputRefPassword.current.value);
+  
+      // création de l'envoi
+      const bodyEnvoie = {
+      email: inputRefUser.current.value,
+      password : inputRefPassword.current.value
+      }
+  
+      // requête API
+      fetch('http://localhost:4200/api/auth/signup', {
+        method: "POST",
+        body: JSON.stringify(bodyEnvoie),
+        headers: {
+          'Content-Type': 'application/json'
+        }        
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        // const orderId = data.orderId
+        console.log("data", data)
+        // window.location.href = "../html/confirmation.html" + "?orderId=" + orderId
+      })
+      .catch((err) => console.log(err))
+  
+    }
+
+    return (
+      <div className="Auth-form-container">
+        <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/>
+        <form onSubmit={handleSubmit} className="Auth-form">
+          <div className="Auth-form-content">
+            <h3 className="Auth-form-title">Sign In</h3>
+            <div className="text-center">
+              Already registered?{" "}
+              <span className="link-primary" onClick={changeAuthMode}>
+                Sign In
+              </span>
+            </div>
+            <div className="form-group mt-3">
+              <label>Full Name</label>
+              <input
+                ref={inputRefUser}
+                type="email"
+                className="form-control mt-1"
+                placeholder="e.g Jane Doe"
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>Email address</label>
+              <input
+                type="email"
+                className="form-control mt-1"
+                placeholder="Email Address"
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>Password</label>
+              <input
+                ref={inputRefPassword}
+                type="password"
+                className="form-control mt-1"
+                placeholder="Password"
+              />
+            </div>
+            <div className="d-grid gap-2 mt-3">
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
+            <p className="text-center mt-2">
+              Forgot <a href="#">password?</a>
+            </p>
           </div>
-          <div className="form-group mt-3">
-            <label>Full Name</label>
-            <input
-              ref={inputRefUser}
-              type="email"
-              className="form-control mt-1"
-              placeholder="e.g Jane Doe"
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label>Email address</label>
-            <input
-              type="email"
-              className="form-control mt-1"
-              placeholder="Email Address"
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label>Password</label>
-            <input
-              ref={inputRefPassword}
-              type="password"
-              className="form-control mt-1"
-              placeholder="Password"
-            />
-          </div>
-          <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
-          <p className="text-center mt-2">
-            Forgot <a href="#">password?</a>
-          </p>
-        </div>
-      </form>
-    </div>
-  )
+        </form>
+      </div>
+    )
+  }
 }
