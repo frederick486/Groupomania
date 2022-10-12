@@ -12,7 +12,6 @@ export default function Navbar() {
     }
 
     useEffect(() => {
-
         const changeWidth = () => {
             setLargeur(window.innerWidth);
         }
@@ -35,8 +34,8 @@ export default function Navbar() {
       </ul>
       )}
       <button 
-      onClick={toggleNav}
-      className="btn">BTN</button>
+        onClick={toggleNav}
+        className="btn-navbar">BTN</button>
     </nav>
   )
 }
