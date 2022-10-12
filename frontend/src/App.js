@@ -5,12 +5,15 @@ import {Routes, Route} from 'react-router-dom'
 import AddArticle from './Containers/AddArticle/AddArticle'
 import Contact from './Containers/Contact/Contact'
 import Article from './Containers/Article/Article' 
+import Login from './Components/Login/Login'
 
 function App() {
   return (
     <>
       <Navbar />
+      {/* <Login /> */}
       <Routes>
+          <Route path='/login' element={<Login />}/>
           <Route path='/' element={<Home />}/>
           <Route path='/ecrire' element={<AddArticle />}/>
           <Route path='/contact' element={<Contact />}/>
