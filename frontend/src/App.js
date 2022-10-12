@@ -13,7 +13,7 @@ import Auth from "./Components/Login/Auth"
 function App() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       {/* <Login /> */}
       <Routes>
           <Route path="/auth" element={<Auth />} />
