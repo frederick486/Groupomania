@@ -5,7 +5,10 @@ import {Routes, Route} from 'react-router-dom'
 import AddArticle from './Containers/AddArticle/AddArticle'
 import Contact from './Containers/Contact/Contact'
 import Article from './Containers/Article/Article' 
-import Login from './Components/Login/Login'
+// import Login from './Components/Login/Login'
+// import "bootstrap/dist/css/bootstrap.min.css"
+import "./App.css"
+import Auth from "./Components/Login/Auth"
 
 function App() {
   return (
@@ -13,7 +16,8 @@ function App() {
       <Navbar />
       {/* <Login /> */}
       <Routes>
-          <Route path='/login' element={<Login />}/>
+          <Route path="/auth" element={<Auth />} />
+          {/* <Route path='/login' element={<Login />}/> */}
           <Route path='/' element={<Home />}/>
           <Route path='/ecrire' element={<AddArticle />}/>
           <Route path='/contact' element={<Contact />}/>
