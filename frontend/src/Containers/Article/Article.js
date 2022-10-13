@@ -10,8 +10,10 @@ export default function Article() {
 
   return (
     <div className="article-content">
-        <h2>Votre article : {location.state.title}</h2>
-        <p>{location.state.body}</p>
+        {/* <h2>Votre article : {location.state.title}</h2> */}
+        <h2>Votre article :</h2>
+        {/* <p>{location.state.body}</p> */}
+        <p>{location.pathname.split('/')[2].replace('-', '\s+')} </p>
     </div>
   )
 }

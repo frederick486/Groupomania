@@ -31,8 +31,9 @@ export default function Home() {
               <h2>{item.title}</h2>
 
               <Link to={{ 
-                // pathname: `articles/${item.title.replace(/\s+/g, '-').trim()}`, 
-                  pathname: '/article',
+                pathname: `articles/${item.title.replace(/\s+/g, '-').trim()}`, 
+                  // pathname: '/article',
+                  // pathname: articles/{item.userId},
                   state: {
                     title: item.title,
                     body: item.body

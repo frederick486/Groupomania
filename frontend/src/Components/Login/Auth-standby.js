@@ -2,7 +2,6 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "./Auth.css"
 import logo from "../../Assets/icon-left-font-monochrome-black.png"
 import React, { useState, useRef } from "react"
-import axios from "axios";
 
 export default function (props) {
   let [authMode, setAuthMode] = useState("signin")
@@ -11,62 +10,69 @@ export default function (props) {
     setAuthMode(authMode === "signin" ? "signup" : "signin")
   }
 
+  // const inputRefUser = useRef();
+	// const inputRefPassword = useRef();
+
+  // const handleSubmit = (e) => {
+	// 	e.preventDefault();
+	// 	console.log("Non utilisateur : ", inputRefUser.current.value);
+	// 	console.log("Password : ", inputRefPassword.current.value);
+
+  //   // création de l'envoi
+  //   const bodyEnvoie = {
+  //   email: inputRefUser.current.value,
+  //   password : inputRefPassword.current.value
+  //   }
+
+  //   // requête API
+  //   fetch('http://localhost:4200/api/auth/login', {
+  //     method: "POST",
+  //     body: JSON.stringify(bodyEnvoie),
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }        
+  //   })
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     // const orderId = data.orderId
+  //     console.log("data", data)
+  //     // window.location.href = "../html/confirmation.html" + "?orderId=" + orderId
+  //   })
+  //   .catch((err) => console.log(err))
+
+  // }
 
   if (authMode === "signin") {
 
-    const email = useRef();
-    const password = useRef();
+    const inputRefUser = useRef();
+    const inputRefPassword = useRef();
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      console.log("Non utilisateur : ", email.current.value);
-      console.log("Password : ", password.current.value);
+      console.log("Non utilisateur : ", inputRefUser.current.value);
+      console.log("Password : ", inputRefPassword.current.value);
   
       // création de l'envoi
-      // const bodyEnvoie = {
-      // email: inputRefUser.current.value,
-      // password : inputRefPassword.current.value
-      // }
+      const bodyEnvoie = {
+      email: inputRefUser.current.value,
+      password : inputRefPassword.current.value
+      }
   
       // requête API
-      // fetch('http://localhost:4200/api/auth/login', {
-      //   method: "POST",
-      //   body: JSON.stringify(bodyEnvoie),
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }        
-      // })
-      // .then((res) => res.json())
-      // .then((data) => {
-      //   // const orderId = data.orderId
-      //   console.log("data", data)
-      //   // window.location.href = "../html/confirmation.html" + "?orderId=" + orderId
-      // })
-      // .catch((err) => console.log(err))
-
-      //------------------------------------------------------------------------
-
-      axios({
-        method: "post",
-        url: 'http://localhost:4200/api/auth/login',
-        // withCredentials: true,
-        data: {
-          email : email.current.value,
-          password : password.current.value,
-        },
+      fetch('http://localhost:4200/api/auth/login', {
+        method: "POST",
+        body: JSON.stringify(bodyEnvoie),
+        headers: {
+          'Content-Type': 'application/json'
+        }        
       })
-        .then((res) => {
-          if (res.data.errors) {
-            // emailError.innerHTML = res.data.errors.email;
-            // passwordError.innerHTML = res.data.erros.password;
-            console.log("password ou nom d'utilisateur incorecte")
-          } else {
-            window.location = "/";
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      .then((res) => res.json())
+      .then((data) => {
+        // const orderId = data.orderId
+        console.log("data", data)
+        // window.location.href = "../html/confirmation.html" + "?orderId=" + orderId
+      })
+      .catch((err) => console.log(err))
   
     }
 
@@ -85,7 +91,7 @@ export default function (props) {
             <div className="form-group mt-3">
               <label>Email address</label>
               <input
-                ref={email}
+                ref={inputRefUser}
                 type="email"
                 className="form-control mt-1"
                 placeholder="Enter email"
@@ -94,7 +100,7 @@ export default function (props) {
             <div className="form-group mt-3">
               <label>Password</label>
               <input
-                ref={password}
+                ref={inputRefPassword}
                 type="password"
                 className="form-control mt-1"
                 placeholder="Enter password"
@@ -151,7 +157,7 @@ export default function (props) {
         <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/>
         <form onSubmit={handleSubmit} className="Auth-form">
           <div className="Auth-form-content">
-            <h3 className="Auth-form-title">Sign In</h3>
+            <h3 className="Auth-form-title">Sign Up</h3>
             <div className="text-center">
               Already registered?{" "}
               <span className="link-primary" onClick={changeAuthMode}>
