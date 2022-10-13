@@ -22,30 +22,6 @@ export default function (props) {
       console.log("Non utilisateur : ", email.current.value);
       console.log("Password : ", password.current.value);
   
-      // création de l'envoi
-      // const bodyEnvoie = {
-      // email: inputRefUser.current.value,
-      // password : inputRefPassword.current.value
-      // }
-  
-      // requête API
-      // fetch('http://localhost:4200/api/auth/login', {
-      //   method: "POST",
-      //   body: JSON.stringify(bodyEnvoie),
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }        
-      // })
-      // .then((res) => res.json())
-      // .then((data) => {
-      //   // const orderId = data.orderId
-      //   console.log("data", data)
-      //   // window.location.href = "../html/confirmation.html" + "?orderId=" + orderId
-      // })
-      // .catch((err) => console.log(err))
-
-      //------------------------------------------------------------------------
-
       axios({
         method: "post",
         url: 'http://localhost:4200/api/auth/login',
@@ -55,19 +31,18 @@ export default function (props) {
           password : password.current.value,
         },
       })
-        .then((res) => {
-          if (res.data.errors) {
-            // emailError.innerHTML = res.data.errors.email;
-            // passwordError.innerHTML = res.data.erros.password;
-            console.log("password ou nom d'utilisateur incorecte")
-          } else {
-            window.location = "/";
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-  
+      .then((res) => {
+        if (res.data.errors) {
+          // emailError.innerHTML = res.data.errors.email;
+          // passwordError.innerHTML = res.data.erros.password;
+          console.log("password ou nom d'utilisateur incorecte")
+        } else {
+          window.location = "/";
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      }); 
     }
 
     return (
@@ -114,36 +89,35 @@ export default function (props) {
     )
   } else if (authMode === "signup") {
 
-    const inputRefUser = useRef();
-    const inputRefPassword = useRef();
+    const email = useRef();
+    const password = useRef();
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      console.log("Non utilisateur : ", inputRefUser.current.value);
-      console.log("Password : ", inputRefPassword.current.value);
-  
-      // création de l'envoi
-      const bodyEnvoie = {
-      email: inputRefUser.current.value,
-      password : inputRefPassword.current.value
-      }
-  
-      // requête API
-      fetch('http://localhost:4200/api/auth/signup', {
-        method: "POST",
-        body: JSON.stringify(bodyEnvoie),
-        headers: {
-          'Content-Type': 'application/json'
-        }        
+      console.log("Non utilisateur : ", email.current.value);
+      console.log("Password : ", password.current.value);
+       
+      axios({
+        method: "post",
+        url: 'http://localhost:4200/api/auth/signup',
+        // withCredentials: true,
+        data: {
+          email : email.current.value,
+          password : password.current.value,
+        },
       })
-      .then((res) => res.json())
-      .then((data) => {
-        // const orderId = data.orderId
-        console.log("data", data)
-        // window.location.href = "../html/confirmation.html" + "?orderId=" + orderId
+      .then((res) => {
+        if (res.data.errors) {
+          // emailError.innerHTML = res.data.errors.email;
+          // passwordError.innerHTML = res.data.erros.password;
+          console.log("password ou nom d'utilisateur incorecte")
+        } else {
+          window.location = "/";
+        }
       })
-      .catch((err) => console.log(err))
-  
+      .catch((error) => {
+        console.log(error);
+      }); 
     }
 
     return (
@@ -161,7 +135,7 @@ export default function (props) {
             <div className="form-group mt-3">
               <label>Full Name</label>
               <input
-                ref={inputRefUser}
+                ref={email}
                 type="email"
                 className="form-control mt-1"
                 placeholder="e.g Jane Doe"
@@ -178,7 +152,7 @@ export default function (props) {
             <div className="form-group mt-3">
               <label>Password</label>
               <input
-                ref={inputRefPassword}
+                ref={password}
                 type="password"
                 className="form-control mt-1"
                 placeholder="Password"
