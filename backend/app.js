@@ -3,7 +3,7 @@ const helmet = require("helmet");
 const app = express();
 const path = require('path');
 const bodyParser = require("body-parser");
-const saucesRoutes = require("./routes/sauces");
+const publicationRoutes = require("./routes/publication");
 const userRoutes = require('./routes/user');
 
 require('dotenv').config()
@@ -21,8 +21,8 @@ app.use(express.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-app.use(helmet());
-app.use("/api/sauces", saucesRoutes);
+// app.use(helmet());
+app.use("/api/publication", publicationRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;

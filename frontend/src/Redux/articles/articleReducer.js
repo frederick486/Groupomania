@@ -23,7 +23,7 @@ const INITIAL_STATE = {
   }
   
   export const getArticles = () => (dispatch, getState) => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
+    fetch("http://localhost:4200/api/publication")
       .then((response) => {
         return response.json();
       })
