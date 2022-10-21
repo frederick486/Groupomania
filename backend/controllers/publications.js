@@ -1,14 +1,19 @@
 const Publication = require("../models/publication");
-
-//Permet de modifier le système de fichiers
-const fs = require("fs");
+const fs = require("fs"); //Permet de modifier le système de fichiers
 
 // création d'une Publication
 exports.createPublication = (req, res, next) => {
-    const publication = new Publication({
-      title: req.body.title,
-      body: req.body.body,
-    });
+    
+    let publication = new Publication(
+      {
+        title: req.body.title,
+        body: req.body.body,
+        imageUrl : req.body.imageUrl,
+        // imageUrl : req.file.filename // <<< ne fonctionne pas
+        // imageUrl : imageUrl.current.value, // <<< ne fonctionne pas
+      }
+    );
+
     //Enregistrement dans la base de données
     publication.save()
       .then(() => res.status(201).json({ message: "Publication enregistrée !" }))

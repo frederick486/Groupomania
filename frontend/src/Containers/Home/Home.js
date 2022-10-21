@@ -31,7 +31,7 @@ export default function Home() {
               <h2>{item.title}</h2>
 
               <Link to={{ 
-                pathname: `articles/${item.title.replace(/\s+/g, '-').trim()}`, 
+                // pathname: `articles/${item.title.replace(/\s+/g, '-').trim()}`, // A ré-activer (pb avec les ??? dans les champs des articles)
                   // pathname: '/article',
                   // pathname: articles/{item.userId},
                   state: {

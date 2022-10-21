@@ -87,6 +87,8 @@ export default function Form() {
     const handleForm = (e) => {
         e.preventDefault();
 
+        console.log("imageUrl.current.value------>", imageUrl.current.value) // imageUrl.current.value------> C:\fakepath\hellfire-elixir-sauce.jpg
+
         axios({
             method: "post",
             url: 'http://localhost:4200/api/publication',
@@ -94,7 +96,9 @@ export default function Form() {
             data: {
                 title : title.current.value,
                 body : body.current.value,
-                // imageUrl : imageUrl.current.value,
+                imageUrl : imageUrl.current.value, // << sur MongoDB, ça enregistre : "C:\fakepath\nom-du-fichier.jpg"
+                // imageUrl : imageUrl.current.files, // << 400 (Bad Request)
+                // imageUrl : e.target.files[0], // <<< Uncaught TypeError: Cannot read properties of undefined (reading '0')
             },
         })
         .then((res) => {
@@ -137,7 +141,7 @@ export default function Form() {
                 // className='inp-body'
             ></textarea>
 
-            <label htmlFor="avatar">Choose a profile picture:</label>
+            <label htmlFor="avatar">Choose a profile picture:</label> 
             <input 
                 ref={imageUrl}
                 type="file"
@@ -146,11 +150,8 @@ export default function Form() {
                 accept="image/png, image/jpeg" 
             />
 
-            <button>Envoyer l'article</button>
+             <button>Envoyer l'article</button>
         </form>      
     </>
-
   );
-
-
 }
