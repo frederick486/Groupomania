@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/Users');
+const User = require('../models/userModel');
 
 exports.signup = (req, res, next) => {  
-    if(req.body.password.length < 6) {
-        res.status(400).json( {message: 'le password doit contenir au moins 6 caractères'} );
-    } else {
+    // if(req.body.password.length < 6) {
+    //     res.status(400).json( {message: 'le password doit contenir au moins 6 caractères'} );
+    // } else {
         bcrypt.hash(req.body.password, 10)
             .then(hash => {
                 const user = new User({
@@ -17,8 +17,8 @@ exports.signup = (req, res, next) => {
                     .catch(error => res.status(400).json({ error }));
             })
             .catch(error => res.status(500).json({ error }));
-    }
-};
+    };
+// };
 
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })

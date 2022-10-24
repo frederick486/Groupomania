@@ -1,0 +1,14 @@
+{
+    "email": "Dédé@mail.com",
+    "password": "qsdfghj"
+}
+
+{
+    "email": "Gégé@gmail.com",
+    "password": "azertyu"
+}
+
+{
+    "email": "Loulou@gmail.com",
+    "password": "wxcvbnq"
+}

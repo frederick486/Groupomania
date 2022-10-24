@@ -1,10 +1,10 @@
 const express = require('express');
-const helmet = require("helmet");
+// const helmet = require("helmet");
 const app = express();
 const path = require('path');
-const bodyParser = require("body-parser");
-const publicationRoutes = require("./routes/publication");
-const userRoutes = require('./routes/user');
+// const bodyParser = require("body-parser");
+const userRoutes = require('./routes/userRoute');
+const postRoutes = require("./routes/postRoute");
 
 require('dotenv').config()
 require("./services/db");
@@ -16,13 +16,15 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(express.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // app.use(helmet());
-app.use("/api/publication", publicationRoutes);
-app.use('/api/auth', userRoutes);
+
+// routes
+app.use('/api/user', userRoutes);
+app.use('/api/post', postRoutes);
 
 module.exports = app;
