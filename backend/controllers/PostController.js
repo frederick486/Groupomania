@@ -1,22 +1,54 @@
-const PostModel = require("../models/postModel");
+// const PostModel = require("../models/postModel");
 // const fs = require("fs"); //Permet de modifier le système de fichiers
+let mongoose = require('mongoose')
+
+// const { json } = require("express");
+
+// const { promisify } = require("util");
+// const pipeline = promisify(require("stream").pipeline);
 
 // import PostModel from "../models/postModel.js";
 // import UserModel from "../models/userModel.js";
 // import mongoose from "mongoose";
 
-// creating a post
+// // creating a post
 
-module.exports.createPost = async (req, res) => {
-  const newPost = new PostModel(req.body);
+// module.exports.createPost = async (req, res) => {
+//   const newPost = new PostModel(req.body);
 
-  try {
-    await newPost.save();
-    res.status(200).json(newPost);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+//   try {
+//     await newPost.save();
+//     res.status(200).json(newPost);
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// };
+
+let Postbis = require('../models/postModel');
+
+module.exports.createPost = (req, res, next) => {
+  const url = req.protocol + '://' + req.get('host')
+  const post = new Postbis({
+      _id: new mongoose.Types.ObjectId(),
+      name: req.body.name,
+      comment: req.body.comment,
+      picture: url + '/images/' + req.file.filename
+  });
+  post.save().then(result => {
+      res.status(201).json({
+          message: "Post registered successfully!",
+          // userCreated: {
+          //     _id: result._id,
+          //     profileImg: result.profileImg
+          // }
+      })
+  }).catch(err => {
+      console.log(err),
+          res.status(500).json({
+              error: err
+          });
+  })
+}
 
 // get a post
 
@@ -26,6 +58,15 @@ module.exports.getPost = async (req, res) => {
   try {
     const post = await PostModel.findById(id);
     res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+module.exports.getAllPost = async (req, res) => {
+  try {
+    const posts = await PostModel.find();
+    res.status(200).json(posts);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -65,23 +106,23 @@ module.exports.deletePost = async (req, res) => {
   }
 };
 
-// // like/dislike a post
-// export const likePost = async (req, res) => {
-//   const id = req.params.id;
-//   const { userId } = req.body;
-//   try {
-//     const post = await PostModel.findById(id);
-//     if (post.likes.includes(userId)) {
-//       await post.updateOne({ $pull: { likes: userId } });
-//       res.status(200).json("Post disliked");
-//     } else {
-//       await post.updateOne({ $push: { likes: userId } });
-//       res.status(200).json("Post liked");
-//     }
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
+// like/dislike a post
+module.exports.likePost = async (req, res) => {
+  const id = req.params.id;
+  const { userId } = req.body;
+  try {
+    const post = await PostModel.findById(id);
+    if (post.likers.includes(userId)) {
+      await post.updateOne({ $pull: { likers: userId } });
+      res.status(200).json("Post disliked");
+    } else {
+      await post.updateOne({ $push: { likers: userId } });
+      res.status(200).json("Post liked");
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 // // Get timeline posts
 // export const getTimelinePosts = async (req, res) => {
