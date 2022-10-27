@@ -46,28 +46,8 @@ server.on('listening', () => {
 });
 
 server.listen(port);
+
 // //----------------------------------------------------------------------------------
-// let express = require('express'),
-//     mongoose = require('mongoose'),
-//     cors = require('cors'),
-//     bodyParser = require('body-parser')
-
-// const api = require('../backend/routes/postRoute')
-
-// // Connexion à la base de donnée
-// require('dotenv').config()
-// require("./services/db");
-
-// const app = express();
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({
-//     extended: false
-// }));
-// app.use(cors());
-
-// app.use('/images', express.static('images'));
-
-// app.use('/api', api)
 
 // const port = process.env.PORT || 4000;
 // const server = app.listen(port, () => {

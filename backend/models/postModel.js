@@ -52,6 +52,10 @@ const postBisSchema = new Schema({
     },
     picture: {
         type: String
+    },
+    likers: {
+      type: [String],
+      required: true
     }
 }, {
     collection: 'postbis'

@@ -32,7 +32,8 @@ module.exports.createPost = (req, res, next) => {
       _id: new mongoose.Types.ObjectId(),
       name: req.body.name,
       comment: req.body.comment,
-      picture: url + '/images/' + req.file.filename
+      picture: url + '/images/' + req.file.filename,
+      likers:[]
   });
   post.save().then(result => {
       res.status(201).json({

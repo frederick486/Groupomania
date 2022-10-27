@@ -2,23 +2,20 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
-exports.signup = (req, res, next) => {  
-    // if(req.body.password.length < 6) {
-    //     res.status(400).json( {message: 'le password doit contenir au moins 6 caractères'} );
-    // } else {
-        bcrypt.hash(req.body.password, 10)
-            .then(hash => {
-                const user = new User({
-                    email: req.body.email,
-                    password: hash
-                });
-                user.save()
-                    .then(() => res.status(201).json( { message: 'Utilisateur crée !'} ) )
-                    .catch(error => res.status(400).json({ error }));
-            })
-            .catch(error => res.status(500).json({ error }));
-    };
-// };
+exports.signup = (req, res, next) => {    
+    bcrypt.hash(req.body.password, 10)
+    .then(hash => {
+        const user = new User({
+            email: req.body.email,
+            password: hash
+        });
+        user.save()
+            .then(() => res.status(201).json( { message: 'Utilisateur crée !'} ) )
+            .catch(error => res.status(400).json({ error }));
+    })
+    .catch(error => res.status(500).json({ error }));
+}; 
+
 
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
@@ -50,3 +47,27 @@ exports.login = (req, res, next) => {
         res.status(500).json( { error } );
     })
 };
+
+//----------------------------------------------------------------------------------------
+// const re = new RegExp("^(?=.*[a-z])$");
+
+// exports.signup = (req, res, next) => {  
+//     if(re.test(req.body.password.toString())) {
+//     //     res.status(400).json( {message: 'le password doit contenir au moins 6 caractères'} );
+//     // } else {        
+//         bcrypt.hash(req.body.password, 10)
+//             .then(hash => {
+//                 const user = new User({
+//                     email: req.body.email,
+//                     password: hash
+//                 });
+//                 user.save()
+//                     .then(() => res.status(201).json( { message: 'Utilisateur crée !'} ) )
+//                     .catch(error => res.status(400).json({ error }));
+//             })
+//             .catch(error => res.status(500).json({ error }));
+//     } 
+//     else {
+//         res.status(400).json( {message: 'le password doit contenir au moins 6 caractères dont 1 chiffre, 1 majuscule, 1 miniscule et un caractère spécial'} );
+//     }
+// };

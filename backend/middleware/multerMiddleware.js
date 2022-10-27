@@ -1,4 +1,4 @@
-let multer = require('multer')
+const multer = require('multer')
 
 const DIR = './images/';
 

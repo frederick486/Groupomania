@@ -119,7 +119,7 @@ export default function Form() {
     <>  
     <Navbar />
         <h1 className="title-form">Ecrivez un article</h1>
-        <form className="container-form" onSubmit={handleForm}>
+        <form className="container-form" encType='multipart/form-data' onSubmit={handleForm}>
             <label htmlFor="title">Titre</label>
             <input 
                 // value={article.title} // control input
