@@ -28,15 +28,19 @@ export default function Home() {
         {articles.map(item => {
           return (
             <Card key={uuidv4()}>
-              <h2>{item.title}</h2>
+              {/* <h2>{item.title}</h2> */}
+              <h2>{item.comment}</h2>
+                {/* <div container-img> */}
+                <img src={item.picture} alt="Canyon" />
+              {/* </div> */}
 
               <Link to={{ 
                 // pathname: `articles/${item.title.replace(/\s+/g, '-').trim()}`, // A ré-activer (pb avec les ??? dans les champs des articles)
                   // pathname: '/article',
                   // pathname: articles/{item.userId},
                   state: {
-                    title: item.title,
-                    body: item.body
+                    comment: item.comment,
+                    picture: item.picture
                   }                                
                 }}>
                   Lire l'article

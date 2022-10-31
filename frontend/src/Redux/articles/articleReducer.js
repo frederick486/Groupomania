@@ -23,7 +23,7 @@ const INITIAL_STATE = {
   }
   
   export const getArticles = () => (dispatch, getState) => {
-    fetch("http://localhost:4200/api/publication")
+    fetch("http://localhost:4000/api/post")
       .then((response) => {
         return response.json();
       })

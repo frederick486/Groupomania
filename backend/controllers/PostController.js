@@ -64,14 +64,23 @@ module.exports.getPost = async (req, res) => {
   }
 };
 
-module.exports.getAllPost = async (req, res) => {
-  try {
-    const posts = await PostModel.find();
-    res.status(200).json(posts);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+// module.exports.getAllPost = async (req, res) => {
+//   try {
+//     // const posts = await PostModel.find();
+//     const posts = await Postbis.find();
+//     res.status(200).json(posts);
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// };
+
+// Récupération de toutes les sauces
+exports.getAllPost = (req, res, next) => {
+  //Utilisation de la méthode find() du modèle Mongoose qui renvoit un tableau de toutes les Sauces de notre base de données
+  Postbis.find()
+      .then(postbis => res.status(200).json(postbis))
+      .catch(error => res.status(400).json({ error: error }))
+  };
 
 // update post
 module.exports.updatePost = async (req, res) => {

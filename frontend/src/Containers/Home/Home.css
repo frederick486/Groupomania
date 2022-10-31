@@ -4,7 +4,6 @@
     text-align: center;
 }
 .container-cards {
-
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -13,8 +12,4 @@
     margin: 0 auto 0;
     flex-direction: column;
     align-content: center;
-
-
 }
-
-

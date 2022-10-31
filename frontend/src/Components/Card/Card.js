@@ -6,7 +6,7 @@ export default function Card(props) {
 
   return (
     <div className='card'>
-      <img src={Canyon} alt="Canyon" />
+      {/* <img src={iten.picture} alt="Canyon" /> */}
 
       {props.children}
       
