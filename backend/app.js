@@ -20,6 +20,8 @@ app.use(cors());
 // // routes
 app.use('/api/user', userRoutes);
 app.use('/api/post', postRoutes);
+
+// middleware
 app.use('/images', express.static('images'));
 
 module.exports = app;

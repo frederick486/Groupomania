@@ -1,19 +1,29 @@
-import React from 'react'
-import {useLocation} from 'react-router-dom'
-import './Article.css'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios'
+import './Article.css';
 
 
-export default function Article() {
+export default function AxiosRequest() {
+  const [data, setData] = useState([])
 
-  const location = useLocation()
-  console.log(location)
+  const getData = () => {
+    axios
+    .get("http://localhost:4000/api/post/63614cf0c396463a8b74dfa7")
+    .then((response) => setData(response.data))
+    .catch((err) => console.log(err));
+  };
 
-  return (
-    <div className="article-content">
-        {/* <h2>Votre article : {location.state.title}</h2> */}
-        <h2>Votre article :</h2>
-        {/* <p>{location.state.body}</p> */}
-        <p>{location.pathname.split('/')[2].replace('-','\s+')} </p>
-    </div>
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return(
+    <>
+      <div className="article-content">
+        <img src={data.picture} alt="Appareil photo Reflex" />
+        <p>{data.comment}</p>
+     </div>
+    </>
   )
 }
+

@@ -45,7 +45,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const postBisSchema = new Schema({
+const PostSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     comment: {
       type: String
@@ -58,7 +58,7 @@ const postBisSchema = new Schema({
       required: true
     }
 }, {
-    collection: 'postbis'
+    collection: 'post'
 })
 
-module.exports = mongoose.model('Postbis', postBisSchema)
+module.exports = mongoose.model('Post', PostSchema)

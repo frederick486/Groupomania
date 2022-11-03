@@ -5,10 +5,8 @@ const multer = require("../middleware/multerMiddleware");
 
 const postController = require('../controllers/PostController');
 
-// router.get('/:id', postController.getPost);
+router.get('/:id', postController.getPost);
 router.get('/', postController.getAllPost);
-
-// // router.post('/', upload.single("file"), postController.createPost);
 router.post('/', multer, postController.createPost);
 
 // router.put('/:id', postController.updatePost);

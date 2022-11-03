@@ -183,10 +183,10 @@ function Form() {
   };
 
   return (
-
     <>  
       <h1 className="title-form">Ecrivez un article</h1>
       <form 
+        className="container-form"
         onSubmit={submitHandler}
       >
 

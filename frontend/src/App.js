@@ -18,7 +18,8 @@ function App() {
           <Route path='/' element={<Home />}/>
           <Route path='/ecrire' element={<AddArticle />}/>
           <Route path='/contact' element={<Contact />}/>
-          <Route path='/articles/:slug' element={<Article />}/>
+          <Route path='/article/:slug' element={<Article />}/>
+          {/* <Route path="/article" exact component={Article} /> */}
       </Routes>
     </>
   );

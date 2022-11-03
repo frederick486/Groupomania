@@ -1,4 +1,4 @@
-// const PostModel = require("../models/postModel");
+const PostModel = require('../models/postModel');
 // const fs = require("fs"); //Permet de modifier le système de fichiers
 let mongoose = require('mongoose')
 
@@ -10,6 +10,8 @@ let mongoose = require('mongoose')
 // import PostModel from "../models/postModel.js";
 // import UserModel from "../models/userModel.js";
 // import mongoose from "mongoose";
+
+
 
 // // creating a post
 
@@ -24,11 +26,10 @@ let mongoose = require('mongoose')
 //   }
 // };
 
-let Postbis = require('../models/postModel');
 
 module.exports.createPost = (req, res, next) => {
   const url = req.protocol + '://' + req.get('host')
-  const post = new Postbis({
+  const post = new PostModel({
       _id: new mongoose.Types.ObjectId(),
       name: req.body.name,
       comment: req.body.comment,
@@ -74,11 +75,9 @@ module.exports.getPost = async (req, res) => {
 //   }
 // };
 
-// Récupération de toutes les sauces
 exports.getAllPost = (req, res, next) => {
-  //Utilisation de la méthode find() du modèle Mongoose qui renvoit un tableau de toutes les Sauces de notre base de données
-  Postbis.find()
-      .then(postbis => res.status(200).json(postbis))
+  PostModel.find()
+      .then(PostModel => res.status(200).json(PostModel))
       .catch(error => res.status(400).json({ error: error }))
   };
 
