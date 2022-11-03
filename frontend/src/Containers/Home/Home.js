@@ -29,18 +29,9 @@ export default function Home() {
           return (
             <Card key={uuidv4()}>
               <h2>{item.comment}</h2>
-                <img src={item.picture} alt="Canyon" />
-
-              <Link to={{ 
-                  // pathname: '/article',
-                  // pathname: `article/?id=${item._id}`,
-                  pathname: `article/${item._id}`,
-                  state: {
-                    comment: item.comment,
-                    picture: item.picture
-                  }                                
-                }}>
-                  Lire l'article
+              <img src={item.picture} alt="Canyon" />
+              <Link to={ { pathname: `article/${item._id}` } }>
+                Lire l'article
               </Link>
             </Card>
           )

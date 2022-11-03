@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import './Article.css';
-
+import {useLocation} from 'react-router-dom'
 
 export default function AxiosRequest() {
   const [data, setData] = useState([])
 
+  const location = useLocation()
+  console.log(location)
+
   const getData = () => {
+
+    const id = location.pathname.split('/article/')[1]
+
     axios
-    .get("http://localhost:4000/api/post/63614cf0c396463a8b74dfa7")
-    .then((response) => setData(response.data))
-    .catch((err) => console.log(err));
+      .get("http://localhost:4000/api/post/" + id)
+      .then((response) => setData(response.data))
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -26,4 +32,3 @@ export default function AxiosRequest() {
     </>
   )
 }
-
