@@ -7,11 +7,12 @@ export default function AxiosRequest() {
   const [data, setData] = useState([])
 
   const location = useLocation()
-  console.log(location)
+  const id = location.pathname.split('/article/')[1]
+  console.log("id : ", id)
 
   const getData = () => {
 
-    const id = location.pathname.split('/article/')[1]
+    // const id = location.pathname.split('/article/')[1]
 
     axios
       .get("http://localhost:4000/api/post/" + id)
@@ -23,11 +24,21 @@ export default function AxiosRequest() {
     getData();
   }, []);
 
+  const deletePost = () => {
+    // const id = location.pathname.split('/article/')[1]
+
+    axios
+      .delete("http://localhost:4000/api/post/" + id)
+      .then((response) => setData(response.data))
+      .catch((err) => console.log(err));
+  }
+
   return(
     <>
       <div className="article-content">
         <img src={data.picture} alt="Appareil photo Reflex" />
         <p>{data.comment}</p>
+        <button onClick={deletePost}>Supprimer</button>
      </div>
     </>
   )

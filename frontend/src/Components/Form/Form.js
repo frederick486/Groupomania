@@ -32,10 +32,10 @@ function Form() {
 
         <label htmlFor="article">Votre article</label>
         <textarea            
-            placeholder="Votre article"
-            onChange={(e) => {
-              setComment(e.target.value);
-            }}      
+          placeholder="Votre article"
+          onChange={(e) => {
+            setComment(e.target.value);
+          }}      
         ></textarea>
 
         <label htmlFor="avatar">Choose a profile picture:</label> 
