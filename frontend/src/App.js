@@ -15,7 +15,7 @@ function App() {
       <Routes>
           <Route path="/auth" element={<Auth />} />
           <Route path='/' element={<Home />}/>
-          <Route path='/ecrire' element={<AddArticle />}/>
+          <Route path='/add-article' element={<AddArticle />}/>
           <Route path='/contact' element={<Contact />}/>
           <Route path='/article/:postId' element={<Article />}/>
       </Routes>

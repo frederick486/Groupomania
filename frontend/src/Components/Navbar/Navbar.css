@@ -4,3 +4,10 @@
     top: 0;
     width: 100%;
 }
+
+.logo {
+    width: 15rem;
+    max-height: 3rem;
+    /* height: 3rem; */
+    object-fit: cover;
+}
