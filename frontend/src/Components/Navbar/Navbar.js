@@ -85,7 +85,7 @@ import './Navbar.css'
 
 function NavScrollExample() {
   return (
-    <nav>
+    <div className='navbis' >
       <Navbar bg="light" expand="lg">
         <Container fluid>
           <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
@@ -124,7 +124,7 @@ function NavScrollExample() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    </nav>
+    </div>
   );
 }
 

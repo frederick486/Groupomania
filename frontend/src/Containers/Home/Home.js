@@ -6,27 +6,44 @@ import { useEffect, useState } from 'react'
 import {getArticles} from '../../Redux/articles/articleReducer'
 import {v4 as uuidv4} from 'uuid'
 import {Link} from 'react-router-dom'
+import axios from 'axios'
 
 
 export default function Home() {
-  const {articles} = useSelector(state => ({
-    ...state.articleReducer,
-  }))
+  const [ data, setData ]= useState([]);
+  // const {articles} = useSelector(state => ({
+  //   ...state.articleReducer,
+  // }))
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   // if(articles.length === 0){
+  //   //   dispatch(getArticles());
+  //   // }
+
+  // }, [])
 
   useEffect(() => {
-    if(articles.length === 0){
-      dispatch(getArticles());
-    }
-  }, [])
+    (async () => {
+      const response = await axios.get("http://localhost:4000/api/post");
+      console.log(response);
+      // if (response.ok) {
+        setData(response.data);
+      // }
+      // else {
+      //   setData([]);
+      // }
+    })();
+  }, []);
 
   return (
     <>
       <h1 className='home-title'>Tous les articles</h1>
       <div className="container-cards">
-        {articles.map(item => {
+        {data && data.map(item => {
           return (
+
             <Card key={uuidv4()}>
               <h2>{item.comment}</h2>
               <img src={item.picture} alt="Canyon" />
@@ -35,6 +52,7 @@ export default function Home() {
               </Link>
             </Card>
           )
+
         })}
       </div>
     </>

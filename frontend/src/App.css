@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  padding: 20px;
+  border: none;
+  border-radius: 1rem;
+  font-size: 20px;
+  overflow: hidden;
+  background:  #FFD7D7;
+  transition: all 100ms ease-out;
+}
+
+.button:hover {
+  cursor: pointer;
+  background:  #FD2D01;
+  border: 2px solid  #FD2D01;
+}

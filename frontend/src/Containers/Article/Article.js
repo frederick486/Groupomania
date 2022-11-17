@@ -2,13 +2,26 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import './Article.css';
 import {useLocation} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 export default function AxiosRequest() {
   const [data, setData] = useState([])
-
+  const [like, setLike] = useState(100)
+  const [likeactive, setLikeactive] = useState(false)
+  const navigate = useNavigate()
   const location = useLocation()
   const id = location.pathname.split('/article/')[1]
   console.log("id : ", id)
+
+  function likef() {
+    if(likeactive){
+      setLikeactive(false)
+      setLike(like - 1)
+    } else {
+      setLikeactive(true)
+      setLike(like + 1)
+    }
+  }
 
   const getData = () => {
 
@@ -29,8 +42,13 @@ export default function AxiosRequest() {
 
     axios
       .delete("http://localhost:4000/api/post/" + id)
-      .then((response) => setData(response.data))
+      .then((response) => {        
+        setData(response.data)
+        navigate('/')
+      })
       .catch((err) => console.log(err));
+
+    
   }
 
   return(
@@ -38,7 +56,24 @@ export default function AxiosRequest() {
       <div className="article-content">
         <img src={data.picture} alt="Appareil photo Reflex" />
         <p>{data.comment}</p>
-        <button onClick={deletePost}>Supprimer</button>
+
+        <div className="postReact">
+          <button 
+            className='button' 
+            onClick={deletePost}
+          >
+            Supprimer
+          </button>
+
+          <button 
+            className={[likeactive ? 'active-like' : 'button'].join(' ')} 
+            onClick={likef}
+          >
+            Like {like}
+          </button>
+
+        </div>
+
      </div>
     </>
   )

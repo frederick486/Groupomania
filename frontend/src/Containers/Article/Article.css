@@ -12,3 +12,18 @@
 .article-content p {
     font-size: 25px;
 }
+
+.postReact {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.active-like {
+    padding: 20px;
+    border: none;
+    border-radius: 1rem;
+    font-size: 20px;
+    background:  #FD2D01;
+    border: 2px solid  #FD2D01;
+}
