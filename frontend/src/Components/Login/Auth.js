@@ -24,7 +24,7 @@ export default function (props) {
   
       axios({
         method: "post",
-        url: 'http://localhost:4200/api/auth/login',
+        url: 'http://localhost:4000/api/user/login',
         // withCredentials: true,
         data: {
           email : email.current.value,
@@ -91,6 +91,7 @@ export default function (props) {
 
     const email = useRef();
     const password = useRef();
+    // const fullName = useRef();
   
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -99,7 +100,7 @@ export default function (props) {
        
       axios({
         method: "post",
-        url: 'http://localhost:4200/api/auth/signup',
+        url: 'http://localhost:4000/api/user/signup',
         // withCredentials: true,
         data: {
           email : email.current.value,
@@ -125,28 +126,29 @@ export default function (props) {
         <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/>
         <form onSubmit={handleSubmit} className="Auth-form">
           <div className="Auth-form-content">
-            <h3 className="Auth-form-title">Sign In</h3>
+            <h3 className="Auth-form-title">Sign Up</h3>
             <div className="text-center">
               Already registered?{" "}
               <span className="link-primary" onClick={changeAuthMode}>
                 Sign In
               </span>
             </div>
-            <div className="form-group mt-3">
+            {/* <div className="form-group mt-3">
               <label>Full Name</label>
-              <input
-                ref={email}
-                type="email"
+               <input
+                ref={fullName}
+                type="text"
                 className="form-control mt-1"
                 placeholder="e.g Jane Doe"
-              />
-            </div>
+              /> 
+             </div> */} 
             <div className="form-group mt-3">
               <label>Email address</label>
               <input
                 type="email"
                 className="form-control mt-1"
                 placeholder="Email Address"
+                ref={email}
               />
             </div>
             <div className="form-group mt-3">

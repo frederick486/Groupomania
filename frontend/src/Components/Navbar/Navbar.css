@@ -1,8 +1,13 @@
-.navbis {
+.navbar-complement {
     position: fixed;
     z-index: 1;
     top: 0;
     width: 100%;
+    background-color: whitesmoke;
+}
+
+.navbar-background {
+    background-color: whitesmoke;
 }
 
 .logo {

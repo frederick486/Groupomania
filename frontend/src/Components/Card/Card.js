@@ -4,7 +4,7 @@ import './Card.css'
 export default function Card(props) {
 
   return (
-    <div className='card'>
+    <div className='post'>
       {props.children}      
     </div>
   )

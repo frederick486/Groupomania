@@ -1,15 +1,20 @@
 .home-title {
-    font-size: 60px;
-    margin: 100px 0 40px;
+    font-size: 50px;
+    margin-top: 100px;
+    margin-bottom: 0;
+    padding-bottom: 50px;
     text-align: center;
+    background-color: #ffd7d7;
 }
+
 .container-cards {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column-reverse;
+    /* flex-wrap: wrap; */
+    /* align-content: center; */
     width: 100%;
     max-width: 1300px;
     margin: 0 auto 0;
-    flex-direction: column;
-    align-content: center;
+    background-color: #ffd7d7;
 }

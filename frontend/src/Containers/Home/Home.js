@@ -28,18 +28,13 @@ export default function Home() {
     (async () => {
       const response = await axios.get("http://localhost:4000/api/post");
       console.log(response);
-      // if (response.ok) {
         setData(response.data);
-      // }
-      // else {
-      //   setData([]);
-      // }
     })();
   }, []);
 
   return (
     <>
-      <h1 className='home-title'>Tous les articles</h1>
+      <h1 className='home-title'>dernières nouvelles : </h1>
       <div className="container-cards">
         {data && data.map(item => {
           return (

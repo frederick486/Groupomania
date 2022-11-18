@@ -13,7 +13,8 @@ function App() {
     <>
       <Navbar />
       <Routes>
-          <Route path="/auth" element={<Auth />} />
+          {/* <Route path="/auth" element={<Auth />} /> */}
+          <Route path="/user" element={<Auth />} />
           <Route path='/' element={<Home />}/>
           <Route path='/add-article' element={<AddArticle />}/>
           <Route path='/contact' element={<Contact />}/>
