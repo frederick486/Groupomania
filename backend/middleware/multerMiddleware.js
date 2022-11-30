@@ -24,4 +24,5 @@ var upload = multer({
     }
 });
 
-module.exports = upload.single('picture')
+// module.exports = upload.single('picture')
+module.exports = upload.single('img')

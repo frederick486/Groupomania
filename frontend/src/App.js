@@ -1,25 +1,26 @@
-import Navbar from './Components/Navbar/Navbar'
-import Home from './Containers/Home/Home';
-import {Routes, Route} from 'react-router-dom'
-import AddArticle from './Containers/AddArticle/AddArticle'
-import Contact from './Containers/Contact/Contact'
-import Article from './Containers/Article/Article' 
 import "./App.css"
-import Auth from "./Components/Login/Auth"
-// import "bootstrap/dist/css/bootstrap.min.css"
+import Navbar from "../src/Components/navbar/Navbar"
+import Home from "../src/pages/home/Home"
+import PostShare from "../src/Components/postShare/PostShare"
+import Post from "../src/Components/post/Post"
+import Auth from "../src/pages/login/Auth"
+import {Routes, Route} from 'react-router-dom'
+import Container from '@mui/material/Container';
+
 
 function App() {
   return (
+    // <Container>
     <>
       <Navbar />
       <Routes>
           {/* <Route path="/auth" element={<Auth />} /> */}
           <Route path="/user" element={<Auth />} />
           <Route path='/' element={<Home />}/>
-          <Route path='/add-article' element={<AddArticle />}/>
-          <Route path='/contact' element={<Contact />}/>
-          <Route path='/article/:postId' element={<Article />}/>
+          <Route path='/post-share' element={<PostShare />}/>
+          <Route path='/post/:postId' element={<Post />}/>
       </Routes>
+    {/* // </Container> */}
     </>
   );
 }

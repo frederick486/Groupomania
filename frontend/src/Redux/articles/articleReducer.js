@@ -1,3 +1,5 @@
+import { API_URL } from "../../config";
+
 const INITIAL_STATE = {
     articles: [],
   };
@@ -23,7 +25,8 @@ const INITIAL_STATE = {
   }
   
   export const getArticles = () => (dispatch, getState) => {
-    fetch("http://localhost:4000/api/post")
+    // fetch("http://localhost:4000/api/post")
+    fetch( API_URL )
       .then((response) => {
         return response.json();
       })

@@ -7,11 +7,6 @@ let mongoose = require('mongoose')
 // const { promisify } = require("util");
 // const pipeline = promisify(require("stream").pipeline);
 
-// import PostModel from "../models/postModel.js";
-// import UserModel from "../models/userModel.js";
-// import mongoose from "mongoose";
-
-
 
 // // creating a post
 
@@ -27,22 +22,19 @@ let mongoose = require('mongoose')
 // };
 
 
-module.exports.createPost = (req, res, next) => {
+module.exports.createPost = (req, res) => {
   const url = req.protocol + '://' + req.get('host')
   const post = new PostModel({
       _id: new mongoose.Types.ObjectId(),
-      name: req.body.name,
-      comment: req.body.comment,
-      picture: url + '/images/' + req.file.filename,
-      likers:[]
-  });
+      title: req.body.title,
+      desc: req.body.desc,
+      img: url + '/images/' + req.file.filename,
+      likes:[],
+      comments: [],
+    });
   post.save().then(result => {
       res.status(201).json({
-          message: "Post registered successfully!",
-          // userCreated: {
-          //     _id: result._id,
-          //     profileImg: result.profileImg
-          // }
+          message: "Post registered successfully!",   
       })
   }).catch(err => {
       console.log(err),
@@ -52,8 +44,18 @@ module.exports.createPost = (req, res, next) => {
   })
 }
 
-// get a post
+// //create a post
+// module.exports.createPost = async (req, res) => {
+//   const newPost = new PostModel(req.body)
+//   try {
+//       const savedPost = await newPost.save();
+//       res.status(200).json(savedPost);
+//   } catch (err) {
+//       res.status(500).json(err);
+//   }
+// }
 
+// get a post
 module.exports.getPost = async (req, res) => {
   const id = req.params.id;
 
@@ -65,21 +67,15 @@ module.exports.getPost = async (req, res) => {
   }
 };
 
-// module.exports.getAllPost = async (req, res) => {
-//   try {
-//     // const posts = await PostModel.find();
-//     const posts = await Postbis.find();
-//     res.status(200).json(posts);
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
-
-exports.getAllPost = (req, res, next) => {
-  PostModel.find()
-      .then(PostModel => res.status(200).json(PostModel))
-      .catch(error => res.status(400).json({ error: error }))
-  };
+// get all posts
+module.exports.getAllPost = async (req, res) => {
+  try {
+    const posts = await PostModel.find();
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 // update post
 module.exports.updatePost = async (req, res) => {

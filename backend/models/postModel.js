@@ -45,20 +45,40 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const PostSchema = new Schema({
+const PostSchema = new Schema(
+  {
     _id: mongoose.Schema.Types.ObjectId,
-    comment: {
+    title: {
+      type: String,
+    },
+    desc: {
       type: String
     },
-    picture: {
+    img: {
         type: String
     },
-    likers: {
-      type: [String],
-      required: true
-    }
-}, {
-    collection: 'post'
-})
+    likes: {
+      type: Array,
+      default: []
+    },
+    comments: {
+      type: [
+        {
+          commenterId:String,
+          commenterPseudo: String,
+          text: String,
+          timestamp: Number,
+        }
+      ],
+      // required: true,
+    },
+  }, 
+  {
+    timestamps: true
+  },
+  // {
+  //   collection: 'Posts'
+  // }
+)
 
-module.exports = mongoose.model('Post', PostSchema)
+module.exports = mongoose.model('Posts', PostSchema)

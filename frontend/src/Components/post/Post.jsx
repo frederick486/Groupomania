@@ -1,8 +1,10 @@
+import './post.css';
+import { API_URL } from '../../config';
+import PostComment from '../postComment/PostComment';
 import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import './Article.css';
-import {useLocation} from 'react-router-dom'
-import { useNavigate } from 'react-router-dom';
+
 
 export default function AxiosRequest() {
   const [data, setData] = useState([])
@@ -10,7 +12,7 @@ export default function AxiosRequest() {
   const [likeactive, setLikeactive] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
-  const id = location.pathname.split('/article/')[1]
+  const id = location.pathname.split('/post/')[1]
   console.log("id : ", id)
 
   function likef() {
@@ -24,11 +26,9 @@ export default function AxiosRequest() {
   }
 
   const getData = () => {
-
-    // const id = location.pathname.split('/article/')[1]
-
     axios
-      .get("http://localhost:4000/api/post/" + id)
+      // .get("http://localhost:4000/api/post/" + id)
+      .get( API_URL + '/' + id )
       .then((response) => setData(response.data))
       .catch((err) => console.log(err));
   };
@@ -38,24 +38,21 @@ export default function AxiosRequest() {
   }, []);
 
   const deletePost = () => {
-    // const id = location.pathname.split('/article/')[1]
-
     axios
-      .delete("http://localhost:4000/api/post/" + id)
+      // .delete("http://localhost:4000/api/post/" + id)
+      .delete( API_URL + '/' + id )
       .then((response) => {        
         setData(response.data)
         navigate('/')
       })
-      .catch((err) => console.log(err));
-
-    
+      .catch((err) => console.log(err));    
   }
 
   return(
     <>
       <div className="article-content">
-        <img src={data.picture} alt="Appareil photo Reflex" />
-        <p>{data.comment}</p>
+        <img src={data.img} alt="Appareil photo Reflex" />
+        <p>{data.desc}</p>
 
         <div className="postReact">
           <button 
@@ -73,6 +70,7 @@ export default function AxiosRequest() {
           </button>
 
         </div>
+        <PostComment/>
 
      </div>
     </>

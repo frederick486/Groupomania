@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css"
-import "./Auth.css"
+import "./auth.css"
 import logo from "../../Assets/icon-left-font-monochrome-black.png"
 import React, { useState, useRef } from "react"
 import axios from "axios";

@@ -1,7 +1,18 @@
 .article-content {
-    max-width: 700px;
+    /* max-width: 700px;
     min-width: 300px;
-    margin: 100px auto;
+    margin: 100px auto; */
+
+    display: flex;
+    max-width: 80%;
+    min-width: 300px;
+    margin: auto;
+    flex-direction: column;
+}
+
+.article-content > img {
+    max-height: 500px;
+    object-fit: cover;
 }
 
 .article-content h2 {
