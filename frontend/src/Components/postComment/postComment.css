@@ -1,0 +1,10 @@
+.commentContainer {
+    display: flex;
+}
+
+.commentFom {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;    
+}

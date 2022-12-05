@@ -4,10 +4,6 @@ let mongoose = require('mongoose')
 
 // const { json } = require("express");
 
-// const { promisify } = require("util");
-// const pipeline = promisify(require("stream").pipeline);
-
-
 // // creating a post
 
 // module.exports.createPost = async (req, res) => {
@@ -21,7 +17,7 @@ let mongoose = require('mongoose')
 //   }
 // };
 
-
+// //create a post
 module.exports.createPost = (req, res) => {
   const url = req.protocol + '://' + req.get('host')
   const post = new PostModel({
@@ -124,6 +120,29 @@ module.exports.likePost = async (req, res) => {
       await post.updateOne({ $push: { likers: userId } });
       res.status(200).json("Post liked");
     }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+module.exports.commentPost = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const post = await PostModel.findById(id)
+    await post.updateOne (
+      { 
+        $push: {
+          comments: {
+            commenterId: req.body.commenterId,
+            commenterPseudo: req.body.commenterPseudo,
+            text: req.body.text,
+            timestamp: new Date().getTime(),
+          },
+        },
+      },
+    );
+    res.status(200).json("Commentaire ajouté");
   } catch (error) {
     res.status(500).json(error);
   }

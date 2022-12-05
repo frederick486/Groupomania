@@ -20,6 +20,7 @@ export default function Posts () {
     })();
   }, []);
 
+
   return (
     <>
       <h1 className='home-title'>dernières nouvelles : </h1>

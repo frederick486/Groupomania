@@ -3,20 +3,19 @@ import { API_URL } from '../../config'
 import { useState } from "react";
 import axios from 'axios'
 
-function Form() {
+function PostShare () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState([]);
 
   const submitHandler = (e) => {
-    e.preventDefault(); //prevent the form from submitting
+    e.preventDefault(); 
     let formData = new FormData();
 
     formData.append("title", title);
     formData.append("desc", desc);
     formData.append("img", file[0]);
 
-    // axios.post("http://localhost:4000/api/post", formData, {
     axios.post( API_URL , formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -65,4 +64,4 @@ function Form() {
   );
 }
 
-export default Form;
+export default PostShare;
