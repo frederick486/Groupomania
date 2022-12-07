@@ -15,7 +15,6 @@ export default function Posts () {
   useEffect(() => {
     (async () => {
       const response = await axios.get( API_URL );
-      console.log(response);
         setData(response.data);
     })();
   }, []);

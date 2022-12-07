@@ -15,7 +15,6 @@ export default function Post () {
   const navigate = useNavigate()
   const location = useLocation()
   const id = location.pathname.split('/post/')[1]
-  console.log("id : ", id)
 
   // const getData = () => {
   //   axios
@@ -31,10 +30,7 @@ export default function Post () {
   useEffect(() => {
     (async () => {
       const response = await axios.get( API_URL + '/' + id  );
-      console.log(response);
         setData(response.data);
-        console.log("response.data.likers : ", response.data.likers);
-        console.log("response.data.likers.length : ", response.data.likers.length);
         setLike(response.data.likers.length)
     })();
   }, []);
@@ -69,10 +65,6 @@ export default function Post () {
     }
   }  
 
-  // console.log("state de isLiked : ", isLiked)
-  console.log("state de like : ", like)
-  console.log("state de data : ", data)
-
 
   return(
     <>
@@ -100,7 +92,7 @@ export default function Post () {
           </button>
 
         </div>
-        <PostComment />
+        <PostComment props={data}/>
 
       </div>
     </>
