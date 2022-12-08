@@ -2,7 +2,7 @@ import './post.css';
 import { API_URL } from '../../config';
 import PostComment from '../postComment/PostComment'
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 
@@ -16,17 +16,7 @@ export default function Post () {
   const location = useLocation()
   const id = location.pathname.split('/post/')[1]
 
-  // const getData = () => {
-  //   axios
-  //     .get( API_URL + '/' + id )
-  //     .then((response) => setData(response.data))
-  //     .catch((err) => console.log(err));
-  // };
-
-  // useEffect(() => {
-  //   getData();
-  // }, []);
-
+ 
   useEffect(() => {
     (async () => {
       const response = await axios.get( API_URL + '/' + id  );
@@ -90,6 +80,16 @@ export default function Post () {
           >
             Like {like}
           </button>
+
+        <Link
+          to={ `/post-update/${id}` } 
+          style={{textDecoration:"none", color:"black"} }        
+        >
+          <button className='button'>
+            Modifier
+          </button>
+        </Link>
+
 
         </div>
         <PostComment props={data}/>

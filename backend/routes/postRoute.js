@@ -9,7 +9,7 @@ router.get('/:id', postController.getPost);
 router.get('/', postController.getAllPost);
 router.post('/', multer, postController.createPost);
 
-// router.put('/:id', postController.updatePost);
+router.put('/:id', multer, postController.updatePost);
 router.delete('/:id', postController.deletePost);
 router.put('/like-post/:id', postController.likePost);
 // // router.patch('/like-post/:id', postController.likePost);

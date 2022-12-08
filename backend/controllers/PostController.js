@@ -77,17 +77,46 @@ module.exports.getAllPost = async (req, res) => {
 module.exports.updatePost = async (req, res) => {
   const postId = req.params.id;
   const { userId } = req.body;
+  const url = req.protocol + '://' + req.get('host')
 
   try {
     const post = await PostModel.findById(postId);
     if (post.userId === userId) {
-      await post.updateOne({ $set: req.body });
+      await post.updateOne(
+        { 
+          $set: req.body,
+          img: url + '/images/' + req.file.filename, 
+        }
+      );
       res.status(200).json("Post updated!");
     } else {
       res.status(403).json("Authentication failed");
     }
   } catch (error) {}
 };
+
+// // update post
+// module.exports.updatePost = async (req, res) => {
+//   const sauceObject = req.file ? {
+//       ...JSON.parse(req.body.sauce),
+//       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+//   } : { ...req.body };
+
+//   delete sauceObject._userId;
+//   Sauce.findOne({_id: req.params.id})
+//       .then((sauce) => {
+//           if (sauce.userId != req.auth.userId) {
+//               res.status(403).json({ message : 'unauthorized request'});
+//           } else {
+//               Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
+//               .then(() => res.status(200).json({message : 'Sauce modifiée !'}))
+//               .catch(error => res.status(401).json({ error }));
+//           }
+//       })
+//       .catch((error) => {
+//           res.status(400).json({ error });
+//       });
+// };
 
 // delete a post
 module.exports.deletePost = async (req, res) => {

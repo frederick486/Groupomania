@@ -30,17 +30,17 @@ export default function PostComment({props}) {
         console.log("pseudo :", pseudo)
         console.log("comment :", comment)
 
-    try {
-        axios.put( API_URL + '/comment-post/' + id, 
-            { 
-                commenterId: "63581eb8f1df05c37b29011a",
-                commenterPseudo: pseudo,
-                text: comment        
-            } 
-        );
-    } catch (err) {
-        console.log(err)
-    }
+        try {
+            axios.put( API_URL + '/comment-post/' + id, 
+                { 
+                    commenterId: "63581eb8f1df05c37b29011a",
+                    commenterPseudo: pseudo,
+                    text: comment        
+                } 
+            );
+        } catch (err) {
+            console.log(err)
+        }
     }
 
   return (
@@ -87,11 +87,13 @@ export default function PostComment({props}) {
                 </Button>
 
             </form>
+
+            <PostCommentList props={props.comments}/>
+
         </div>
          
-        <div className='commentList'>
-            <PostCommentList props={props.comments}/>
-        </div>
+        {/* <div className='commentList'>
+        </div> */}
     </>
     )
   

@@ -1,12 +1,24 @@
-import './postShare.css'
+import './postUpdate.css'
 import { API_URL } from '../../config' 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
-function PostShare () {
+export default function PostUpdate () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState([]);
+  const [data, setData] = useState([])
+
+  const location = useLocation()
+  const id = location.pathname.split('/post-update/')[1]  
+
+  useEffect(() => {
+    (async () => {
+      const response = await axios.get( API_URL + '/' + id  );
+        setData(response.data);
+    })();
+  }, []);  
 
   const submitHandler = (e) => {
     e.preventDefault(); 
@@ -15,16 +27,19 @@ function PostShare () {
     formData.append("title", title);
     formData.append("desc", desc);
     formData.append("img", file[0]);
+ 
+    try {
+      axios.put( API_URL + '/' + id, formData, {        
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      window.location = "/";
+    } catch (err) {
+        console.log(err)
+    }    
 
-    axios.post( API_URL , formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }).then(res => {
-        console.log(res)
-    })
-
-    window.location = "/";    
+    // window.location = "/";    
   };
 
   return (
@@ -38,13 +53,14 @@ function PostShare () {
         <label htmlFor="article">Votre article</label>
 
         <input 
-          placeholder={" Donner un titre à votre post"} 
-          // className='shareInput' 
+          // placeholder={" Donner un titre à votre post"} 
+          defaultValue={data.title}
           onChange={(e) => { setTitle(e.target.value) }}      
         />
 
         <textarea            
-          placeholder="Ajouter une description"
+          // placeholder="Ajouter une description"
+          defaultValue={data.desc}
           onChange={(e) => { setDesc(e.target.value) }}     
         ></textarea>        
 
@@ -60,5 +76,3 @@ function PostShare () {
     </>
   );
 }
-
-export default PostShare;
