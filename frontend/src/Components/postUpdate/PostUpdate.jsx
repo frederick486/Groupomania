@@ -1,4 +1,5 @@
 import './postUpdate.css'
+import { Cancel } from '@mui/icons-material'
 import { API_URL } from '../../config' 
 import { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom'
@@ -7,7 +8,7 @@ import axios from 'axios'
 export default function PostUpdate () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
-  const [file, setFile] = useState([]);
+  const [file, setFile] = useState(null);
   const [data, setData] = useState([])
 
   const location = useLocation()
@@ -17,29 +18,28 @@ export default function PostUpdate () {
     (async () => {
       const response = await axios.get( API_URL + '/' + id  );
         setData(response.data);
+        setFile(response.data.img)
     })();
   }, []);  
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault(); 
     let formData = new FormData();
 
     formData.append("title", title);
     formData.append("desc", desc);
-    formData.append("img", file[0]);
+    formData.append("img", file);
  
     try {
-      axios.put( API_URL + '/' + id, formData, {        
-        headers: {
-          "Content-Type": "multipart/form-data",
+      await axios.put( API_URL + '/' + id, formData, {        
+        headers: { "Content-Type": "multipart/form-data",
         },
       });
       window.location = "/";
     } catch (err) {
-        console.log(err)
+      console.log(err)
     }    
 
-    // window.location = "/";    
   };
 
   return (
@@ -64,11 +64,25 @@ export default function PostUpdate () {
           onChange={(e) => { setDesc(e.target.value) }}     
         ></textarea>        
 
+        {/* ----------------------------------------------------------------------- */}
+        {file && (
+          <div className="shareImgContainer">
+            {/* <img className='shareImg' src={URL.createObjectURL(file)} alt="" /> */}
+            <img className='shareImg' src={data.img} alt="" />
+            <Cancel 
+              className='shareCancelImg' 
+              onClick={() => setFile(null)} 
+            />
+          </div>
+        )}       
+        {/* ----------------------------------------------------------------------- */}   
+
+
         <label htmlFor="avatar">Ajoutez une image</label> 
         <input 
           label="Select a File"
           type="file"
-          onChange={(e) => { setFile(e.target.files) }}
+          onChange={(e) => { setFile(e.target.files[0]) }}
         />
 
         <button>Envoyer</button>

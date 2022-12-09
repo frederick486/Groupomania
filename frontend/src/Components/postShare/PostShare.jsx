@@ -1,30 +1,31 @@
 import './postShare.css'
+import { Cancel } from '@mui/icons-material'
 import { API_URL } from '../../config' 
 import { useState } from "react";
 import axios from 'axios'
 
-function PostShare () {
+export default function PostShare () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
-  const [file, setFile] = useState([]);
+  const [file, setFile] = useState(null);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault(); 
     let formData = new FormData();
 
     formData.append("title", title);
     formData.append("desc", desc);
-    formData.append("img", file[0]);
+    formData.append("img", file);
 
-    axios.post( API_URL , formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }).then(res => {
-        console.log(res)
-    })
+    try {
+      await axios.post( API_URL , formData, { 
+        headers: { "Content-Type": "multipart/form-data" },
+      }); 
+      window.location = "/";                
+    } catch (err) {
+      console.log(err)      
+    }
 
-    window.location = "/";    
   };
 
   return (
@@ -46,13 +47,26 @@ function PostShare () {
         <textarea            
           placeholder="Ajouter une description"
           onChange={(e) => { setDesc(e.target.value) }}     
-        ></textarea>        
+        ></textarea>       
+
+
+        {/* ----------------------------------------------------------------------- */}
+        {file && (
+          <div className="shareImgContainer">
+            <img className='shareImg' src={URL.createObjectURL(file)} alt="" />
+            <Cancel 
+              className='shareCancelImg' 
+              onClick={() => setFile(null)} 
+            />
+          </div>
+        )}        
+        {/* ----------------------------------------------------------------------- */}         
 
         <label htmlFor="avatar">Ajoutez une image</label> 
         <input 
           label="Select a File"
           type="file"
-          onChange={(e) => { setFile(e.target.files) }}
+          onChange={(e) => { setFile(e.target.files[0]) }}          
         />
 
         <button>Envoyer</button>
@@ -60,5 +74,3 @@ function PostShare () {
     </>
   );
 }
-
-export default PostShare;
