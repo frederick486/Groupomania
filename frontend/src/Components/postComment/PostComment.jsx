@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 
 import { API_URL } from '../../config';
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
 import './postComment.css'
@@ -22,16 +22,15 @@ export default function PostComment({props}) {
     const [comment, setComment] = useState("");
 
     const navigate = useNavigate()
-    const location = useLocation()
-    const id = location.pathname.split('/post/')[1]
+    const id = useParams().postId
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault()
         console.log("pseudo :", pseudo)
         console.log("comment :", comment)
 
         try {
-            axios.put( API_URL + '/comment-post/' + id, 
+            await axios.put( API_URL + '/comment-post/' + id, 
                 { 
                     commenterId: "63581eb8f1df05c37b29011a",
                     commenterPseudo: pseudo,

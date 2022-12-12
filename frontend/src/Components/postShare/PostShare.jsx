@@ -3,11 +3,14 @@ import { Cancel } from '@mui/icons-material'
 import { API_URL } from '../../config' 
 import { useState } from "react";
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 export default function PostShare () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState(null);
+
+  const navigate = useNavigate()
 
   const submitHandler = async (e) => {
     e.preventDefault(); 
@@ -21,7 +24,8 @@ export default function PostShare () {
       await axios.post( API_URL , formData, { 
         headers: { "Content-Type": "multipart/form-data" },
       }); 
-      window.location = "/";                
+      // window.location = "/";   
+      navigate('/')
     } catch (err) {
       console.log(err)      
     }
@@ -49,8 +53,6 @@ export default function PostShare () {
           onChange={(e) => { setDesc(e.target.value) }}     
         ></textarea>       
 
-
-        {/* ----------------------------------------------------------------------- */}
         {file && (
           <div className="shareImgContainer">
             <img className='shareImg' src={URL.createObjectURL(file)} alt="" />
@@ -60,7 +62,6 @@ export default function PostShare () {
             />
           </div>
         )}        
-        {/* ----------------------------------------------------------------------- */}         
 
         <label htmlFor="avatar">Ajoutez une image</label> 
         <input 

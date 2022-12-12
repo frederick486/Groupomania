@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
 import { API_URL } from '../../config';
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import axios from 'axios';
 
@@ -16,8 +16,8 @@ export default function PostCommentList({props}) {
     // console.log("props : ", props);
 
     const [comment, setComment] = useState([])
-    const location = useLocation()
-    const id = location.pathname.split('/post/')[1]
+
+    const id = useParams().postId
 
     useEffect(() => {
         (async () => {
@@ -39,7 +39,7 @@ export default function PostCommentList({props}) {
                         <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                     </ListItemAvatar>
                     <ListItemText
-                        // primary={"Affiche moi quelquechose !!!"}
+                        primary={comment.commenterPseudo}
                         secondary={
                         <React.Fragment>
                             <Typography
@@ -48,7 +48,7 @@ export default function PostCommentList({props}) {
                             variant="body2"
                             color="text.primary"
                             >
-                            {comment.commenterPseudo}
+                            {/* {comment.commenterPseudo} */}
                             </Typography>
                             {comment.text}
                             {/* {"Affiche moi quelquechose !!!"} */}

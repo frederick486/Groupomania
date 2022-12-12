@@ -2,7 +2,7 @@ import './postUpdate.css'
 import { Cancel } from '@mui/icons-material'
 import { API_URL } from '../../config' 
 import { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
 export default function PostUpdate () {
@@ -11,9 +11,9 @@ export default function PostUpdate () {
   const [file, setFile] = useState(null);
   const [data, setData] = useState([])
 
-  const location = useLocation()
-  const id = location.pathname.split('/post-update/')[1]  
-
+  const navigate = useNavigate()
+  const id = useParams().postId
+ 
   useEffect(() => {
     (async () => {
       const response = await axios.get( API_URL + '/' + id  );
@@ -35,7 +35,8 @@ export default function PostUpdate () {
         headers: { "Content-Type": "multipart/form-data",
         },
       });
-      window.location = "/";
+      // window.location = "/";
+      navigate('/')
     } catch (err) {
       console.log(err)
     }    
@@ -64,7 +65,6 @@ export default function PostUpdate () {
           onChange={(e) => { setDesc(e.target.value) }}     
         ></textarea>        
 
-        {/* ----------------------------------------------------------------------- */}
         {file && (
           <div className="shareImgContainer">
             {/* <img className='shareImg' src={URL.createObjectURL(file)} alt="" /> */}
@@ -75,8 +75,6 @@ export default function PostUpdate () {
             />
           </div>
         )}       
-        {/* ----------------------------------------------------------------------- */}   
-
 
         <label htmlFor="avatar">Ajoutez une image</label> 
         <input 

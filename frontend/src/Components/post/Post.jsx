@@ -2,7 +2,7 @@ import './post.css';
 import { API_URL } from '../../config';
 import PostComment from '../postComment/PostComment'
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
 
@@ -13,9 +13,7 @@ export default function Post () {
   const [isLiked, setIsLiked] = useState(false)
 
   const navigate = useNavigate()
-  const location = useLocation()
-  const id = location.pathname.split('/post/')[1]
-
+  const id = useParams().postId
  
   useEffect(() => {
     (async () => {
@@ -26,20 +24,23 @@ export default function Post () {
   }, []);
 
 
-  const deletePost = () => {
-    axios
-      .delete( API_URL + '/' + id )
-      .then((response) => {        
-        setData(response.data)
-        navigate('/')
-      })
-      .catch((err) => console.log(err));    
+  const deletePost = async () => {
+    try {
+      await axios.delete( API_URL + '/' + id )
+        .then((response) => {        
+          setData(response.data)
+          navigate('/')
+        })          
+    } catch (err) {
+      console.log(err)      
+    }
+ 
   }
 
 
-  const likeHandler = () => {
+  const likeHandler = async () => {
     try {
-      axios.put( API_URL + '/like-post/' + id, { userId: "635abed658bac2c768a67cb4" } );
+      await axios.put( API_URL + '/like-post/' + id, { userId: "635abed658bac2c768a67cb4" } );
     } catch (err) {
       console.log(err)
     }
