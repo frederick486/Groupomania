@@ -1,9 +1,12 @@
 import './post.css';
 import { API_URL } from '../../config';
-import PostComment from '../postComment/PostComment'
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+
+import PostComment from '../postComment/PostComment';
+// import PostCommentForm from '../postCommentForm/PostCommentForm'
+// import PostCommentList from '../postCommentList/PostCommentList';
 
 
 export default function Post () {
@@ -93,8 +96,11 @@ export default function Post () {
 
 
         </div>
-        <PostComment props={data}/>
-
+        {/* <PostCommentForm props={data}/>
+        <PostCommentList props={data.comments}/> */}
+      
+        <PostComment />
+       
       </div>
     </>
   )

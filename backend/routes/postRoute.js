@@ -18,7 +18,7 @@ router.put('/like-post/:id', postController.likePost);
 // // // comments
 router.put('/comment-post/:id', postController.commentPost);
 // // router.patch('/edit-comment-post/:id', postController.editCommentPost);
-// // router.patch('/delete-comment-post/:id', postController.deleteCommentPost);
+router.put('/delete-comment-post/:id', postController.deleteCommentPost);
 
 
 

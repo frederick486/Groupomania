@@ -154,6 +154,7 @@ module.exports.likePost = async (req, res) => {
   }
 };
 
+// comment a post
 module.exports.commentPost = async (req, res) => {
   const id = req.params.id;
 
@@ -172,6 +173,27 @@ module.exports.commentPost = async (req, res) => {
       },
     );
     res.status(200).json("Commentaire ajouté");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+// delete a comment post
+module.exports.deleteCommentPost = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const post = await PostModel.findById(id)
+    await post.updateOne (
+      {
+        $pull: {
+          comments: {
+            _id: req.body.commentId,
+          },
+        },
+      },
+    );
+    res.status(200).json("Commentaire supprimé");
   } catch (error) {
     res.status(500).json(error);
   }
