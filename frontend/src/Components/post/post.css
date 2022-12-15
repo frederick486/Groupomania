@@ -35,6 +35,15 @@
     border: 2px solid  #FD2D01;
 }
 
+.buttonDelette {
+    border: none;
+    background-color: transparent;
+}
+
+.deleteIcon {
+    margin-right: 3px;
+}
+
 /* .commentContainer {
     display: flex;
 }  */

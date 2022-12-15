@@ -1,15 +1,13 @@
+import './postComment.css'
+import { API_URL } from '../../config';
 import React from 'react'
 import { useState } from 'react';
-import './postComment.css'
-
-import { API_URL } from '../../config';
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import jwtDecode from "jwt-decode"
 
 // Formulaire
 import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -27,17 +25,22 @@ export default function PostComment ({props}) {
 
     const [pseudo, setPseudo] = useState("")
     const [comment, setComment] = useState("");
+    const [userId, setUserId] = useState("")
 
     const [comments, setComments] = useState([])
 
-    const navigate = useNavigate()
     const id = useParams().postId
+
+    const token = localStorage.getItem("authToken")
+
 
     useEffect(() => {
         (async () => {
             try {
                 const response = await axios.get( API_URL + '/' + id  );
                 setComments(response.data.comments);
+                setPseudo(localStorage.getItem("pseudo"))
+                setUserId(localStorage.getItem("userId"))
             } catch (err) {
                 console.log(err)            
             }
@@ -48,47 +51,81 @@ export default function PostComment ({props}) {
         e.preventDefault()
         console.log("pseudo :", pseudo)
         console.log("comment :", comment)
+        console.log("userId :", userId)
 
-        try {
-            await axios.put( API_URL + '/comment-post/' + id, 
-                { 
-                    commenterId: "63581eb8f1df05c37b29011a",
-                    commenterPseudo: pseudo,
-                    text: comment        
-                }, 
-                setComment("")
-            );
-        } catch (err) {
-            console.log(err)
-        }
 
-        try {
-            const response = await axios.get( API_URL + '/' + id  );
-            setComments(response.data.comments);
-        } catch (err) {
-            console.log(err)            
-        }
+        if(token) {
+            const {exp} = jwtDecode(token)
+          
+            if(exp * 1000 > new Date().getTime()) {
+
+                try {
+                    await axios.put( API_URL + '/comment-post/' + id, 
+                        { 
+                            // commenterId: "63581eb8f1df05c37b29011a",
+                            commenterId: userId,
+                            commenterPseudo: pseudo,
+                            text: comment        
+                        }, 
+                        setComment("")
+                    );
+                } catch (err) {
+                    console.log(err)
+                }
+        
+                try {
+                    const response = await axios.get( API_URL + '/' + id  );
+                    setComments(response.data.comments);
+                } catch (err) {
+                    console.log(err)            
+                }
+                            
+            } else {
+                alert("votre session a expiré. Merci de vous reconnecter")
+            }
+        } else { 
+            alert("Vous devez être connecté pour laisser un commentaire")
+        }        
 
     }
 
     const deleteComment = async (e) => {
         // console.log("e.target.id : ", e.target.id)
 
-        try {
-            await axios.put( API_URL + '/delete-comment-post/' + id, 
-            { commentId: e.target.id }
-        )                     
-        } catch (err) {
-            console.log(err)            
+        if(token) {
+            const {exp} = jwtDecode(token)
+
+            if(exp * 1000 > new Date().getTime()) {
+
+                if(e.target.value === localStorage.getItem("userId")) {
+                    try {
+                        await axios.put( API_URL + '/delete-comment-post/' + id, 
+                        { 
+                            commentId: e.target.id,
+                            token: localStorage.getItem("authToken")
+                        }
+                    )                     
+                    } catch (err) {
+                        console.log(err)            
+                    }
+            
+                    try {
+                        const response = await axios.get( API_URL + '/' + id  );
+                        setComments(response.data.comments);
+            
+                    } catch (err) {
+                        console.log(err)            
+                    }  
+                } else {
+                    alert("vous devez être l'auteur de ce commentaire pour pouvoir le supprimer")
+                }
+            } else {
+              alert("votre session a expiré. Merci de vous reconnecter")
+            }
+        } else {
+            alert("Vous devez être connecté pour supprimer un commentaire")
         }
-
-        try {
-            const response = await axios.get( API_URL + '/' + id  );
-            setComments(response.data.comments);
-        } catch (err) {
-            console.log(err)            
-        }        
-
+     
     }
 
 
@@ -99,21 +136,6 @@ export default function PostComment ({props}) {
                 className='commentFom' 
                 onSubmit={submitHandler}
             >
-    
-                <TextField
-                    id="input-with-icon-textfield"
-                    label="Pseudo"
-                    InputProps={{
-                        startAdornment: (
-                        <InputAdornment position="start">
-                            <AccountCircle />
-                        </InputAdornment>
-                        ),
-                    }}
-                    variant="standard"
-                    onChange={ (e) => { setPseudo(e.target.value); } } 
-                    name="pseudo"
-                />
 
                 <TextField
                     id="standard-multiline-static"
@@ -167,6 +189,7 @@ export default function PostComment ({props}) {
                         />
                         <button
                             id={comment._id}
+                            value={comment.commenterId}
                             onClick={deleteComment}
                         >
                             Supprimer

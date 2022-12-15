@@ -1,9 +1,12 @@
 import './postShare.css'
-import { Cancel } from '@mui/icons-material'
-import { API_URL } from '../../config' 
 import { useState } from "react";
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../config' 
+import axios from 'axios'
+
+// icones
+import { Cancel } from '@mui/icons-material'
+
 
 export default function PostShare () {
   const [title, setTitle] = useState("");

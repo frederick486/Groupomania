@@ -160,6 +160,7 @@ module.exports.commentPost = async (req, res) => {
 
   try {
     const post = await PostModel.findById(id)
+
     await post.updateOne (
       { 
         $push: {
@@ -184,8 +185,10 @@ module.exports.deleteCommentPost = async (req, res) => {
 
   try {
     const post = await PostModel.findById(id)
+    console.log("req.auth.userId :", req.auth.userId)
+
     await post.updateOne (
-      {
+      {        
         $pull: {
           comments: {
             _id: req.body.commentId,
@@ -193,10 +196,11 @@ module.exports.deleteCommentPost = async (req, res) => {
         },
       },
     );
-    res.status(200).json("Commentaire supprimé");
-  } catch (error) {
-    res.status(500).json(error);
+    res.status(200).json("Commentaire supprimé");  
+  } catch (err) {    
+    res.status(500).json(err)
   }
+
 };
 
 // // Get timeline posts

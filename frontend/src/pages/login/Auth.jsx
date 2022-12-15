@@ -37,7 +37,11 @@ export default function (props) {
           // passwordError.innerHTML = res.data.erros.password;
           console.log("password ou nom d'utilisateur incorecte")
         } else {
-          window.location = "/";
+          console.log("res : ", res)
+          window.localStorage.setItem("authToken", res.data.token)
+          window.localStorage.setItem("userId", res.data.userId)
+          window.localStorage.setItem("pseudo", res.data.pseudo)
+          // window.location = "/";
         }
       })
       .catch((error) => {

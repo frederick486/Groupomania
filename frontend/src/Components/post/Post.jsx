@@ -3,10 +3,12 @@ import { API_URL } from '../../config';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import jwtDecode from "jwt-decode"
 
 import PostComment from '../postComment/PostComment';
-// import PostCommentForm from '../postCommentForm/PostCommentForm'
-// import PostCommentList from '../postCommentList/PostCommentList';
+
+// icônes
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 
 export default function Post () {
@@ -17,6 +19,8 @@ export default function Post () {
 
   const navigate = useNavigate()
   const id = useParams().postId
+
+  const token = localStorage.getItem("authToken")
  
   useEffect(() => {
     (async () => {
@@ -27,7 +31,10 @@ export default function Post () {
   }, []);
 
 
-  const deletePost = async () => {
+  const deletePost = async (e) => {
+
+    console.log("e.target.value : ", e.target.value)
+
     try {
       await axios.delete( API_URL + '/' + id )
         .then((response) => {        
@@ -37,16 +44,50 @@ export default function Post () {
     } catch (err) {
       console.log(err)      
     }
+
+    if(token) {
+      const {exp} = jwtDecode(token)
+
+      if(exp * 1000 > new Date().getTime()) {
+
+        if(e.target.value === localStorage.getItem("userId")) {
+          alert("vous pouvez supprimer ce post")
+
+        } else {
+          alert("(En principe) vous devez être l'auteur de ce post pour pouvoir le supprimer")
+        }
+      } else {
+        alert("votre session a expiré. Merci de vous reconnecter")
+      }
+    } else {
+      alert("Vous devez être connecté pour supprimer un de vos post")
+    }
  
   }
 
 
   const likeHandler = async () => {
-    try {
-      await axios.put( API_URL + '/like-post/' + id, { userId: "635abed658bac2c768a67cb4" } );
-    } catch (err) {
-      console.log(err)
+
+    if(token) {
+      const {exp} = jwtDecode(token)
+
+      if(exp * 1000 > new Date().getTime()) {
+
+        try {
+          // await axios.put( API_URL + '/like-post/' + id, { userId: "635abed658bac2c768a67cb4" } );
+          await axios.put( API_URL + '/like-post/' + id, 
+          { userId: localStorage.getItem("userId") } );
+        } catch (err) {
+          console.log(err)
+        }
+
+      } else {
+        alert("Veuillez vous connecter à nouveau")
+      }
+    } else {
+      alert("Veuillez vous connecter pour liker ce post")
     }
+
     // setLike(isLiked ? like - 1 : like + 1)
     // setIsLiked(!isLiked)     
 
@@ -72,12 +113,15 @@ export default function Post () {
 
         <div className="postReact">
           <button 
-            className='button' 
+            // style={{ display:"none" }}
+            // className='button' 
+            className='buttonDelette' 
             onClick={deletePost}
+            value={data.userId}
           >
-            Supprimer
+            <DeleteForeverIcon style={{ fontSize:"50px" }}/>
           </button>
-
+        
           <button 
             className={[isLiked ? 'active-like' : 'button'].join(' ')} 
             onClick={likeHandler} 
@@ -94,10 +138,7 @@ export default function Post () {
           </button>
         </Link>
 
-
         </div>
-        {/* <PostCommentForm props={data}/>
-        <PostCommentList props={data.comments}/> */}
       
         <PostComment />
        

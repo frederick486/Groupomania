@@ -1,9 +1,12 @@
 import './postUpdate.css'
-import { Cancel } from '@mui/icons-material'
-import { API_URL } from '../../config' 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
+import { API_URL } from '../../config' 
 import axios from 'axios'
+
+// icones
+import { Cancel } from '@mui/icons-material'
+
 
 export default function PostUpdate () {
   const [title, setTitle] = useState("");
