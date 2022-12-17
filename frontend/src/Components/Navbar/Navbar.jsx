@@ -20,6 +20,7 @@ function NavScrollExample() {
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
+              <Nav.Link href="/user">Connection</Nav.Link>
               <Nav.Link href="/">Page d'acceuil</Nav.Link>
               <Nav.Link href="/post-share">Ajouter un article</Nav.Link>
               </Nav>

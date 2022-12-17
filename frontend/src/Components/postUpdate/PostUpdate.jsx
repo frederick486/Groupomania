@@ -22,6 +22,7 @@ export default function PostUpdate () {
       const response = await axios.get( API_URL + '/' + id  );
         setData(response.data);
         setFile(response.data.img)
+        setDesc(response.data.desc)
     })();
   }, []);  
 
@@ -38,12 +39,11 @@ export default function PostUpdate () {
         headers: { "Content-Type": "multipart/form-data",
         },
       });
-      // window.location = "/";
       navigate('/')
     } catch (err) {
       console.log(err)
     }    
-
+  
   };
 
   return (
@@ -57,14 +57,12 @@ export default function PostUpdate () {
         <label htmlFor="article">Votre article</label>
 
         <input 
-          // placeholder={" Donner un titre à votre post"} 
           defaultValue={data.title}
           onChange={(e) => { setTitle(e.target.value) }}      
         />
 
         <textarea            
-          // placeholder="Ajouter une description"
-          defaultValue={data.desc}
+          defaultValue={desc}
           onChange={(e) => { setDesc(e.target.value) }}     
         ></textarea>        
 

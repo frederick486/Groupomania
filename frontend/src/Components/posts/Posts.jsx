@@ -23,16 +23,16 @@ export default function Posts () {
       <h1 className='home-title'>dernières nouvelles : </h1>
       <div className="container-cards">
 
-        if(data) {
-          data.map(item => {
-            return (
-              <PostCard 
-                key={uuidv4()} 
-                card={item}
-              />
-            )
-          })
-        }
+      {
+        data.map(item => {
+          return (
+            <PostCard 
+              key={uuidv4()} 
+              card={item}
+            />
+          )
+        })
+      }
         
       </div>
     </>

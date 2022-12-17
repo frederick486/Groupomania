@@ -1,7 +1,7 @@
 import './postComment.css'
 import { API_URL } from '../../config';
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import jwtDecode from "jwt-decode"
@@ -18,7 +18,6 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
 
 
 export default function PostComment ({props}) {
@@ -62,24 +61,19 @@ export default function PostComment ({props}) {
                 try {
                     await axios.put( API_URL + '/comment-post/' + id, 
                         { 
-                            // commenterId: "63581eb8f1df05c37b29011a",
                             commenterId: userId,
                             commenterPseudo: pseudo,
                             text: comment        
                         }, 
                         setComment("")
-                    );
-                } catch (err) {
-                    console.log(err)
-                }
-        
-                try {
+                    )
+
                     const response = await axios.get( API_URL + '/' + id  );
                     setComments(response.data.comments);
+
                 } catch (err) {
-                    console.log(err)            
-                }
-                            
+                    console.log(err)
+                }                           
             } else {
                 alert("votre session a expiré. Merci de vous reconnecter")
             }
@@ -89,33 +83,29 @@ export default function PostComment ({props}) {
 
     }
 
-    const deleteComment = async (e) => {
-        // console.log("e.target.id : ", e.target.id)
+    const deleteComment = async (commentId, commenterId) => {
 
         if(token) {
             const {exp} = jwtDecode(token)
 
             if(exp * 1000 > new Date().getTime()) {
 
-                if(e.target.value === localStorage.getItem("userId")) {
+                if(commenterId === localStorage.getItem("userId")) {
+
                     try {
                         await axios.put( API_URL + '/delete-comment-post/' + id, 
-                        { 
-                            commentId: e.target.id,
-                            token: localStorage.getItem("authToken")
-                        }
-                    )                     
+                            { commentId: commentId },
+                            { headers: { 'Authorization': `Bearer ${token}`  }},                    
+
+                        ) 
+
+                        const response = await axios.get( API_URL + '/' + id  );
+                        setComments(response.data.comments); 
+
                     } catch (err) {
                         console.log(err)            
                     }
             
-                    try {
-                        const response = await axios.get( API_URL + '/' + id  );
-                        setComments(response.data.comments);
-            
-                    } catch (err) {
-                        console.log(err)            
-                    }  
                 } else {
                     alert("vous devez être l'auteur de ce commentaire pour pouvoir le supprimer")
                 }
@@ -142,7 +132,6 @@ export default function PostComment ({props}) {
                     label="Commentaire :"
                     multiline
                     rows={4}
-                    // defaultValue="Quoid de neuf ?"
                     placeholder="Quoi de neuf ?"
                     variant="standard"
                     onChange={ (e) => { setComment(e.target.value); } }                     
@@ -180,17 +169,15 @@ export default function PostComment ({props}) {
                                 variant="body2"
                                 color="text.primary"
                                 >
-                                {/* {comment.commenterPseudo} */}
                                 </Typography>
                                 {comment.text}
-                                {/* {"Affiche moi quelquechose !!!"} */}
                             </React.Fragment>
                             }
                         />
                         <button
-                            id={comment._id}
-                            value={comment.commenterId}
-                            onClick={deleteComment}
+                            onClick={async () => { await deleteComment(comment._id, comment.commenterId);} }
+                            // id={comment._id}
+                            // value={comment.commenterId}                            
                         >
                             Supprimer
                         </button>

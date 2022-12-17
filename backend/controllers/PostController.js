@@ -20,12 +20,16 @@ let mongoose = require('mongoose')
 // //create a post
 module.exports.createPost = (req, res) => {
   const url = req.protocol + '://' + req.get('host')
+
   const post = new PostModel({
       _id: new mongoose.Types.ObjectId(),
+      userId: req.auth.userId,
+      // userId: req.body.userId,
       title: req.body.title,
       desc: req.body.desc,
       img: url + '/images/' + req.file.filename,
-      likes:[],
+      // likes:[],
+      likers:[],
       comments: [],
     });
   post.save().then(result => {
@@ -121,7 +125,8 @@ module.exports.updatePost = async (req, res) => {
 // delete a post
 module.exports.deletePost = async (req, res) => {
   const id = req.params.id;
-  const { userId } = req.body;
+  // const { userId } = req.body;
+  const userId = req.auth.userId;
 
   try {
     const post = await PostModel.findById(id);
@@ -182,10 +187,10 @@ module.exports.commentPost = async (req, res) => {
 // delete a comment post
 module.exports.deleteCommentPost = async (req, res) => {
   const id = req.params.id;
+  console.log("req.auth.userId :", req.auth.userId)
 
   try {
     const post = await PostModel.findById(id)
-    console.log("req.auth.userId :", req.auth.userId)
 
     await post.updateOne (
       {        

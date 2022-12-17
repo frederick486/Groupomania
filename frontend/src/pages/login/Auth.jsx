@@ -3,9 +3,12 @@ import "./auth.css"
 import logo from "../../Assets/icon-left-font-monochrome-black.png"
 import React, { useState, useRef } from "react"
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function (props) {
   let [authMode, setAuthMode] = useState("signin")
+
+  const navigate = useNavigate()
 
   const changeAuthMode = () => {
     setAuthMode(authMode === "signin" ? "signup" : "signin")
@@ -41,7 +44,9 @@ export default function (props) {
           window.localStorage.setItem("authToken", res.data.token)
           window.localStorage.setItem("userId", res.data.userId)
           window.localStorage.setItem("pseudo", res.data.pseudo)
+          // axios.defaults.headers["Authorization"] = "Bearer" + res.data.token
           // window.location = "/";
+          navigate('/')
         }
       })
       .catch((error) => {

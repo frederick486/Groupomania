@@ -48,6 +48,10 @@ const Schema = mongoose.Schema;
 const PostSchema = new Schema(
   {
     _id: mongoose.Schema.Types.ObjectId,
+    userId: {
+      type: String,
+      required: true
+    },    
     title: {
       type: String,
     },

@@ -12,6 +12,7 @@ export default function PostShare () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState(null);
+  const token = localStorage.getItem("authToken")
 
   const navigate = useNavigate()
 
@@ -22,12 +23,12 @@ export default function PostShare () {
     formData.append("title", title);
     formData.append("desc", desc);
     formData.append("img", file);
+    // formData.append("token", token);
 
     try {
       await axios.post( API_URL , formData, { 
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { "Content-Type": "multipart/form-data", 'Authorization': `Bearer ${token}`  },
       }); 
-      // window.location = "/";   
       navigate('/')
     } catch (err) {
       console.log(err)      

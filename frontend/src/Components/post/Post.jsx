@@ -1,7 +1,7 @@
 import './post.css';
 import { API_URL } from '../../config';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import jwtDecode from "jwt-decode"
 
@@ -30,39 +30,32 @@ export default function Post () {
     })();
   }, []);
 
+  console.log("data :", data)
 
-  const deletePost = async (e) => {
-
-    console.log("e.target.value : ", e.target.value)
-
-    try {
-      await axios.delete( API_URL + '/' + id )
-        .then((response) => {        
-          setData(response.data)
-          navigate('/')
-        })          
-    } catch (err) {
-      console.log(err)      
-    }
+  const deletePost = async (userId) => {
 
     if(token) {
       const {exp} = jwtDecode(token)
 
       if(exp * 1000 > new Date().getTime()) {
 
-        if(e.target.value === localStorage.getItem("userId")) {
-          alert("vous pouvez supprimer ce post")
-
-        } else {
-          alert("(En principe) vous devez être l'auteur de ce post pour pouvoir le supprimer")
-        }
-      } else {
-        alert("votre session a expiré. Merci de vous reconnecter")
-      }
-    } else {
-      alert("Vous devez être connecté pour supprimer un de vos post")
-    }
- 
+        if(localStorage.getItem("userId") === userId) {
+          alert("Vous êtes l'auteur de ce post et vous pouvez le supprimer")
+          try {
+            await axios.delete( API_URL + '/' + id,
+              { headers: { 'Authorization': `Bearer ${token}`  }}
+            )
+              .then((response) => {        
+                setData(response.data)
+                navigate('/')
+              })          
+          } catch (err) {
+            console.log(err)      
+          }          
+        } else { alert("Vous devez être l'auteur de ce post pour pouvoir le supprimer") }
+      } else { alert("votre session a expiré. Merci de vous reconnecter") }
+    } else { alert("Vous devez être connecté pour supprimer un de vos post") }
+  
   }
 
 
@@ -101,6 +94,21 @@ export default function Post () {
   }  
 
 
+  const uptdatePost = async (userId) => {
+    console.log("userId : ", userId)
+
+    if(token) {
+      const {exp} = jwtDecode(token)
+      if(exp * 1000 > new Date().getTime()) {
+        if(localStorage.getItem("userId") === userId) {
+          alert("Vous êtes l'auteur de ce post et vous pouvez le modifier")
+            navigate(`/post-update/${id}`)        
+        } else { alert("Vous devez être l'auteur de ce post pour pouvoir le modifier") }
+      } else { alert("votre session a expiré. Merci de vous reconnecter") }
+    } else { alert("Vous devez être connecté pour modifié un de vos post") }    
+
+  }
+
   return(
     <>
       <div className="article-content">
@@ -113,13 +121,14 @@ export default function Post () {
 
         <div className="postReact">
           <button 
-            // style={{ display:"none" }}
-            // className='button' 
             className='buttonDelette' 
-            onClick={deletePost}
-            value={data.userId}
+            onClick={async () => { await deletePost(data.userId)}}
+            // value={data.userId}
+            // onClick={deletePost}
+            // style={{ display:"none" }}
+            // className='button'             
           >
-            <DeleteForeverIcon style={{ fontSize:"50px" }}/>
+            <DeleteForeverIcon style={{ fontSize:"50px", color:"red"}}/>
           </button>
         
           <button 
@@ -129,14 +138,12 @@ export default function Post () {
             Like {like}
           </button>
 
-        <Link
-          to={ `/post-update/${id}` } 
-          style={{textDecoration:"none", color:"black"} }        
-        >
-          <button className='button'>
+          <button 
+            className='button'
+            onClick={async () => { await uptdatePost(data.userId)}}
+          >
             Modifier
           </button>
-        </Link>
 
         </div>
       
