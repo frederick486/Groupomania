@@ -80,7 +80,8 @@ module.exports.getAllPost = async (req, res) => {
 // update post
 module.exports.updatePost = async (req, res) => {
   const postId = req.params.id;
-  const { userId } = req.body;
+  // const { userId } = req.body;
+  const userId = req.auth.userId;
   const url = req.protocol + '://' + req.get('host')
 
   try {
@@ -96,7 +97,9 @@ module.exports.updatePost = async (req, res) => {
     } else {
       res.status(403).json("Authentication failed");
     }
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
 // // update post

@@ -1,11 +1,11 @@
 import "./App.css"
 import Navbar from "../src/Components/navbar/Navbar"
 import Home from "../src/pages/home/Home"
-import PostShare from "../src/Components/postShare/PostShare"
 import Post from "../src/Components/post/Post"
 import Auth from "../src/pages/login/Auth"
 import {Routes, Route} from 'react-router-dom'
 import PostUpdate from "./Components/postUpdate/PostUpdate"
+import PostShare from "./Components/postShare/PostShare"
 
 
 function App() {

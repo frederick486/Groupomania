@@ -12,12 +12,21 @@ export default function PostCard(props) {
             style={{textDecoration:"none", color:"black"} }
         >
             <div className='cardPost'>
-                <div className="postImageWrapper">
+
+                <p>Posté par : {props.card.userId}</p>
+
+                {/* <div className="postImageWrapper">
                     <img 
                         src={props.card.img} 
                         alt="" 
                     />
-                </div>
+                </div> */}
+        
+                <img className="postImageWrapper"
+                    src={props.card.img} 
+                    alt="" 
+                />
+                         
                 <h2>{props.card.title}</h2>
                 <p>{props.card.desc}</p>
             </div>

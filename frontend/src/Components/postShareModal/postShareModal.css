@@ -35,6 +35,13 @@
     border-radius: 3px;
     cursor: pointer;
 }
+*/
+
+.postShareBox {
+    background-color:aliceblue !important;
+    width: 80% !important;
+    max-width: 800px !important;
+}
 
 .shareImgContainer {
     padding: 0 20px 10px 20px;
@@ -43,6 +50,7 @@
 
 .shareImg {
     width: 100%;
+    max-height: 300px;
     object-fit: cover;
 }
 
@@ -52,4 +60,4 @@
     right: 20px;
     cursor: pointer;
     opacity: 0.7;
-} */
+} 

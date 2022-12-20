@@ -12,5 +12,6 @@
     flex-direction: column-reverse;
     align-items: stretch;    
     width: 100%;
+    max-width: 975px;
     margin: 0 auto 0;
 }

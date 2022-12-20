@@ -12,10 +12,13 @@ export default function PostUpdate () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState(null);
+  const [newFile, setNewFile] = useState(null);
   const [data, setData] = useState([])
 
   const navigate = useNavigate()
   const id = useParams().postId
+  const token = localStorage.getItem("authToken")
+
  
   useEffect(() => {
     (async () => {
@@ -32,12 +35,12 @@ export default function PostUpdate () {
 
     formData.append("title", title);
     formData.append("desc", desc);
-    formData.append("img", file);
+    // formData.append("img", file);
+    formData.append("img", newFile);
  
     try {
       await axios.put( API_URL + '/' + id, formData, {        
-        headers: { "Content-Type": "multipart/form-data",
-        },
+        headers: { "Content-Type": "multipart/form-data", 'Authorization': `Bearer ${token}` },
       });
       navigate('/')
     } catch (err) {
@@ -66,22 +69,22 @@ export default function PostUpdate () {
           onChange={(e) => { setDesc(e.target.value) }}     
         ></textarea>        
 
-        {file && (
+        {newFile && (
           <div className="shareImgContainer">
-            {/* <img className='shareImg' src={URL.createObjectURL(file)} alt="" /> */}
-            <img className='shareImg' src={data.img} alt="" />
+            <img className='shareImg' src={URL.createObjectURL(newFile)} alt="" />
+            {/* <img className='shareImg' src={data.img} alt="" /> */}
             <Cancel 
               className='shareCancelImg' 
-              onClick={() => setFile(null)} 
+              onClick={(e) => setNewFile(null)} 
             />
           </div>
         )}       
 
-        <label htmlFor="avatar">Ajoutez une image</label> 
+        <label htmlFor="avatar">Modifiez votre image</label> 
         <input 
           label="Select a File"
           type="file"
-          onChange={(e) => { setFile(e.target.files[0]) }}
+          onChange={(e) => { setNewFile(e.target.files[0]) }}
         />
 
         <button>Envoyer</button>
