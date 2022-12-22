@@ -41,22 +41,31 @@ export default function Post () {
       if(exp * 1000 > new Date().getTime()) {
 
         if(localStorage.getItem("userId") === userId) {
-          alert("Vous êtes l'auteur de ce post et vous pouvez le supprimer")
-          try {
-            await axios.delete( API_URL + '/' + id,
-              { headers: { 'Authorization': `Bearer ${token}`  }}
-            )
-              .then((response) => {        
-                setData(response.data)
-                navigate('/')
-              })          
-          } catch (err) {
-            console.log(err)      
-          }          
-        } else { alert("Vous devez être l'auteur de ce post pour pouvoir le supprimer") }
-      } else { alert("votre session a expiré. Merci de vous reconnecter") }
-    } else { alert("Vous devez être connecté pour supprimer un de vos post") }
-  
+
+          if(window.confirm("êtes vous sur de vouloir supprimer ce post ?")) {
+
+            try {
+              await axios.delete( API_URL + '/' + id,
+                { headers: { 'Authorization': `Bearer ${token}`  }}
+              )
+                .then((response) => {        
+                  setData(response.data)
+                  navigate('/')
+                })          
+            } catch (err) {
+              console.log(err)      
+            } 
+            
+          }        
+        } else { 
+          alert("Vous devez être l'auteur de ce post pour pouvoir le supprimer") 
+        }
+      } else { 
+        alert("votre session a expiré. Merci de vous reconnecter") 
+      }
+    } else { 
+      alert("Vous devez être connecté pour supprimer un de vos post") 
+    }
   }
 
 

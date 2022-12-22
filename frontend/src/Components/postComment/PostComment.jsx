@@ -37,7 +37,11 @@ export default function PostComment ({props}) {
     const [userId, setUserId] = useState("")
     const [avatar, setAvatar] = useState("")
     const [comment, setComment] = useState("");
-    const [comments, setComments] = useState([])
+    const [comments, setComments] = useState([]);
+    const [open, setOpen] = React.useState(false);
+    const [text, setText] = useState("");
+    const [send, setSend] = useState(false);
+    const [commentId, setCommentId] = useState();
 
     const id = useParams().postId
     const token = localStorage.getItem("authToken")
@@ -54,7 +58,7 @@ export default function PostComment ({props}) {
                 console.log(err)            
             }
         })();
-    }, []);        
+    }, [send]);        
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -99,18 +103,20 @@ export default function PostComment ({props}) {
 
                 if(commenterId === localStorage.getItem("userId")) {
 
-                    try {
-                        await axios.put( API_URL + '/delete-comment-post/' + id, 
-                            { commentId: commentId },
-                            { headers: { 'Authorization': `Bearer ${token}`  }}
-                        ) 
-
-                        const response = await axios.get( API_URL + '/' + id  );
-                        setComments(response.data.comments); 
-
-                    } catch (err) {
-                        console.log(err)            
-                    }            
+                    if(window.confirm("êtes vous sur de vouloir supprimer ce commentaire ?")) {
+                        try {
+                            await axios.put( API_URL + '/delete-comment-post/' + id, 
+                                { commentId: commentId },
+                                { headers: { 'Authorization': `Bearer ${token}`  }}
+                            ) 
+    
+                            const response = await axios.get( API_URL + '/' + id  );
+                            setComments(response.data.comments); 
+    
+                        } catch (err) {
+                            console.log(err)            
+                        }  
+                    }          
                 } else {
                     alert("vous devez être l'auteur de ce commentaire pour pouvoir le supprimer")
                 }
@@ -121,10 +127,6 @@ export default function PostComment ({props}) {
             alert("Vous devez être connecté pour supprimer un commentaire")
         }     
     }
-
-    const [open, setOpen] = React.useState(false);
-    const [text, setText] = useState("")
-    const [send, setSend] = useState(false)
 
     useEffect(()=> {
         setOpen(false)
@@ -141,24 +143,7 @@ export default function PostComment ({props}) {
 
                 if(commenterId === localStorage.getItem("userId")) {
                     setOpen(true)
-
-                    try {
-                        await axios.patch( API_URL + '/edit-comment-post/' + id, 
-                            { 
-                                commentId: commentId,
-                                text: text
-                            },
-                            // { headers: { 'Authorization': `Bearer ${token}`  }}
-                        ) 
-                        // setOpen(false)
-            
-                        const response = await axios.get( API_URL + '/' + id  );
-                        setComments(response.data.comments); 
-            
-                    } catch (err) {
-                        console.log(err)            
-                    }       
-
+                    setCommentId(commentId);
                 } else {
                     alert("vous devez être l'auteur de ce commentaire pour pouvoir le modifier")
                 }
@@ -171,11 +156,25 @@ export default function PostComment ({props}) {
 
     }
 
+    const modifComment = async (text) => {
+        try {
+            await axios.patch( API_URL + '/edit-comment-post/' + id, 
+                { 
+                    commentId: commentId,
+                    text: text
+                },
+                // { headers: { 'Authorization': `Bearer ${token}`  }}
+            ) 
+            const response = await axios.get( API_URL + '/' + id  );
+            setComments(response.data.comments); 
+            setSend(false);
+        } catch (err) {
+            console.log(err)            
+        }       
+    }
 
   return (
     <>
-
-
         <div className='commentContainer'>
             <form 
                 className='commentFom' 
@@ -251,12 +250,9 @@ export default function PostComment ({props}) {
                                 // id={comment._id}
                                 // value={comment.commenterId}                            
                             >
-                                {/* <DeleteIcon fontSize='small'/> */}
-                                {/* <DeleteTwoToneIcon fontSize='small' /> */}
                                 <DeleteOutlinedIcon fontSize='small'/>
-
-
                             </button>
+
                             <button
                                 onClick={async () => { await updateComment(comment._id, comment.commentatorUserId);} }
                                 // onClick={async () => { await openModal(comment._id, comment.commentatorUserId);} }
@@ -266,7 +262,6 @@ export default function PostComment ({props}) {
                             </button> 
                         </div>
                        
-
                         </ListItem>   
                     )
                 })}                      
@@ -299,18 +294,14 @@ export default function PostComment ({props}) {
                 id="basic-modal-dialog-description"
                 mt={0.5}
                 mb={2}
-                // textColor="text.tertiary"
             >
                 Fill in the information of the project.
             </Typography>
             <form
-                // onSubmit={(event) => {
-                // event.preventDefault();
-                // setOpen(false);
-                // }}
                 onSubmit={(event) => {
                 event.preventDefault();
                 setSend(true);
+                modifComment(text);
                 }}
 
             >
@@ -326,8 +317,6 @@ export default function PostComment ({props}) {
             </ModalDialog>
         </Modal>
         </React.Fragment>
-        );
-
     </>
     )  
 }

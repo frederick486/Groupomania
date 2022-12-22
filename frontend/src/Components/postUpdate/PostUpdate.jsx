@@ -11,8 +11,8 @@ import { Cancel } from '@mui/icons-material'
 export default function PostUpdate () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
-  const [file, setFile] = useState(null);
-  const [newFile, setNewFile] = useState(null);
+  const [file, setFile] = useState(null); //Url
+  const [newFile, setNewFile] = useState(null); // Binaire
 
   const navigate = useNavigate()
   const id = useParams().postId
