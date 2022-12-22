@@ -11,6 +11,7 @@ router.get('/', postController.getAllPost);
 router.post('/', auth, multer, postController.createPost);
 
 router.put('/:id', auth, multer, postController.updatePost);
+router.put('/updatePostWithoutImg/:id', auth, postController.updatePostWithoutImg);
 router.delete('/:id', auth, postController.deletePost);
 router.put('/like-post/:id', postController.likePost);
 // // router.patch('/like-post/:id', postController.likePost);
@@ -18,7 +19,7 @@ router.put('/like-post/:id', postController.likePost);
 
 // // // comments
 router.put('/comment-post/:id', postController.commentPost);
-// // router.patch('/edit-comment-post/:id', postController.editCommentPost);
+router.patch('/edit-comment-post/:id', postController.updateCommentPost);
 router.put('/delete-comment-post/:id',auth, postController.deleteCommentPost);
 
 

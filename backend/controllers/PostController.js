@@ -24,10 +24,12 @@ module.exports.createPost = (req, res) => {
   const post = new PostModel({
       _id: new mongoose.Types.ObjectId(),
       userId: req.auth.userId,
-      // userId: req.body.userId,
+      pseudo: req.body.pseudo,
+      email: req.body.email,
+      profileImgUrl: req.body.profileImgUrl,
       title: req.body.title,
       desc: req.body.desc,
-      img: url + '/images/' + req.file.filename,
+      postImgUrl: url + '/images/post/' + req.file.filename,
       // likes:[],
       likers:[],
       comments: [],
@@ -78,9 +80,30 @@ module.exports.getAllPost = async (req, res) => {
 };
 
 // update post
+module.exports.updatePostWithoutImg = async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.auth.userId;
+ 
+  try {
+    const post = await PostModel.findById(postId);
+    if (post.userId === userId) {
+      await post.updateOne(
+        { 
+          $set: req.body
+        }
+      );
+      res.status(200).json("Post modifié avec updatePostWithoutImg");
+    } else {
+      res.status(403).json("Authentication failed");
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+// update post
 module.exports.updatePost = async (req, res) => {
   const postId = req.params.id;
-  // const { userId } = req.body;
   const userId = req.auth.userId;
   const url = req.protocol + '://' + req.get('host')
 
@@ -90,7 +113,7 @@ module.exports.updatePost = async (req, res) => {
       await post.updateOne(
         { 
           $set: req.body,
-          img: url + '/images/' + req.file.filename, 
+          postImgUrl: url + '/images/post/' + req.file.filename,
         }
       );
       res.status(200).json("Post updated!");
@@ -104,19 +127,20 @@ module.exports.updatePost = async (req, res) => {
 
 // // update post
 // module.exports.updatePost = async (req, res) => {
-//   const sauceObject = req.file ? {
-//       ...JSON.parse(req.body.sauce),
-//       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-//   } : { ...req.body };
+//   const postObject = req.file ? {
+//       ...JSON.parse(req.body.post),
+//       postImgUrl: url + '/images/post/' + req.file.filename,
+//     } : { ...req.body };
 
-//   delete sauceObject._userId;
-//   Sauce.findOne({_id: req.params.id})
-//       .then((sauce) => {
-//           if (sauce.userId != req.auth.userId) {
+//   delete postObject._userId;
+
+//   PostModel.findOne({_id: req.params.id})
+//       .then((post) => {
+//           if (post.userId != req.auth.userId) {
 //               res.status(403).json({ message : 'unauthorized request'});
 //           } else {
-//               Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
-//               .then(() => res.status(200).json({message : 'Sauce modifiée !'}))
+//               post.updateOne({ _id: req.params.id}, { ...postObject, _id: req.params.id})
+//               .then(() => res.status(200).json({message : 'post modifié !'}))
 //               .catch(error => res.status(401).json({ error }));
 //           }
 //       })
@@ -128,7 +152,6 @@ module.exports.updatePost = async (req, res) => {
 // delete a post
 module.exports.deletePost = async (req, res) => {
   const id = req.params.id;
-  // const { userId } = req.body;
   const userId = req.auth.userId;
 
   try {
@@ -173,8 +196,9 @@ module.exports.commentPost = async (req, res) => {
       { 
         $push: {
           comments: {
-            commenterId: req.body.commenterId,
-            commenterPseudo: req.body.commenterPseudo,
+            commentatorUserId: req.body.commentatorUserId,
+            commentatorPseudo: req.body.commentatorPseudo,
+            commentatorProfilImgUrl:req.body.commentatorProfilImgUrl,
             text: req.body.text,
             timestamp: new Date().getTime(),
           },
@@ -190,7 +214,7 @@ module.exports.commentPost = async (req, res) => {
 // delete a comment post
 module.exports.deleteCommentPost = async (req, res) => {
   const id = req.params.id;
-  console.log("req.auth.userId :", req.auth.userId)
+  // console.log("req.auth.userId :", req.auth.userId)
 
   try {
     const post = await PostModel.findById(id)
@@ -210,6 +234,30 @@ module.exports.deleteCommentPost = async (req, res) => {
   }
 
 };
+
+
+// update a comment post
+module.exports.updateCommentPost = (req, res) => {
+
+  try {
+    return PostModel.findById(req.params.id, (err, docs) => {
+      const theComment = docs.comments.find((comment) =>
+        comment._id.equals(req.body.commentId)
+      );
+
+      if (!theComment) return res.status(404).send("Comment not found");
+      theComment.text = req.body.text;
+
+      return docs.save((err) => {
+        if (!err) return res.status(200).send(docs);
+        return res.status(500).send(err);
+      });
+    });
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+};    
+ 
 
 // // Get timeline posts
 // export const getTimelinePosts = async (req, res) => {

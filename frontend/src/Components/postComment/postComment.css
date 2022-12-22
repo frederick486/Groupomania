@@ -1,10 +1,52 @@
 .commentContainer {
     display: flex;
+    flex-direction: column;
 } 
 
 .commentFom {
-    width: 30%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;    
+}
+
+.commentFomButton {
+    width: 50%;
+    height: 35px;
+    margin: auto;
+    background-color: #2b86fd;
+    border: none;
+    border-radius: 18px;
+    margin-top: 10px;
+    font-weight: 500;
+    transition: all 0.25s ease-in-out;
+}
+
+.commentFomButton:hover {
+    background-color: #65a8ff;
+}
+
+
+.listComment {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.commentHeaderAvatarPseudo{
+    display: flex;    
+}
+
+.commentHeaderPseudo{
+    margin-left: 10px;
+    font-weight: bold;   
+}
+
+.commentHeader{
+    font-weight: 500;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.commentFieldIcones {
+    display: flex;
+    flex-direction: column;
 }

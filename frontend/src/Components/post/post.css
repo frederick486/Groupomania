@@ -17,12 +17,12 @@
 }
 
 .article-content p {
-    font-size: 25px;
+    font-size: 16px;
 }
 
 .postReact {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1.5rem;
 }
 

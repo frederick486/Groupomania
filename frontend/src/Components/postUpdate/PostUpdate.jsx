@@ -13,7 +13,6 @@ export default function PostUpdate () {
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState(null);
   const [newFile, setNewFile] = useState(null);
-  const [data, setData] = useState([])
 
   const navigate = useNavigate()
   const id = useParams().postId
@@ -23,29 +22,56 @@ export default function PostUpdate () {
   useEffect(() => {
     (async () => {
       const response = await axios.get( API_URL + '/' + id  );
-        setData(response.data);
-        setFile(response.data.img)
+        setTitle(response.data.title)
         setDesc(response.data.desc)
+        setFile(response.data.postImgUrl)
     })();
   }, []);  
 
+  console.log("newFile :", newFile)
+
+  useEffect(() => {
+    setFile("")
+  }, [newFile])
+
   const submitHandler = async (e) => {
     e.preventDefault(); 
-    let formData = new FormData();
 
-    formData.append("title", title);
-    formData.append("desc", desc);
-    // formData.append("img", file);
-    formData.append("img", newFile);
- 
-    try {
-      await axios.put( API_URL + '/' + id, formData, {        
-        headers: { "Content-Type": "multipart/form-data", 'Authorization': `Bearer ${token}` },
-      });
-      navigate('/')
-    } catch (err) {
-      console.log(err)
-    }    
+    if(newFile != null) {
+      let formData = new FormData();
+      formData.append("title", title);
+      formData.append("desc", desc);
+      formData.append("postImgUrl", newFile);
+   
+      try {
+        await axios.put( API_URL + '/' + id, formData, {        
+          headers: { 
+            "Content-Type": "multipart/form-data", 
+            'Authorization': `Bearer ${token}` 
+          },
+        });
+        navigate('/')
+      } catch (err) {
+        console.log(err)
+      } 
+    } else {
+   
+      try {
+        await axios.put( API_URL + '/updatePostWithoutImg/' + id, 
+        {
+          title:title,
+          desc:desc
+        }, 
+        {        
+          headers: { 
+            'Authorization': `Bearer ${token}` 
+          },
+        });
+        navigate('/')
+      } catch (err) {
+        console.log(err)
+      }       
+    }   
   
   };
 
@@ -60,25 +86,35 @@ export default function PostUpdate () {
         <label htmlFor="article">Votre article</label>
 
         <input 
-          defaultValue={data.title}
+          defaultValue={title}
           onChange={(e) => { setTitle(e.target.value) }}      
         />
 
         <textarea            
           defaultValue={desc}
           onChange={(e) => { setDesc(e.target.value) }}     
-        ></textarea>        
+        ></textarea>
+
+        {file && (
+          <div className="shareImgContainer">
+            <img className='shareImg' src={file} alt="" />
+            <Cancel 
+              className='shareCancelImg' 
+              onClick={(e) => setFile(null)} 
+            />
+          </div>
+        )}                       
 
         {newFile && (
           <div className="shareImgContainer">
             <img className='shareImg' src={URL.createObjectURL(newFile)} alt="" />
-            {/* <img className='shareImg' src={data.img} alt="" /> */}
             <Cancel 
               className='shareCancelImg' 
               onClick={(e) => setNewFile(null)} 
             />
           </div>
         )}       
+           
 
         <label htmlFor="avatar">Modifiez votre image</label> 
         <input 

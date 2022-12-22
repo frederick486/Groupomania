@@ -11,8 +11,11 @@ import { Cancel } from '@mui/icons-material'
 export default function PostShare () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
-  const [file, setFile] = useState(null);
+  const [postImgFile, setPostImgfile] = useState(null);
+
   const token = localStorage.getItem("authToken")
+  const pseudo = localStorage.getItem("pseudo")
+  const profileImgUrl = localStorage.getItem("profileImgUrl")
 
   const navigate = useNavigate()
 
@@ -20,10 +23,11 @@ export default function PostShare () {
     e.preventDefault(); 
     let formData = new FormData();
 
+    formData.append("pseudo", pseudo);
+    formData.append("profileImgUrl", profileImgUrl);
     formData.append("title", title);
     formData.append("desc", desc);
-    formData.append("img", file);
-    // formData.append("token", token);
+    formData.append("postImgUrl", postImgFile);
 
     try {
       await axios.post( API_URL , formData, { 
@@ -57,12 +61,12 @@ export default function PostShare () {
           onChange={(e) => { setDesc(e.target.value) }}     
         ></textarea>       
 
-        {file && (
+        {postImgFile && (
           <div className="shareImgContainer">
-            <img className='shareImg' src={URL.createObjectURL(file)} alt="" />
+            <img className='shareImg' src={URL.createObjectURL(postImgFile)} alt="" />
             <Cancel 
               className='shareCancelImg' 
-              onClick={() => setFile(null)} 
+              onClick={() => setPostImgfile(null)} 
             />
           </div>
         )}        
@@ -71,7 +75,7 @@ export default function PostShare () {
         <input 
           label="Select a File"
           type="file"
-          onChange={(e) => { setFile(e.target.files[0]) }}          
+          onChange={(e) => { setPostImgfile(e.target.files[0]) }}          
         />
 
         <button>Envoyer</button>

@@ -2,15 +2,30 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
-exports.signup = (req, res, next) => {    
+exports.signup = (req, res, next) => {   
+    const url = req.protocol + '://' + req.get('host')
+
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
+            pseudo: req.body.pseudo,
             email: req.body.email,
-            password: hash
+            password: hash,
+            profileImgUrl: url + '/images/profile/' + req.file.filename,
         });
         user.save()
-            .then(() => res.status(201).json( { message: 'Utilisateur crée !'} ) )
+            .then(() => res.status(201).json( 
+                // { message: 'Utilisateur crée !'},
+                {   userId: user._id,
+                    token: jwt.sign(
+                        { userId: user._id },
+                        'RANDOM_TOKEN_SECRET',
+                        { expiresIn: '24h' }
+                    ),
+                    pseudo: user.pseudo,
+                    profileImgUrl: user.profileImgUrl                    
+                }
+            ) )
             .catch(error => res.status(400).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
@@ -35,7 +50,8 @@ exports.login = (req, res, next) => {
                             'RANDOM_TOKEN_SECRET',
                             { expiresIn: '24h' }
                         ),
-                        pseudo: user.email
+                        pseudo: user.pseudo,
+                        profileImgUrl: user.profileImgUrl                    
                     });
                 }
             })
@@ -49,26 +65,14 @@ exports.login = (req, res, next) => {
     })
 };
 
-//----------------------------------------------------------------------------------------
-// const re = new RegExp("^(?=.*[a-z])$");
 
-// exports.signup = (req, res, next) => {  
-//     if(re.test(req.body.password.toString())) {
-//     //     res.status(400).json( {message: 'le password doit contenir au moins 6 caractères'} );
-//     // } else {        
-//         bcrypt.hash(req.body.password, 10)
-//             .then(hash => {
-//                 const user = new User({
-//                     email: req.body.email,
-//                     password: hash
-//                 });
-//                 user.save()
-//                     .then(() => res.status(201).json( { message: 'Utilisateur crée !'} ) )
-//                     .catch(error => res.status(400).json({ error }));
-//             })
-//             .catch(error => res.status(500).json({ error }));
-//     } 
-//     else {
-//         res.status(400).json( {message: 'le password doit contenir au moins 6 caractères dont 1 chiffre, 1 majuscule, 1 miniscule et un caractère spécial'} );
-//     }
-// };
+// delete a user
+module.exports.deleteUser = async (req, res) => {
+  
+    try {
+      await User.findByIdAndDelete(req.auth.userId);
+      res.status(200).json("Account has been deleted succefuly")
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  };

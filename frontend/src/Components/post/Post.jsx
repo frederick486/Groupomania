@@ -9,6 +9,7 @@ import PostComment from '../postComment/PostComment';
 
 // icônes
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 
 
 export default function Post () {
@@ -113,7 +114,7 @@ export default function Post () {
     <>
       <div className="article-content">
         <img 
-          src={data.img} 
+          src={data.postImgUrl} 
           alt="" 
         />
         <h2>{data.title}</h2>
@@ -134,8 +135,9 @@ export default function Post () {
           <button 
             className={[isLiked ? 'active-like' : 'button'].join(' ')} 
             onClick={likeHandler} 
+            style={{ border:"none", backgroundColor:"transparent" }}
           >
-            Like {like}
+            <ThumbUpOffAltIcon fontSize='large'/> {like}
           </button>
 
           <button 

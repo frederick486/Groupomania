@@ -52,13 +52,22 @@ const PostSchema = new Schema(
       type: String,
       required: true
     },    
+    pseudo : {
+      type: String,
+    },
+    email : {
+      type: String,
+    },
+    profileImgUrl : {
+      type: String
+    },
     title: {
       type: String,
     },
     desc: {
       type: String
     },
-    img: {
+    postImgUrl: {
         type: String
     },
     likers: {
@@ -68,8 +77,9 @@ const PostSchema = new Schema(
     comments: {
       type: [
         {
-          commenterId:String,
-          commenterPseudo: String,
+          commentatorUserId:String,
+          commentatorPseudo: String,
+          commentatorProfilImgUrl: String,
           text: String,
           timestamp: Number,
         }
@@ -85,4 +95,4 @@ const PostSchema = new Schema(
   // }
 )
 
-module.exports = mongoose.model('Posts', PostSchema)
+module.exports = mongoose.model('posts', PostSchema)

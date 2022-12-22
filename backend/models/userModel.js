@@ -4,14 +4,14 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = new mongoose.Schema(
   {
-    // pseudo: {
-    //   type: String,
-    //   required: true,
-    //   minLength: 3,
-    //   maxLength: 55,
-    //   unique: true,
-    //   trim: true
-    // },
+    pseudo: {
+      type: String,
+      required: true,
+      minLength: 2,
+      maxLength: 55,
+      unique: true,
+      trim: true
+    },    
     email: {
       type: String,
       required: true,
@@ -25,8 +25,11 @@ const userSchema = new mongoose.Schema(
         required: true,
         max: 1024,
         minlength: 6
-    }
-
+    },    
+    profileImgUrl: {
+      type: String,
+      default: ""
+  },    
 });
 
 userSchema.plugin(uniqueValidator);

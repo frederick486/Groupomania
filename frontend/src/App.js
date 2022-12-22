@@ -6,6 +6,7 @@ import Auth from "../src/pages/login/Auth"
 import {Routes, Route} from 'react-router-dom'
 import PostUpdate from "./Components/postUpdate/PostUpdate"
 import PostShare from "./Components/postShare/PostShare"
+import Signup from "./pages/signup/Signup"
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Navbar />
       <Routes>
           <Route path="/user" element={<Auth />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path='/' element={<Home />}/>
           <Route path='/post-share' element={<PostShare />}/>
           <Route path='/post-update/:postId' element={<PostUpdate />}/>

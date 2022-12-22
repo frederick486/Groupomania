@@ -1,6 +1,6 @@
 const multer = require('multer')
 
-const DIR = './images/post';
+const DIR = './images/profile';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -25,4 +25,4 @@ var upload = multer({
 });
 
 // module.exports = upload.single('picture')
-module.exports = upload.single('postImgUrl')
+module.exports = upload.single('profileImgUrl')
