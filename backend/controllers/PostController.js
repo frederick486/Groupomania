@@ -46,6 +46,34 @@ module.exports.createPost = (req, res) => {
   })
 }
 
+// //create a post without post img
+module.exports.createPostWwithoutPostImg = (req, res) => {
+  const url = req.protocol + '://' + req.get('host')
+
+  const post = new PostModel({
+      _id: new mongoose.Types.ObjectId(),
+      userId: req.auth.userId,
+      pseudo: req.body.pseudo,
+      email: req.body.email,
+      profileImgUrl: req.body.profileImgUrl,
+      title: req.body.title,
+      desc: req.body.desc,
+      postImgUrl: url + "/images/default/noAvatar.png",
+      likers:[],
+      comments: [],
+    });
+  post.save().then(result => {
+      res.status(201).json({
+          message: "Post registered successfully!",   
+      })
+  }).catch(err => {
+      console.log(err),
+          res.status(500).json({
+              error: err
+          });
+  })
+}
+
 // //create a post
 // module.exports.createPost = async (req, res) => {
 //   const newPost = new PostModel(req.body)
@@ -167,22 +195,150 @@ module.exports.deletePost = async (req, res) => {
   }
 };
 
-// like/dislike a post
+// // like/dislike a post
+// module.exports.likePost = async (req, res) => {
+//   const id = req.params.id;
+//   const { userId } = req.body;
+//   try {
+//     const post = await PostModel.findById(id);
+//     if (post.likers.includes(userId)) {
+//       await post.updateOne({ $pull: { likers: userId } });
+//       res.status(200).json("Post disliked");
+//     } else {
+//       await post.updateOne({ $push: { likers: userId } });
+//       res.status(200).json("Post liked");
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// };
+
+// like / dislike a post
 module.exports.likePost = async (req, res) => {
   const id = req.params.id;
   const { userId } = req.body;
-  try {
-    const post = await PostModel.findById(id);
-    if (post.likers.includes(userId)) {
-      await post.updateOne({ $pull: { likers: userId } });
-      res.status(200).json("Post disliked");
-    } else {
-      await post.updateOne({ $push: { likers: userId } });
-      res.status(200).json("Post liked");
+  const like = req.body.like;
+
+  
+    try {
+      const post = await PostModel.findById(id);
+
+
+      // if (like === 1 && post.likers.includes(userId)) {
+      //   await post.updateOne({ $pull: { likers: userId } });
+      //   res.status(200).json("Post disliked");
+      // } else {
+      //   await post.updateOne({ $push: { likers: userId } });
+      //   res.status(200).json("Post liked");
+      // }
+
+      if (like === 1) {
+        if ( !post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
+          await post.updateOne(
+          { 
+            $push: { likers: userId } 
+          });
+          res.status(200).json("Post liked");
+        }
+        if ( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
+          await post.updateOne(
+          { 
+            $pull: { likers: userId } 
+          });
+          res.status(200).json("Post disliked");
+        }
+        if ( !post.likers.includes(userId) && post.unLikers.includes(userId)) {
+          await post.updateOne(
+          { 
+            $pull: { unLikers: userId },
+            $push: { likers: userId } 
+          });
+          res.status(200).json("Post liked");
+        }
+      }        
+      else if (like === -1) {
+        if( !post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
+          await post.updateOne(
+            { 
+              $push: { unLikers: userId },
+            });
+            res.status(200).json("Post unliked");
+          }
+        
+        if( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
+          await post.updateOne(
+            { 
+              $pull: { likers: userId },
+              $push: { unLikers: userId } 
+            });
+            res.status(200).json("Post unliked");
+          }
+        
+        if( !post.likers.includes(userId) && post.unLikers.includes(userId) ) {
+          await post.updateOne(
+            { 
+              $pull: { unLikers: userId },
+            });
+            res.status(200).json("Post reset");
+        }
+      }    
+
+
+    } catch (error) {
+      res.status(500).json(error);
     }
-  } catch (error) {
-    res.status(500).json(error);
-  }
+  
+
+
+    
+    // 0 | 0 >>> 1 | 0
+    // like === 1 && !post.likers.includes(userId) && !post.unLikers.includes(userId)
+
+    // 0 | 0 >>> 0 | - 1
+    // like === -1 && !post.likers.includes(userId) && !post.unLikers.includes(userId) 
+
+    // 1 | 0 >>> 0 | 0
+    // like === 1 && post.likers.includes(userId) && !post.unLikers.includes(userId)
+
+    // 1 | 0 >>> 0 | - 1
+    // like === - 1 && post.likers.includes(userId) && !post.unLikers.includes(userId)
+
+    // 0 | - 1 >>> 0 | 0
+    // like === -1 && !post.likers.includes(userId) && post.unLikers.includes(userId)
+
+    // 0 | - 1 >>> 1 | 0
+    // like === 1 && !post.likers.includes(userId) && post.unLikers.includes(userId)
+
+
+    // like === 1
+    // !post.likers.includes(userId) && !post.unLikers.includes(userId)
+    // post.likers.includes(userId) && !post.unLikers.includes(userId)
+    // !post.likers.includes(userId) && post.unLikers.includes(userId)
+
+    // like === -1
+    // !post.likers.includes(userId) && !post.unLikers.includes(userId) 
+    // post.likers.includes(userId) && !post.unLikers.includes(userId)
+    // !post.likers.includes(userId) && post.unLikers.includes(userId)
+
+
+
+    // if (like === 1) {
+    //   if ( !post.likers.includes(userId) && !post.unLikers.includes(userId) ) {}
+    //   if ( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {}
+    //   if ( !post.likers.includes(userId) && post.unLikers.includes(userId)) {}
+    // }        
+    // else if (like === -1) {
+    //   if( !post.likers.includes(userId) && !post.unLikers.includes(userId) ) {}
+    //   if( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {}
+    //   if( !post.likers.includes(userId) && post.unLikers.includes(userId) ) {}
+    // }    
+    
+    
+    
+
+
+
+
 };
 
 // comment a post

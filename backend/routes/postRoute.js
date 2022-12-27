@@ -9,6 +9,7 @@ const postController = require('../controllers/PostController');
 router.get('/:id', postController.getPost);
 router.get('/', postController.getAllPost);
 router.post('/', auth, multer, postController.createPost);
+router.post('/createPostWwithoutPostImg', auth, postController.createPostWwithoutPostImg);
 
 router.put('/:id', auth, multer, postController.updatePost);
 router.put('/updatePostWithoutImg/:id', auth, postController.updatePostWithoutImg);

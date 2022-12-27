@@ -74,6 +74,10 @@ const PostSchema = new Schema(
       type: Array,
       default: []
     },
+    unLikers: {
+      type: Array,
+      default: []
+    },
     comments: {
       type: [
         {

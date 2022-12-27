@@ -4,9 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { API_URL } from '../../config' 
 import axios from 'axios'
 
-// icones
-import { Cancel } from '@mui/icons-material'
+import { Link } from 'react-router-dom';
 
+// Components Matérial UI
+import TextField from '@mui/material/TextField';
+
+// icones Matérial UI
+import { Cancel, PermMedia } from '@mui/icons-material'
 
 export default function PostUpdate () {
   const [title, setTitle] = useState("");
@@ -77,53 +81,79 @@ export default function PostUpdate () {
 
   return (
     <>  
-      <h1 className="title-form">Nouveau post</h1>
+      <h1 className="postUpdate-title-form">Modifiez votre post ...</h1>
+      
       <form 
-        className="container-form"
         onSubmit={submitHandler}
+        className="postUpdate-container-form"
       >
 
-        <label htmlFor="article">Votre article</label>
-
-        <input 
+        <span className='postUpdate-textSaizure-object'>Modifiez votre titre</span>
+        <textarea
+          className='postUpdate-textfield-title'
           defaultValue={title}
-          onChange={(e) => { setTitle(e.target.value) }}      
-        />
+          onChange={(e) => { setTitle(e.target.value) }}   
+        >         
+        </textarea>
 
-        <textarea            
+        <span className='postUpdate-textSaizure-object'>Modifiez votre description</span>
+        <textarea          
+          className='postUpdate-textfield-desc'  
           defaultValue={desc}
           onChange={(e) => { setDesc(e.target.value) }}     
         ></textarea>
+            
+        <label 
+          htmlFor="file" // <<< associé à l'id de <input/>
+          className='postUpdate-label-choseFile'
+        > 
+          <PermMedia htmlColor='blue'/>
+          <span className='postUpdate-label-choseFile-text'>Modifiez votre fichier</span>
+          <input 
+            style={{ display:"none" }} // <<< à revoir 
+            label="Modifiez votre fichier"
+            type="file"
+            id="file"  // <<< associé au HtmlFor de <label/>
+            accept=".png,.jpeg,.jpg" 
+            onChange={(e) => { setNewFile(e.target.files[0]) }}
+          />
+        </label>
 
+        {/* ------------------------- preview ------------------------ */}
         {file && (
-          <div className="shareImgContainer">
-            <img className='shareImg' src={file} alt="" />
+          <div className="postUpdate-wrapper-preview-Img">
+            <img className='postUpdate-preview-Img' src={file} alt="" />
             <Cancel 
-              className='shareCancelImg' 
+              className='postUpdate-preview-Img-cancel-icone' 
               onClick={(e) => setFile(null)} 
             />
           </div>
         )}                       
 
+        {/* ------------------------- preview ------------------------ */}
         {newFile && (
-          <div className="shareImgContainer">
-            <img className='shareImg' src={URL.createObjectURL(newFile)} alt="" />
+          <div className="postUpdate-wrapper-preview-Img">
+            <img className='postUpdate-preview-Img' src={URL.createObjectURL(newFile)} alt="" />
             <Cancel 
-              className='shareCancelImg' 
+              className='postUpdate-preview-Img-cancel-icone' 
               onClick={(e) => setNewFile(null)} 
             />
           </div>
-        )}       
-           
+        )}           
 
-        <label htmlFor="avatar">Modifiez votre image</label> 
-        <input 
-          label="Select a File"
-          type="file"
-          onChange={(e) => { setNewFile(e.target.files[0]) }}
-        />
+        <div className="postUpdate-button-wrapper">
+          <Link 
+            to="/"
+            className='postUpdate-button-cancel'
+          >Annuler</Link>
+          <button
+            type="Submit"
+            className='postUpdate-button-send'
+          >                   
+            Envoyer
+          </button>
+        </div>
 
-        <button>Envoyer</button>
       </form>      
     </>
   );

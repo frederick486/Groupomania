@@ -1,38 +1,54 @@
-.article-content {
+.post-wrapper {
     display: flex;
     flex-direction: column;
-    max-width: 80%;
+    width: 85%;
     min-width: 300px;
+    max-width: 900px;
     margin: auto;
+    margin-top: 100px;
 }
 
-.article-content > img {
+.post-img {
     max-height: 500px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
-.article-content h2 {
-    font-size: 45px;
+.post-title {
+    margin-top: 15px;
     margin-bottom: 20px;
 }
 
-.article-content p {
+.post-article {
     font-size: 16px;
 }
 
-.postReact {
+.post-action {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    justify-content: space-between;
+    height: 65px;
+    border-top: 1.5px solid #b3b0b0;
+    border-bottom: 1.5px solid #b3b0b0;
 }
 
-.active-like {
-    padding: 20px;
-    border: none;
-    border-radius: 1rem;
-    font-size: 20px;
-    background:  #FD2D01;
-    border: 2px solid  #FD2D01;
+.post-action-allUsers {
+    display: flex;
+    min-width: 100px;
+    justify-content: space-between;
+}
+
+.button-active-like {
+    color: #65a8ff
+}
+
+.button-active-dislike {
+    color: #b9d0d3;
+}
+
+.post-action-owner {
+    display: flex;
+    justify-content: flex-end;
+    width: 10%;
 }
 
 .buttonDelette {
@@ -43,14 +59,3 @@
 .deleteIcon {
     margin-right: 3px;
 }
-
-/* .commentContainer {
-    display: flex;
-}  */
-
-/* .commentFom {
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;    
-}  */

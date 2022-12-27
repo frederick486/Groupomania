@@ -2,11 +2,11 @@ import "./App.css"
 import Navbar from "../src/Components/navbar/Navbar"
 import Home from "../src/pages/home/Home"
 import Post from "../src/Components/post/Post"
-import Auth from "../src/pages/login/Auth"
-import {Routes, Route} from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import PostUpdate from "./Components/postUpdate/PostUpdate"
 import PostShare from "./Components/postShare/PostShare"
 import Signup from "./pages/signup/Signup"
+import Login from "./pages/login/Login"
 
 
 function App() {
@@ -14,9 +14,9 @@ function App() {
     <>
       <Navbar />
       <Routes>
-          <Route path="/user" element={<Auth />} />
-          <Route path="/signup" element={<Signup />} />
           <Route path='/' element={<Home />}/>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />          
           <Route path='/post-share' element={<PostShare />}/>
           <Route path='/post-update/:postId' element={<PostUpdate />}/>
           <Route path='/post/:postId' element={<Post />}/>

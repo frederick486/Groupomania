@@ -60,6 +60,14 @@ export default function PostComment ({props}) {
         })();
     }, [send]);        
 
+    // let owner = false;
+
+    // if(response.data.userId == localStorage.getItem("userId")) {
+    //     owner = true;
+    //   }    
+
+    // console.log("owner : ", owner)
+
     const submitHandler = async (e) => {
         e.preventDefault()
 
@@ -221,47 +229,49 @@ export default function PostComment ({props}) {
                             alignItems="flex-start"
                             key={comment._id}
                         >
-                        <ListItemAvatar>
-                            <Avatar 
-                                alt="Remy Sharp" 
-                                // src="/static/images/avatar/1.jpg" 
-                                src={comment.commentatorProfilImgUrl}
+                            <ListItemAvatar>
+                                <Avatar 
+                                    alt="Remy Sharp" 
+                                    // src="/static/images/avatar/1.jpg" 
+                                    src={comment.commentatorProfilImgUrl}
+                                />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={comment.commentatorPseudo}
+                                secondary={
+                                <React.Fragment>
+                                    <Typography
+                                    sx={{ display: 'inline' }}
+                                    component="span"
+                                    variant="body2"
+                                    color="text.primary"
+                                    >
+                                    </Typography>
+                                    {comment.text}
+                                </React.Fragment>
+                                }
                             />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={comment.commentatorPseudo}
-                            secondary={
-                            <React.Fragment>
-                                <Typography
-                                sx={{ display: 'inline' }}
-                                component="span"
-                                variant="body2"
-                                color="text.primary"
-                                >
-                                </Typography>
-                                {comment.text}
-                            </React.Fragment>
-                            }
-                        />
-                        <div className="commentFieldIcones">
-                            <button
-                                onClick={async () => { await deleteComment(comment._id, comment.commentatorUserId);} }
-                                style={{ border:"none", backgroundColor:"transparent" }}
-                                // id={comment._id}
-                                // value={comment.commenterId}                            
-                            >
-                                <DeleteOutlinedIcon fontSize='small'/>
-                            </button>
+                            
+                            {(comment.commentatorUserId == localStorage.getItem("userId")) && (
+                                <div className="commentFieldIcones">
+                                    <button
+                                        onClick={async () => { await deleteComment(comment._id, comment.commentatorUserId);} }
+                                        style={{ border:"none", backgroundColor:"transparent" }}
+                                        // id={comment._id}
+                                        // value={comment.commenterId}                            
+                                    >
+                                        <DeleteOutlinedIcon fontSize='small'/>
+                                    </button>
 
-                            <button
-                                onClick={async () => { await updateComment(comment._id, comment.commentatorUserId);} }
-                                // onClick={async () => { await openModal(comment._id, comment.commentatorUserId);} }
-                                style={{ border:"none", backgroundColor:"transparent" }}
-                            >
-                                <EditOutlinedIcon fontSize='small'/>
-                            </button> 
-                        </div>
-                       
+                                    <button
+                                        onClick={async () => { await updateComment(comment._id, comment.commentatorUserId);} }
+                                        // onClick={async () => { await openModal(comment._id, comment.commentatorUserId);} }
+                                        style={{ border:"none", backgroundColor:"transparent" }}
+                                    >
+                                        <EditOutlinedIcon fontSize='small'/>
+                                    </button> 
+                                </div>
+                            )}                       
                         </ListItem>   
                     )
                 })}                      
@@ -299,11 +309,10 @@ export default function PostComment ({props}) {
             </Typography>
             <form
                 onSubmit={(event) => {
-                event.preventDefault();
-                setSend(true);
-                modifComment(text);
+                    event.preventDefault();
+                    setSend(true);
+                    modifComment(text);
                 }}
-
             >
                 <Stack spacing={2}>
                 <TextField 

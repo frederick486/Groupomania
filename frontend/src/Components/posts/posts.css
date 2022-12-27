@@ -10,8 +10,8 @@
 .container-cards {
     display: flex;
     flex-direction: column-reverse;
-    align-items: stretch;    
-    width: 100%;
-    max-width: 975px;
+    /* align-items: stretch;     */
+    /* width: 100%; */
+    max-width: 800px;
     margin: 0 auto 0;
 }
