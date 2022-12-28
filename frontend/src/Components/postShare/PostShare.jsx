@@ -1,5 +1,5 @@
 import './postShare.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { API_URL } from '../../config' 
 import axios from 'axios'
@@ -12,19 +12,23 @@ import { Cancel } from '@mui/icons-material'
 import { PermMedia } from "@mui/icons-material";
 
 
-export default function PostShare () {
+export default function PostShare ({openPostShare, setOpenPostShare}) {
 
   const token = localStorage.getItem("authToken")
   const pseudo = localStorage.getItem("pseudo")
   const profileImgUrl = localStorage.getItem("profileImgUrl")
   const navigate = useNavigate()
 
+
+  // const [openPostShare, setOpenPostShare] = useState(true);
+  // // // const handleOpen = () => setOpenPostShare(true);
+  // const handleClose = () => setOpenPostShare(false);
+
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState(null);
 
   // console.log("state de file : ", file)
- 
 
   const submitHandler = async (e) => {
     e.preventDefault(); 
@@ -68,15 +72,17 @@ export default function PostShare () {
           console.log(err)          
         }
     }
-    navigate('/')
-
+    // navigate('/')
+    setOpenPostShare(false)
+    window.location.reload('/');
   };
 
   return (
-    <>  
-      <h1 className="postShare-title-form">Nouveau post</h1>
-
-      <form 
+    <>
+      {openPostShare && (  
+        <div className='postshare-wrapper'>
+        <h1 className="postShare-title-form">Nouveau post</h1>
+        <form 
         onSubmit={submitHandler}
         className="postShare-container-form"
       >
@@ -128,10 +134,14 @@ export default function PostShare () {
         )} 
 
         <div className="postShare-button-wrapper">
-          <Link 
-            to="/"
+          <button 
+            // to="/"
+            // onClick={handleClose}
+            onClick={()=>{setOpenPostShare(false)}}
             className='postShare-button-cancel'
-          >Annuler</Link>
+          >Annuler
+          </button>
+
           <button
             type="Submit"
             className='postShare-button-send'
@@ -140,7 +150,8 @@ export default function PostShare () {
           </button>
         </div>
       </form>   
-
+        </div>
+      )} 
     </>
   );
 }

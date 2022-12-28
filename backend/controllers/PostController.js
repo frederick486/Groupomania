@@ -1,5 +1,5 @@
 const PostModel = require('../models/postModel');
-// const fs = require("fs"); //Permet de modifier le système de fichiers
+const fs = require("fs"); //Permet de modifier le système de fichiers
 let mongoose = require('mongoose')
 
 // const { json } = require("express");
@@ -129,6 +129,30 @@ module.exports.updatePostWithoutImg = async (req, res) => {
   }
 };
 
+// // update post
+// module.exports.updatePost = async (req, res) => {
+//   const postId = req.params.id;
+//   const userId = req.auth.userId;
+//   const url = req.protocol + '://' + req.get('host')
+
+//   try {
+//     const post = await PostModel.findById(postId);
+//     if (post.userId === userId) {
+//       await post.updateOne(
+//         { 
+//           $set: req.body,
+//           postImgUrl: url + '/images/post/' + req.file.filename,
+//         }
+//       );
+//       res.status(200).json("Post updated!");
+//     } else {
+//       res.status(403).json("Authentication failed");
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// };
+
 // update post
 module.exports.updatePost = async (req, res) => {
   const postId = req.params.id;
@@ -137,14 +161,18 @@ module.exports.updatePost = async (req, res) => {
 
   try {
     const post = await PostModel.findById(postId);
-    if (post.userId === userId) {
+    if (post.userId === userId) {        
+
+      const oldFilename = post.postImgUrl.split('/images/post/')[1]
+      fs.unlink(`images/post/${oldFilename}`, ()=> {}) 
+
       await post.updateOne(
-        { 
-          $set: req.body,
-          postImgUrl: url + '/images/post/' + req.file.filename,
-        }
-      );
-      res.status(200).json("Post updated!");
+          { 
+            $set: req.body,
+            postImgUrl: url + '/images/post/' + req.file.filename,
+          }
+        );
+        res.status(200).json("Post updated!");
     } else {
       res.status(403).json("Authentication failed");
     }
@@ -177,6 +205,24 @@ module.exports.updatePost = async (req, res) => {
 //       });
 // };
 
+// // delete a post
+// module.exports.deletePost = async (req, res) => {
+//   const id = req.params.id;
+//   const userId = req.auth.userId;
+
+//   try {
+//     const post = await PostModel.findById(id);
+//     if (post.userId === userId) {
+//       await post.deleteOne();
+//       res.status(200).json("Post deleted.");
+//     } else {
+//       res.status(403).json("Action forbidden");
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// };
+
 // delete a post
 module.exports.deletePost = async (req, res) => {
   const id = req.params.id;
@@ -185,8 +231,12 @@ module.exports.deletePost = async (req, res) => {
   try {
     const post = await PostModel.findById(id);
     if (post.userId === userId) {
-      await post.deleteOne();
-      res.status(200).json("Post deleted.");
+      const filename = post.postImgUrl.split('/images/post/')[1]
+      fs.unlink(`images/post/${filename}`, () => {
+        post.deleteOne();
+        res.status(200).json("Post deleted.");
+      })
+
     } else {
       res.status(403).json("Action forbidden");
     }
@@ -195,150 +245,70 @@ module.exports.deletePost = async (req, res) => {
   }
 };
 
-// // like/dislike a post
-// module.exports.likePost = async (req, res) => {
-//   const id = req.params.id;
-//   const { userId } = req.body;
-//   try {
-//     const post = await PostModel.findById(id);
-//     if (post.likers.includes(userId)) {
-//       await post.updateOne({ $pull: { likers: userId } });
-//       res.status(200).json("Post disliked");
-//     } else {
-//       await post.updateOne({ $push: { likers: userId } });
-//       res.status(200).json("Post liked");
-//     }
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
-
 // like / dislike a post
 module.exports.likePost = async (req, res) => {
   const id = req.params.id;
   const { userId } = req.body;
   const like = req.body.like;
-
   
-    try {
-      const post = await PostModel.findById(id);
+  try {
+    const post = await PostModel.findById(id);
 
-
-      // if (like === 1 && post.likers.includes(userId)) {
-      //   await post.updateOne({ $pull: { likers: userId } });
-      //   res.status(200).json("Post disliked");
-      // } else {
-      //   await post.updateOne({ $push: { likers: userId } });
-      //   res.status(200).json("Post liked");
-      // }
-
-      if (like === 1) {
-        if ( !post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
-          await post.updateOne(
+    if (like === 1) {
+      if ( !post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
+        await post.updateOne(
+        { 
+          $push: { likers: userId } 
+        });
+        res.status(200).json("Post liked");
+      }
+      if ( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
+        await post.updateOne(
+        { 
+          $pull: { likers: userId } 
+        });
+        res.status(200).json("Post disliked");
+      }
+      if ( !post.likers.includes(userId) && post.unLikers.includes(userId)) {
+        await post.updateOne(
+        { 
+          $pull: { unLikers: userId },
+          $push: { likers: userId } 
+        });
+        res.status(200).json("Post liked");
+      }
+    }        
+    else if (like === -1) {
+      if( !post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
+        await post.updateOne(
           { 
-            $push: { likers: userId } 
+            $push: { unLikers: userId },
           });
-          res.status(200).json("Post liked");
+          res.status(200).json("Post unliked");
         }
-        if ( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
-          await post.updateOne(
+      
+      if( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
+        await post.updateOne(
           { 
-            $pull: { likers: userId } 
+            $pull: { likers: userId },
+            $push: { unLikers: userId } 
           });
-          res.status(200).json("Post disliked");
+          res.status(200).json("Post unliked");
         }
-        if ( !post.likers.includes(userId) && post.unLikers.includes(userId)) {
-          await post.updateOne(
+      
+      if( !post.likers.includes(userId) && post.unLikers.includes(userId) ) {
+        await post.updateOne(
           { 
             $pull: { unLikers: userId },
-            $push: { likers: userId } 
           });
-          res.status(200).json("Post liked");
-        }
-      }        
-      else if (like === -1) {
-        if( !post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
-          await post.updateOne(
-            { 
-              $push: { unLikers: userId },
-            });
-            res.status(200).json("Post unliked");
-          }
-        
-        if( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
-          await post.updateOne(
-            { 
-              $pull: { likers: userId },
-              $push: { unLikers: userId } 
-            });
-            res.status(200).json("Post unliked");
-          }
-        
-        if( !post.likers.includes(userId) && post.unLikers.includes(userId) ) {
-          await post.updateOne(
-            { 
-              $pull: { unLikers: userId },
-            });
-            res.status(200).json("Post reset");
-        }
-      }    
+          res.status(200).json("Post reset");
+      }
+    }    
 
-
-    } catch (error) {
-      res.status(500).json(error);
-    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
   
-
-
-    
-    // 0 | 0 >>> 1 | 0
-    // like === 1 && !post.likers.includes(userId) && !post.unLikers.includes(userId)
-
-    // 0 | 0 >>> 0 | - 1
-    // like === -1 && !post.likers.includes(userId) && !post.unLikers.includes(userId) 
-
-    // 1 | 0 >>> 0 | 0
-    // like === 1 && post.likers.includes(userId) && !post.unLikers.includes(userId)
-
-    // 1 | 0 >>> 0 | - 1
-    // like === - 1 && post.likers.includes(userId) && !post.unLikers.includes(userId)
-
-    // 0 | - 1 >>> 0 | 0
-    // like === -1 && !post.likers.includes(userId) && post.unLikers.includes(userId)
-
-    // 0 | - 1 >>> 1 | 0
-    // like === 1 && !post.likers.includes(userId) && post.unLikers.includes(userId)
-
-
-    // like === 1
-    // !post.likers.includes(userId) && !post.unLikers.includes(userId)
-    // post.likers.includes(userId) && !post.unLikers.includes(userId)
-    // !post.likers.includes(userId) && post.unLikers.includes(userId)
-
-    // like === -1
-    // !post.likers.includes(userId) && !post.unLikers.includes(userId) 
-    // post.likers.includes(userId) && !post.unLikers.includes(userId)
-    // !post.likers.includes(userId) && post.unLikers.includes(userId)
-
-
-
-    // if (like === 1) {
-    //   if ( !post.likers.includes(userId) && !post.unLikers.includes(userId) ) {}
-    //   if ( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {}
-    //   if ( !post.likers.includes(userId) && post.unLikers.includes(userId)) {}
-    // }        
-    // else if (like === -1) {
-    //   if( !post.likers.includes(userId) && !post.unLikers.includes(userId) ) {}
-    //   if( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {}
-    //   if( !post.likers.includes(userId) && post.unLikers.includes(userId) ) {}
-    // }    
-    
-    
-    
-
-
-
-
 };
 
 // comment a post
@@ -412,45 +382,4 @@ module.exports.updateCommentPost = (req, res) => {
   } catch (err) {
     return res.status(400).send(err);
   }
-};    
- 
-
-// // Get timeline posts
-// export const getTimelinePosts = async (req, res) => {
-//   const userId = req.params.id
-//   try {
-//     const currentUserPosts = await PostModel.find({ userId: userId });
-
-//     const followingPosts = await UserModel.aggregate([
-//       { 
-//         $match: {
-//           _id: new mongoose.Types.ObjectId(userId),
-//         },
-//       },
-//       {
-//         $lookup: {
-//           from: "posts",
-//           localField: "following",
-//           foreignField: "userId",
-//           as: "followingPosts",
-//         },
-//       },
-//       {
-//         $project: {
-//           followingPosts: 1,
-//           _id: 0,
-//         },
-//       },
-//     ]);
-
-//     res.status(200).json(
-//       currentUserPosts
-//         .concat(...followingPosts[0].followingPosts)
-//         .sort((a, b) => {
-//           return new Date(b.createdAt) - new Date(a.createdAt);
-//         })
-//     );
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
+};

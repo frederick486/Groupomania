@@ -291,7 +291,7 @@ export default function PostComment ({props}) {
                 boxShadow: 'lg',
             }}
             >
-            <Typography
+            {/* <Typography
                 id="basic-modal-dialog-title"
                 component="h2"
                 level="inherit"
@@ -299,13 +299,13 @@ export default function PostComment ({props}) {
                 mb="0.25em"
             >
                 Create new project
-            </Typography>
+            </Typography> */}
             <Typography
                 id="basic-modal-dialog-description"
                 mt={0.5}
                 mb={2}
             >
-                Fill in the information of the project.
+                Modifiez votre commentaire :
             </Typography>
             <form
                 onSubmit={(event) => {

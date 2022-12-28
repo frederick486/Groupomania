@@ -16,10 +16,11 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 
-// Components Matérial UI
+// Components timeago
 import TimeAgo from 'react-timeago'
 import frenchStrings from 'react-timeago/lib/language-strings/fr'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
+import Loader from '../Loader/Loader';
 
 
 export default function Post () {
@@ -34,6 +35,7 @@ export default function Post () {
   const [click, setClick] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
   const [isDiLiked, setisDiLiked] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   // const [owner, setOwner] = useState(false)
  
@@ -45,6 +47,7 @@ export default function Post () {
         setDisLike(response.data.unLikers.length)
         setIsLiked(response.data.likers.includes(localStorage.getItem("userId")))
         setisDiLiked(response.data.unLikers.includes(localStorage.getItem("userId")))
+        setLoaded(true)
     })();
   }, [click]);
 
@@ -179,74 +182,81 @@ export default function Post () {
 
 
   return(
-    <>
-      <div className="post-wrapper">
-        <h3>Posté par {data.pseudo}</h3>
-        <TimeAgo date={`${data.createdAt}`} formatter={formatter} />
-        
-        <img 
-          className='post-img'
-          src={data.postImgUrl} 
-          alt="" 
-        />
-        <h3 className='post-title'>{data.title}</h3>
-        <p className='post-article'>{data.desc}</p>
+    <> 
+      {loaded 
+        ? (  
+            <>
+              <div className="post-wrapper">
+                <h3>Posté par {data.pseudo}</h3>
+                <TimeAgo date={`${data.createdAt}`} formatter={formatter} />
+                
+                <img 
+                  className='post-img'
+                  src={data.postImgUrl} 
+                  alt="" 
+                />
+                <h3 className='post-title'>{data.title}</h3>
+                <p className='post-article'>{data.desc}</p>
 
-        <div className="post-action">
-       
-          <div className="post-action-allUsers">
-            <button 
-              onClick={likePost} 
-              style={{ border:"none", backgroundColor:"transparent" }}
-            >
-              { isLiked 
-                ? <ThumbUpAltIcon className='button-active-like' /> 
-                : <ThumbUpOffAltIcon /> 
-              }
-              {like}
-            </button>
-            <button            
-              onClick={dislikePost} 
-              style={{ border:"none", backgroundColor:"transparent" }}
-            >
-              { isDiLiked 
-                ? <ThumbDownAltIcon className='button-active-dislike'/> 
-                : <ThumbDownOffAltIcon/> 
-              }
-              {dislike}
-            </button>
-          </div>
+                <div className="post-action">
+              
+                  <div className="post-action-allUsers">
+                    <button 
+                      onClick={likePost} 
+                      style={{ border:"none", backgroundColor:"transparent" }}
+                    >
+                      { isLiked 
+                        ? <ThumbUpAltIcon className='button-active-like' /> 
+                        : <ThumbUpOffAltIcon /> 
+                      }
+                      {like}
+                    </button>
+                    <button            
+                      onClick={dislikePost} 
+                      style={{ border:"none", backgroundColor:"transparent" }}
+                    >
+                      { isDiLiked 
+                        ? <ThumbDownAltIcon className='button-active-dislike'/> 
+                        : <ThumbDownOffAltIcon/> 
+                      }
+                      {dislike}
+                    </button>
+                  </div>
 
-          <div className="post-action-owner">
-            {owner && (
-              <>
-              <button 
-                style={{ border:"none", backgroundColor:"transparent" }}              
-                onClick={async () => { await uptdatePost(data.userId)}}
-              >
-              <EditOutlinedIcon/>
-              </button>
+                  <div className="post-action-owner">
+                    {owner && (
+                      <>
+                      <button 
+                        style={{ border:"none", backgroundColor:"transparent" }}              
+                        onClick={async () => { await uptdatePost(data.userId)}}
+                      >
+                      <EditOutlinedIcon/>
+                      </button>
 
-              <button 
-              className='buttonDelette' 
-              onClick={async () => { await deletePost(data.userId)}}
-              // value={data.userId}
-              // onClick={deletePost}
-              // style={{ display:"none" }}
-              // className='button'             
-              >
-              <DeleteOutlinedIcon/>
-              </button> 
-              </>
-            )}
+                      <button 
+                      className='buttonDelette' 
+                      onClick={async () => { await deletePost(data.userId)}}
+                      // value={data.userId}
+                      // onClick={deletePost}
+                      // style={{ display:"none" }}
+                      // className='button'             
+                      >
+                      <DeleteOutlinedIcon/>
+                      </button> 
+                      </>
+                    )}
 
-          </div>
-      
-        </div>
-      
-        <PostComment />
-       
-      </div>
+                  </div>
+              
+                </div>
+              
+                <PostComment />
+              
+              </div> 
+            </>
+          ) 
+        : ( <> <Loader/> </>)
+      }
     </>
   )
 }
