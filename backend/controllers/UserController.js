@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const fs = require("fs"); //<<< Permet de modifier le système de fichiers
+
 
 exports.signup = (req, res, next) => {   
     const url = req.protocol + '://' + req.get('host')
@@ -66,12 +68,30 @@ exports.login = (req, res, next) => {
 };
 
 
+// // delete a user
+// module.exports.deleteUser = async (req, res) => {
+  
+//     try {
+//       await User.findByIdAndDelete(req.auth.userId);
+//       res.status(200).json("Account has been deleted succefuly")
+//     } catch (error) {
+//       res.status(500).json(error);
+//     }
+//   };
+
 // delete a user
 module.exports.deleteUser = async (req, res) => {
-  
+
     try {
-      await User.findByIdAndDelete(req.auth.userId);
-      res.status(200).json("Account has been deleted succefuly")
+        const user = await User.findById(req.auth.userId);
+
+        const filename = user.profileImgUrl.split('/images/profile/')[1]
+        fs.unlink(`images/profile/${filename}`, async () => {
+            await User.findByIdAndDelete(req.auth.userId);
+            res.status(200).json("Account has been deleted succefuly")
+        })
+
+
     } catch (error) {
       res.status(500).json(error);
     }

@@ -7,13 +7,35 @@ import PostShare from '../postShare/PostShare'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
+import jwtDecode from "jwt-decode"
+import Login from '../../pages/login/Login';
+import Signup from '../../pages/signup/Signup'
+import axios from 'axios';
+import { API_URL_USER } from '../../config';
+import { useNavigate } from "react-router-dom";
+
 
 
 export default function Topbar () {
 
+  const navigate = useNavigate()
+
   const [openPostShare, setOpenPostShare] = useState(false);
   const handleOpen = () => setOpenPostShare(true);
   const handleClose = () => setOpenPostShare(false);
+  const tokenLocalStorage = localStorage.getItem("authToken")
+
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openSignup, setOpenSignup] = useState(false);
+
+  const connection = () => {setOpenLogin(true); setOpenSignup(false)};
+  const register = () => {setOpenSignup(true); setOpenLogin(false)};
+
+  const [token, setToken] = useState(null) 
+  console.log("token : ", token)
+
+  const [tokenValid, setTokenValid] = useState(false) 
+  console.log("tokenValid : ", tokenValid)
 
   const [pseudo, setPseudo] = useState("")
   const [avatar, setAvatar] = useState("")
@@ -21,25 +43,72 @@ export default function Topbar () {
   useEffect(()=> {
     setPseudo(localStorage.getItem("pseudo"))
     setAvatar(localStorage.getItem("profileImgUrl"))
-  }, [])
+    setToken(localStorage.getItem("authToken"))
 
+    if(token) {
+      const {exp} = jwtDecode(token)
   
+      if(exp * 1000 > new Date().getTime()) {
+        setTokenValid(true) 
+      }
+    }
+  }, [token, openLogin, openSignup])
+
+  const deconnexion = (e) => {
+    e.preventDefault();
+    localStorage.clear()
+    setToken(null)
+    setTokenValid(false)
+    navigate('/')
+  }
+
+  const deleteUser = async (e) => {
+    e.preventDefault();
+    if(window.confirm("êtes vous sur de vouloir supprimer votre compte")){
+      try {
+        await axios.delete( API_URL_USER, {
+          headers: { 'Authorization': `Bearer ${token}`  }
+        })
+        localStorage.clear()
+        setToken(null) // <<< relance le useEffect
+        setTokenValid(false)
+        navigate('/')
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
   return (
     <>
       <div className='navbar-complement' >
         <Navbar bg="light" expand="lg">
           <Container fluid>
-            {/* <Navbar.Brand>
-              <img src={Logo} className='logo' alt="logo Groupomania" />
-            </Navbar.Brand> */}
+            <div className="navbar-avatar-wrapper">
+              <Avatar 
+                alt="Utilisateur" 
+                // src="/static/images/avatar/1.jpg" 
+                src={avatar 
+                      ? avatar
+                      : "../../Assets/noAvatar.png" 
+                    }
+              />
+              
+                {pseudo
+                  ? (<>
+                      <div className="navbar-avatar-text">
+                        <span className='navbar-avatar-pseudo' >Connecté en tant que <b>"{pseudo}"</b></span>
+                        <button 
+                          className='navbar-avatar-button-delete'
+                          onClick={deleteUser}>Supprimer mon compte
+                        </button>
+                      </div>
 
-            <Avatar 
-              alt="Auteur du post" 
-              // src="/static/images/avatar/1.jpg" 
-              src={avatar}
-            />
-
-
+                    </>
+                  )
+                  : <span className='navbar-avatar-pseudo' >Non connecté</span>
+                }
+            </div>
 
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
@@ -48,7 +117,13 @@ export default function Topbar () {
                 style={{ maxHeight: '100px' }}
                 navbarScroll
               >
-                <Nav.Link href="/login">Connection</Nav.Link>
+                { tokenValid 
+                  ? <Nav.Link onClick={deconnexion}>Déconnexion</Nav.Link>
+                  // : <Nav.Link href="/login">Connection</Nav.Link>
+                  : <Nav.Link onClick={connection}>Connection</Nav.Link>
+                  // : <Nav.Link href="/login" onClick={connection}>Connection</Nav.Link>
+                }                
+                <Nav.Link onClick={register}>Enregistrement</Nav.Link>
                 <Nav.Link href="/">Page d'acceuil</Nav.Link>
                 <Nav.Link 
                   // href="/post-share"
@@ -64,12 +139,28 @@ export default function Topbar () {
           </Container>
         </Navbar>
       </div>
-      {openPostShare && 
-        (<PostShare 
+      
+      {setOpenLogin && 
+        (<Login
+          openLogin={openLogin}
+          setOpenLogin={setOpenLogin}
+        />)}
+      
+      {openPostShare && (
+        <PostShare 
           // handleClose = {() => setOpenPostShare(false)} 
           openPostShare = {openPostShare}
           setOpenPostShare = {setOpenPostShare}
-          /> )} 
+        /> 
+      )} 
+
+      {openSignup && (
+        <Signup 
+          openSignup={openSignup}
+          setOpenSignup={setOpenSignup}      
+        />
+      )}        
+
     </>
   );
 }

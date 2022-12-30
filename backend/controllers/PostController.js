@@ -1,5 +1,5 @@
 const PostModel = require('../models/postModel');
-const fs = require("fs"); //Permet de modifier le système de fichiers
+const fs = require("fs"); //<<< Permet de modifier le système de fichiers
 let mongoose = require('mongoose')
 
 // const { json } = require("express");
@@ -18,6 +18,17 @@ let mongoose = require('mongoose')
 // };
 
 // //create a post
+// module.exports.createPost = async (req, res) => {
+//   const newPost = new PostModel(req.body)
+//   try {
+//       const savedPost = await newPost.save();
+//       res.status(200).json(savedPost);
+//   } catch (err) {
+//       res.status(500).json(err);
+//   }
+// }
+
+// //create a post
 module.exports.createPost = (req, res) => {
   const url = req.protocol + '://' + req.get('host')
 
@@ -30,7 +41,6 @@ module.exports.createPost = (req, res) => {
       title: req.body.title,
       desc: req.body.desc,
       postImgUrl: url + '/images/post/' + req.file.filename,
-      // likes:[],
       likers:[],
       comments: [],
     });
@@ -74,16 +84,6 @@ module.exports.createPostWwithoutPostImg = (req, res) => {
   })
 }
 
-// //create a post
-// module.exports.createPost = async (req, res) => {
-//   const newPost = new PostModel(req.body)
-//   try {
-//       const savedPost = await newPost.save();
-//       res.status(200).json(savedPost);
-//   } catch (err) {
-//       res.status(500).json(err);
-//   }
-// }
 
 // get a post
 module.exports.getPost = async (req, res) => {
@@ -129,29 +129,6 @@ module.exports.updatePostWithoutImg = async (req, res) => {
   }
 };
 
-// // update post
-// module.exports.updatePost = async (req, res) => {
-//   const postId = req.params.id;
-//   const userId = req.auth.userId;
-//   const url = req.protocol + '://' + req.get('host')
-
-//   try {
-//     const post = await PostModel.findById(postId);
-//     if (post.userId === userId) {
-//       await post.updateOne(
-//         { 
-//           $set: req.body,
-//           postImgUrl: url + '/images/post/' + req.file.filename,
-//         }
-//       );
-//       res.status(200).json("Post updated!");
-//     } else {
-//       res.status(403).json("Authentication failed");
-//     }
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
 
 // update post
 module.exports.updatePost = async (req, res) => {
@@ -172,9 +149,9 @@ module.exports.updatePost = async (req, res) => {
             postImgUrl: url + '/images/post/' + req.file.filename,
           }
         );
-        res.status(200).json("Post updated!");
+        res.status(200).json("Post mis à jour");
     } else {
-      res.status(403).json("Authentication failed");
+      res.status(403).json("Echec Authentication");
     }
   } catch (error) {
     res.status(500).json(error);
@@ -205,24 +182,6 @@ module.exports.updatePost = async (req, res) => {
 //       });
 // };
 
-// // delete a post
-// module.exports.deletePost = async (req, res) => {
-//   const id = req.params.id;
-//   const userId = req.auth.userId;
-
-//   try {
-//     const post = await PostModel.findById(id);
-//     if (post.userId === userId) {
-//       await post.deleteOne();
-//       res.status(200).json("Post deleted.");
-//     } else {
-//       res.status(403).json("Action forbidden");
-//     }
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
-
 // delete a post
 module.exports.deletePost = async (req, res) => {
   const id = req.params.id;
@@ -232,13 +191,12 @@ module.exports.deletePost = async (req, res) => {
     const post = await PostModel.findById(id);
     if (post.userId === userId) {
       const filename = post.postImgUrl.split('/images/post/')[1]
-      fs.unlink(`images/post/${filename}`, () => {
-        post.deleteOne();
-        res.status(200).json("Post deleted.");
+      fs.unlink(`images/post/${filename}`, async () => {
+        await post.deleteOne();
+        res.status(200).json("Post supprimé.");
       })
-
     } else {
-      res.status(403).json("Action forbidden");
+      res.status(403).json("Action interdite");
     }
   } catch (error) {
     res.status(500).json(error);
@@ -285,8 +243,7 @@ module.exports.likePost = async (req, res) => {
             $push: { unLikers: userId },
           });
           res.status(200).json("Post unliked");
-        }
-      
+        }   
       if( post.likers.includes(userId) && !post.unLikers.includes(userId) ) {
         await post.updateOne(
           { 
@@ -294,21 +251,18 @@ module.exports.likePost = async (req, res) => {
             $push: { unLikers: userId } 
           });
           res.status(200).json("Post unliked");
-        }
-      
+        }    
       if( !post.likers.includes(userId) && post.unLikers.includes(userId) ) {
         await post.updateOne(
           { 
             $pull: { unLikers: userId },
           });
-          res.status(200).json("Post reset");
+          res.status(200).json("Like post reset");
       }
     }    
-
   } catch (error) {
     res.status(500).json(error);
-  }
-  
+  }  
 };
 
 // comment a post

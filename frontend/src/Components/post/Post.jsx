@@ -8,6 +8,8 @@ import jwtDecode from "jwt-decode"
 // Components
 import PostComment from '../postComment/PostComment';
 
+import PostUpdate from '../postUpdate/PostUpdate'
+
 // icônes Matérial UI
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -37,6 +39,9 @@ export default function Post () {
   const [isDiLiked, setisDiLiked] = useState(false)
   const [loaded, setLoaded] = useState(false)
 
+  const [openPosUpdate, setOpenPosUpdate] = useState(false);
+  const [updated, setUpdated] = useState(false)
+
   // const [owner, setOwner] = useState(false)
  
   useEffect(() => {
@@ -49,7 +54,7 @@ export default function Post () {
         setisDiLiked(response.data.unLikers.includes(localStorage.getItem("userId")))
         setLoaded(true)
     })();
-  }, [click]);
+  }, [click, updated]);
 
   console.log("data :", data)
 
@@ -130,7 +135,9 @@ export default function Post () {
 
         if(localStorage.getItem("userId") === userId) {
 
-          navigate(`/post-update/${id}`)        
+          // navigate(`/post-update/${id}`)   
+          setOpenPosUpdate(true)  
+          setLoaded(false)   
 
         } else { 
           alert("Vous devez être l'auteur de ce post pour pouvoir le modifier") 
@@ -257,6 +264,14 @@ export default function Post () {
           ) 
         : ( <> <Loader/> </>)
       }
+      {openPosUpdate && 
+        (<PostUpdate 
+          id={id}
+          openPosUpdate = {openPosUpdate}
+          setOpenPosUpdate = {setOpenPosUpdate}
+          updated={updated}
+          setUpdated={setUpdated}
+          /> )} 
     </>
   )
 }

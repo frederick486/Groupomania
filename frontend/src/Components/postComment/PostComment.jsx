@@ -142,7 +142,7 @@ export default function PostComment ({props}) {
 
     console.log("state de text : ", text)
 
-    const updateComment = async (commentId, commenterId) => {
+    const updateComment = async (commentId, commenterId, comment) => {
 
         if(token) {
             const {exp} = jwtDecode(token)
@@ -152,6 +152,7 @@ export default function PostComment ({props}) {
                 if(commenterId === localStorage.getItem("userId")) {
                     setOpen(true)
                     setCommentId(commentId);
+                    setComment(comment)
                 } else {
                     alert("vous devez être l'auteur de ce commentaire pour pouvoir le modifier")
                 }
@@ -173,8 +174,8 @@ export default function PostComment ({props}) {
                 },
                 // { headers: { 'Authorization': `Bearer ${token}`  }}
             ) 
-            const response = await axios.get( API_URL + '/' + id  );
-            setComments(response.data.comments); 
+            // const response = await axios.get( API_URL + '/' + id  );
+            // setComments(response.data.comments); 
             setSend(false);
         } catch (err) {
             console.log(err)            
@@ -264,7 +265,7 @@ export default function PostComment ({props}) {
                                     </button>
 
                                     <button
-                                        onClick={async () => { await updateComment(comment._id, comment.commentatorUserId);} }
+                                        onClick={async () => { await updateComment(comment._id, comment.commentatorUserId, comment.text);} }
                                         // onClick={async () => { await openModal(comment._id, comment.commentatorUserId);} }
                                         style={{ border:"none", backgroundColor:"transparent" }}
                                     >
@@ -280,7 +281,7 @@ export default function PostComment ({props}) {
 
         <React.Fragment>
 
-        <Modal open={open} onClose={() => setOpen(false)}>
+        <Modal open={open} onClose={() => {setComment(""); setOpen(false); }}>
             <ModalDialog
             aria-labelledby="basic-modal-dialog-title"
             aria-describedby="basic-modal-dialog-description"
@@ -312,12 +313,15 @@ export default function PostComment ({props}) {
                     event.preventDefault();
                     setSend(true);
                     modifComment(text);
+                    setComment("")
+
                 }}
             >
                 <Stack spacing={2}>
                 <TextField 
                     label="Description" 
                     required 
+                    defaultValue={comment}
                     onChange={ (e) => { setText(e.target.value); } }                     
                 />
                 <Button type="submit">Submit</Button>

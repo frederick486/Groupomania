@@ -19,7 +19,6 @@ export default function PostShare ({openPostShare, setOpenPostShare}) {
   const profileImgUrl = localStorage.getItem("profileImgUrl")
   const navigate = useNavigate()
 
-
   // const [openPostShare, setOpenPostShare] = useState(true);
   // // // const handleOpen = () => setOpenPostShare(true);
   // const handleClose = () => setOpenPostShare(false);
@@ -72,8 +71,8 @@ export default function PostShare ({openPostShare, setOpenPostShare}) {
           console.log(err)          
         }
     }
-    // navigate('/')
     setOpenPostShare(false)
+    // navigate('/')
     window.location.reload('/');
   };
 
@@ -81,75 +80,75 @@ export default function PostShare ({openPostShare, setOpenPostShare}) {
     <>
       {openPostShare && (  
         <div className='postshare-wrapper'>
-        <h1 className="postShare-title-form">Nouveau post</h1>
-        <form 
-        onSubmit={submitHandler}
-        className="postShare-container-form"
-      >
-        <TextField
-          placeholder="Placeholdker"
-          // multiline
-          className='postShare-textfield-title'
-          id="outlined-basic" 
-          label="Titre" 
-          variant="outlined"           
-          onChange={(e) => { setTitle(e.target.value) }}      
-        />              
+          <h1 className="postShare-title-form">Nouveau post</h1>
+          <form 
+              onSubmit={submitHandler}
+              className="postShare-container-form"
+            >
+            <TextField
+              placeholder="Placeholdker"
+              // multiline
+              className='postShare-textfield-title'
+              id="outlined-basic" 
+              label="Titre" 
+              variant="outlined"           
+              onChange={(e) => { setTitle(e.target.value) }}      
+            />              
 
-        <TextField
-          className='postShare-textfield-desc'
-          id="outlined-multiline-static"
-          label="Description"
-          multiline
-          rows={4}
-          // defaultValue="Ajouter une description!"
-          // placeholder="Ajouter une description!"
-          onChange={(e) => { setDesc(e.target.value) }}     
-        />        
+            <TextField
+              className='postShare-textfield-desc'
+              id="outlined-multiline-static"
+              label="Description"
+              multiline
+              rows={4}
+              // defaultValue="Ajouter une description!"
+              // placeholder="Ajouter une description!"
+              onChange={(e) => { setDesc(e.target.value) }}     
+            />        
 
-        <label 
-          className='postShare-label-choseFile'
-          htmlFor="file" // <<< associé à l'id de <input/>
-        >
-          <PermMedia htmlColor='blue'/>
-          <span className='postShare-label-choseFile-text'>Ajouter une image</span>
-          <input 
-            style={{ display:"none" }} // <<< à revoir
-            type="file" 
-            id="file" // <<< associé au HtmlFor de <label/>
-            accept=".png,.jpeg,.jpg" 
-            onChange={(e) => setFile(e.target.files[0])}
-          />
-        </label> 
+            <label 
+              className='postShare-label-choseFile'
+              htmlFor="file" // <<< associé à l'id de <input/>
+            >
+              <PermMedia htmlColor='blue'/>
+              <span className='postShare-label-choseFile-text'>Ajouter une image</span>
+              <input 
+                style={{ display:"none" }} // <<< à revoir
+                type="file" 
+                id="file" // <<< associé au HtmlFor de <label/>
+                accept=".png,.jpeg,.jpg" 
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </label> 
 
-        {/* -------------------------- preview -------------------------- */}
-        {file && (
-          <div className="postShare-wrapper-preview-Img">
-            <img className='postShare-preview-Img' src={URL.createObjectURL(file)} alt="" />
-            <Cancel 
-              className='postShare-preview-Img-cancel-icone' 
-              onClick={() => setFile(null)} 
-            />
-          </div>
-        )} 
+            {/* -------------------------- preview -------------------------- */}
+            {file && (
+              <div className="postShare-wrapper-preview-Img">
+                <img className='postShare-preview-Img' src={URL.createObjectURL(file)} alt="" />
+                <Cancel 
+                  className='postShare-preview-Img-cancel-icone' 
+                  onClick={() => setFile(null)} 
+                />
+              </div>
+            )} 
 
-        <div className="postShare-button-wrapper">
-          <button 
-            // to="/"
-            // onClick={handleClose}
-            onClick={()=>{setOpenPostShare(false)}}
-            className='postShare-button-cancel'
-          >Annuler
-          </button>
+            <div className="postShare-button-wrapper">
+              <button 
+                // to="/"
+                // onClick={handleClose}
+                onClick={()=>{setOpenPostShare(false)}}
+                className='postShare-button-cancel'
+              >Annuler
+              </button>
 
-          <button
-            type="Submit"
-            className='postShare-button-send'
-          >                   
-            Envoyer
-          </button>
-        </div>
-      </form>   
+              <button
+                type="Submit"
+                className='postShare-button-send'
+              >                   
+                Envoyer
+              </button>
+            </div>
+          </form>   
         </div>
       )} 
     </>

@@ -57,8 +57,9 @@
 
 .postCard-desc {
     max-height: 150px;
-    overflow-y: overlay;
+    overflow-y: hidden;
     padding-left: 15px;
     padding-right: 15px;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
+    margin-bottom: 20px;
 }

@@ -15,8 +15,6 @@ router.put('/:id', auth, multer, postController.updatePost);
 router.put('/updatePostWithoutImg/:id', auth, postController.updatePostWithoutImg);
 router.delete('/:id', auth, postController.deletePost);
 router.put('/like-post/:id', postController.likePost);
-// // router.patch('/like-post/:id', postController.likePost);
-// // router.patch('/unlike-post/:id', postController.unlikePost);
 
 // // // comments
 router.put('/comment-post/:id', postController.commentPost);

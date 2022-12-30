@@ -12,14 +12,14 @@ import TextField from '@mui/material/TextField';
 // icones Matérial UI
 import { Cancel, PermMedia } from '@mui/icons-material'
 
-export default function PostUpdate () {
+export default function PostUpdate ({id, openPosUpdate, setOpenPosUpdate, updated, setUpdated}) {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState(null); //Url
   const [newFile, setNewFile] = useState(null); // Binaire
 
   const navigate = useNavigate()
-  const id = useParams().postId
+  // const id = useParams().postId
   const token = localStorage.getItem("authToken")
 
  
@@ -54,7 +54,7 @@ export default function PostUpdate () {
             'Authorization': `Bearer ${token}` 
           },
         });
-        navigate('/')
+        // navigate('/')
       } catch (err) {
         console.log(err)
       } 
@@ -71,90 +71,97 @@ export default function PostUpdate () {
             'Authorization': `Bearer ${token}` 
           },
         });
-        navigate('/')
+        // navigate('/')
       } catch (err) {
         console.log(err)
       }       
     }   
-  
+    setUpdated(!updated)
+    // window.location.reload()
+    setOpenPosUpdate(false) 
+
   };
 
   return (
     <>  
-      <h1 className="postUpdate-title-form">Modifiez votre post ...</h1>
-      
-      <form 
-        onSubmit={submitHandler}
-        className="postUpdate-container-form"
-      >
+      {openPosUpdate && (
+        <div className="postUpdate-wrapper">
+          <h1 className="postUpdate-title-form">Modifiez votre post ...</h1>
+          <form 
+            onSubmit={submitHandler}
+            className="postUpdate-container-form"
+          >
 
-        <span className='postUpdate-textSaizure-object'>Modifiez votre titre</span>
-        <textarea
-          className='postUpdate-textfield-title'
-          defaultValue={title}
-          onChange={(e) => { setTitle(e.target.value) }}   
-        >         
-        </textarea>
+            <span className='postUpdate-textSaizure-object'>Modifiez votre titre</span>
+            <textarea
+              className='postUpdate-textfield-title'
+              defaultValue={title}
+              onChange={(e) => { setTitle(e.target.value) }}   
+            >         
+            </textarea>
 
-        <span className='postUpdate-textSaizure-object'>Modifiez votre description</span>
-        <textarea          
-          className='postUpdate-textfield-desc'  
-          defaultValue={desc}
-          onChange={(e) => { setDesc(e.target.value) }}     
-        ></textarea>
+            <span className='postUpdate-textSaizure-object'>Modifiez votre description</span>
+            <textarea          
+              className='postUpdate-textfield-desc'  
+              defaultValue={desc}
+              onChange={(e) => { setDesc(e.target.value) }}     
+            ></textarea>
             
-        <label 
-          htmlFor="file" // <<< associé à l'id de <input/>
-          className='postUpdate-label-choseFile'
-        > 
-          <PermMedia htmlColor='blue'/>
-          <span className='postUpdate-label-choseFile-text'>Modifiez votre fichier</span>
-          <input 
-            style={{ display:"none" }} // <<< à revoir 
-            label="Modifiez votre fichier"
-            type="file"
-            id="file"  // <<< associé au HtmlFor de <label/>
-            accept=".png,.jpeg,.jpg" 
-            onChange={(e) => { setNewFile(e.target.files[0]) }}
-          />
-        </label>
+            <label 
+              htmlFor="file" // <<< associé à l'id de <input/>
+              className='postUpdate-label-choseFile'
+            > 
+              <PermMedia htmlColor='blue'/>
+              <span className='postUpdate-label-choseFile-text'>Modifiez votre fichier</span>
+              <input 
+                style={{ display:"none" }} // <<< à revoir 
+                label="Modifiez votre fichier"
+                type="file"
+                id="file"  // <<< associé au HtmlFor de <label/>
+                accept=".png,.jpeg,.jpg" 
+                onChange={(e) => { setNewFile(e.target.files[0]) }}
+              />
+            </label>
 
-        {/* ------------------------- preview ------------------------ */}
-        {file && (
-          <div className="postUpdate-wrapper-preview-Img">
-            <img className='postUpdate-preview-Img' src={file} alt="" />
-            <Cancel 
-              className='postUpdate-preview-Img-cancel-icone' 
-              onClick={(e) => setFile(null)} 
-            />
-          </div>
-        )}                       
+            {/* ------------------------- preview ------------------------ */}
+            {file && (
+              <div className="postUpdate-wrapper-preview-Img">
+                <img className='postUpdate-preview-Img' src={file} alt="" />
+                <Cancel 
+                  className='postUpdate-preview-Img-cancel-icone' 
+                  onClick={(e) => setFile(null)} 
+                />
+              </div>
+            )}                       
 
-        {/* ------------------------- preview ------------------------ */}
-        {newFile && (
-          <div className="postUpdate-wrapper-preview-Img">
-            <img className='postUpdate-preview-Img' src={URL.createObjectURL(newFile)} alt="" />
-            <Cancel 
-              className='postUpdate-preview-Img-cancel-icone' 
-              onClick={(e) => setNewFile(null)} 
-            />
-          </div>
-        )}           
+            {/* ------------------------- preview ------------------------ */}
+            {newFile && (
+              <div className="postUpdate-wrapper-preview-Img">
+                <img className='postUpdate-preview-Img' src={URL.createObjectURL(newFile)} alt="" />
+                <Cancel 
+                  className='postUpdate-preview-Img-cancel-icone' 
+                  onClick={(e) => setNewFile(null)} 
+                />
+              </div>
+            )}           
 
-        <div className="postUpdate-button-wrapper">
-          <Link 
-            to="/"
-            className='postUpdate-button-cancel'
-          >Annuler</Link>
-          <button
-            type="Submit"
-            className='postUpdate-button-send'
-          >                   
-            Envoyer
-          </button>
+            <div className="postUpdate-button-wrapper">
+              <button 
+                onClick={()=>{setOpenPosUpdate(false)}}
+                className='postUpdate-button-cancel'
+              >Annuler
+              </button>
+
+              <button
+                type="Submit"
+                className='postUpdate-button-send'
+              >                   
+                Envoyer
+              </button>
+            </div>
+          </form> 
         </div>
-
-      </form>      
+      )}           
     </>
   );
 }

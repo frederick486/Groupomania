@@ -10,9 +10,42 @@
     background-color: whitesmoke;
 }
 
+.navbar-avatar-wrapper {
+    display: flex;
+}
+
+.navbar-avatar-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-avatar-pseudo {
+    margin-left: 10px;
+}
+
+.navbar-avatar-button-delete {
+    margin-left: 25px;
+    margin-right: 25px;
+    background-color: transparent;
+    border: none;
+    border-radius: 18px;    
+    font-weight: 100;
+    font-size: small;
+    color: black;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    transition: all 0.25s ease-in-out;
+}
+
+.navbar-avatar-button-delete:hover {
+    background-color: #e82525;
+}
+
 .logo {
     width: 15rem;
     max-height: 3rem;
     /* height: 3rem; */
     object-fit: cover;
 }
+
