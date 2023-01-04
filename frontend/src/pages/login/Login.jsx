@@ -2,66 +2,44 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "./login.css"
 import logo from "../../Assets/icon-left-font-monochrome-black.png"
 import React, { useState, useRef } from "react"
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from '../../Components/navbar/Navbar'
+import axios from "axios";
 import Signup from '../signup/Signup'
+import { API_URL_USER_LOGIN } from '../../config'
 
 export default function Login ({openLogin, setOpenLogin}) {
-// export default function Login () {
-
   const navigate = useNavigate()
 
   const email = useRef();
   const password = useRef();
 
-  const [openSignup, setOpenSignup] = useState(false);
-
+  // const [openSignup, setOpenSignup] = useState(false);
   // const register = () => {setOpenSignup(true); setOpenLogin(false) };
 
-  // const [token, setToken] = useState(null) 
-  // console.log("token : ",token)
-
-    const handleSubmit = (e) => {
+  const connection = async (e) => {
     e.preventDefault();
-    console.log("Non utilisateur : ", email.current.value);
-    console.log("Password : ", password.current.value);
 
-    axios({
-      method: "post",
-      url: 'http://localhost:4000/api/user/login',
-      // withCredentials: true,
-      data: {
-        email : email.current.value,
-        password : password.current.value,
-      },
-    })
-    .then((res) => {
-      if (res.data.errors) {
-        // emailError.innerHTML = res.data.errors.email;
-        // passwordError.innerHTML = res.data.erros.password;
-        console.log("password ou nom d'utilisateur incorecte")
-      } else {
+    try {
+      await axios.post( API_URL_USER_LOGIN,
+        {
+          email : email.current.value,
+          password : password.current.value,
+        },
+      )
+      .then((res) => {    
         console.log("res : ", res)
         window.localStorage.setItem("authToken", res.data.token)
         window.localStorage.setItem("userId", res.data.userId)
         window.localStorage.setItem("pseudo", res.data.pseudo)
         window.localStorage.setItem("profileImgUrl", res.data.profileImgUrl)
         // axios.defaults.headers["Authorization"] = "Bearer" + res.data.token
-        // const tokenLocalStorage = localStorage.getItem("authToken")
-        // setToken(tokenLocalStorage)
 
-        // window.location.reload('/');
         navigate('/')
-        setOpenLogin(false)
-    
-        // window.location = "/";
-
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    }); 
+        setOpenLogin(false)              
+      })            
+    } catch (err) {
+      console.log(err)        
+    }
   }
 
   return (
@@ -76,7 +54,7 @@ export default function Login ({openLogin, setOpenLogin}) {
           >
             Enregister vous
           </button> */}
-          <form onSubmit={handleSubmit} className="Auth-form">
+          <form onSubmit={connection} className="Auth-form">
             <div className="Auth-form-content">
               <h3 className="Auth-form-title">Sign In</h3>
               <div className="text-center">

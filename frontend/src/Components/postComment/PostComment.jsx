@@ -2,7 +2,7 @@ import './postComment.css'
 import { API_URL } from '../../config';
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 import jwtDecode from "jwt-decode"
 
@@ -42,6 +42,8 @@ export default function PostComment ({props}) {
     const [text, setText] = useState("");
     const [send, setSend] = useState(false);
     const [commentId, setCommentId] = useState();
+    const [tokenValid, setTokenValid] = useState(false) 
+
 
     const id = useParams().postId
     const token = localStorage.getItem("authToken")
@@ -54,6 +56,15 @@ export default function PostComment ({props}) {
                 setPseudo(localStorage.getItem("pseudo"))
                 setAvatar(localStorage.getItem("profileImgUrl"))
                 setComments(response.data.comments);
+
+                if(token) {
+                    const {exp} = jwtDecode(token)
+                
+                    if(exp * 1000 > new Date().getTime()) {
+                      setTokenValid(true) 
+                    }
+                }                
+
             } catch (err) {
                 console.log(err)            
             }
@@ -185,41 +196,54 @@ export default function PostComment ({props}) {
   return (
     <>
         <div className='commentContainer'>
-            <form 
-                className='commentFom' 
-                onSubmit={submitHandler}
-            >
-                <span className='commentHeader'>Commenter en tant que</span>
+            { tokenValid 
+                ?   <form 
+                        className='commentFom' 
+                        onSubmit={submitHandler}
+                    >
+                        <span className='commentHeader'>Commenter en tant que</span>
 
-                <div className="commentHeaderAvatarPseudo">
-                    <Avatar 
-                        alt="Auteur du post" 
-                        // src="/static/images/avatar/1.jpg" 
-                        src={avatar}
-                    />
-                    <span className='commentHeaderPseudo'>{pseudo}</span>                            
-                </div>
+                        <div className="commentHeaderAvatarPseudo">
+                            <Avatar 
+                                alt="Auteur du post" 
+                                // src="/static/images/avatar/1.jpg" 
+                                src={ tokenValid
+                                    ? avatar
+                                    : "../../Assets/noAvatar.png" 
+                                }
+                            />
+                            <span className='commentHeaderPseudo'>
+                                {tokenValid 
+                                    ? pseudo
+                                    : "non connecté"
+                                }
+                                    {/* {pseudo} */}
+                            </span>                            
+                        </div>
 
-                <TextField
-                    id="standard-multiline-static"
-                    label="Commentaire :"
-                    multiline
-                    // rows={1}
-                    placeholder="Quoi de neuf ?"
-                    variant="standard"
-                    onChange={ (e) => { setComment(e.target.value); } }                     
-                    name="comment"
-                    value={comment || ""}
-                />
+                        <TextField
+                            id="standard-multiline-static"
+                            label="Commentaire :"
+                            multiline
+                            // rows={1}
+                            placeholder="Quoi de neuf ?"
+                            variant="standard"
+                            onChange={ (e) => { setComment(e.target.value); } }                     
+                            name="comment"
+                            value={comment || ""}
+                        />
 
-                <button
-                    type="Submit"
-                    className='commentFomButton'
-                >                   
-                   Envoyer
-                </button>
+                        <button
+                            type="Submit"
+                            className='commentFomButton'
+                        >                   
+                        Envoyer
+                        </button>
 
-            </form>
+                    </form>
+                :   <span className='comment-form-notconnect'>Connectez vous pour laisser un commentaire</span>
+                // : <Link to='/login'>Connectez vous pour laisser un commentaire</Link>
+            }
 
             <List
                 className='listComment'

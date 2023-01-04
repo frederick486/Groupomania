@@ -1,8 +1,77 @@
-.Auth-form-container {
-    margin-top: 10%;
-    width: 80%;
+.signup-form-container {
+    /* margin-top: 10%; */
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+
+    /* width: 80%;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto; */
     display: flex;
     flex-direction: column;
+    justify-content: center;
+}
+
+.signup-form-logo {
+    display: flex;
+    align-self: center;
+    object-fit: cover;
+    width: 150px;
+    height: 50px;
+}
+
+.signup-form-title {
+    display: flex;
+    justify-content: center;
+}
+
+.signup-form {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap-reverse;
+}
+
+.signup-form-content {
+    width: 30%;
+    min-width: 300px;
+}
+
+.signup-wrapper-preview-Img {
+    padding: 0 20px 10px 20px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.signup-preview-Img {
+    /* width: 100%; */
+    border-radius: 50%;
+    max-height: 200px;
+    object-fit: contain;
+    border: solid;
+}
+
+.signup-preview-Img-cancel-icone {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.signup-label-choseFile {
+    display: flex;
+    width:fit-content;
+    margin:auto;
+    margin-bottom: 20px !important;
+    cursor: pointer;
+}
+
+.signup-label-choseFile-text {
+    font-weight:500;
+    margin-left: 10px;
 }

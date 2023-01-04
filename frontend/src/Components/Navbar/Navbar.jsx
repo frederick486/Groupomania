@@ -3,27 +3,24 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import './navbar.css'
 import Logo from '../../Assets/icon-left-font-monochrome-black.png'
-import PostShare from '../postShare/PostShare'
 import { useState } from 'react';
 import { useEffect } from 'react';
-import Avatar from '@mui/material/Avatar';
+import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode"
+import { API_URL_USER } from '../../config';
+import axios from 'axios';
+
+// Components
 import Login from '../../pages/login/Login';
 import Signup from '../../pages/signup/Signup'
-import axios from 'axios';
-import { API_URL_USER } from '../../config';
-import { useNavigate } from "react-router-dom";
 
+// Components Matérial UI
+import Avatar from '@mui/material/Avatar';
 
 
 export default function Topbar () {
 
   const navigate = useNavigate()
-
-  const [openPostShare, setOpenPostShare] = useState(false);
-  const handleOpen = () => setOpenPostShare(true);
-  const handleClose = () => setOpenPostShare(false);
-  const tokenLocalStorage = localStorage.getItem("authToken")
 
   const [openLogin, setOpenLogin] = useState(false);
   const [openSignup, setOpenSignup] = useState(false);
@@ -32,10 +29,7 @@ export default function Topbar () {
   const register = () => {setOpenSignup(true); setOpenLogin(false)};
 
   const [token, setToken] = useState(null) 
-  console.log("token : ", token)
-
   const [tokenValid, setTokenValid] = useState(false) 
-  console.log("tokenValid : ", tokenValid)
 
   const [pseudo, setPseudo] = useState("")
   const [avatar, setAvatar] = useState("")
@@ -88,13 +82,14 @@ export default function Topbar () {
               <Avatar 
                 alt="Utilisateur" 
                 // src="/static/images/avatar/1.jpg" 
-                src={avatar 
+                // src={avatar 
+                src={tokenValid
                       ? avatar
                       : "../../Assets/noAvatar.png" 
                     }
               />
               
-                {pseudo
+                {tokenValid
                   ? (<>
                       <div className="navbar-avatar-text">
                         <span className='navbar-avatar-pseudo' >Connecté en tant que <b>"{pseudo}"</b></span>
@@ -125,16 +120,18 @@ export default function Topbar () {
                 }                
                 <Nav.Link onClick={register}>Enregistrement</Nav.Link>
                 <Nav.Link href="/">Page d'acceuil</Nav.Link>
-                <Nav.Link 
-                  // href="/post-share"
-                  // onClick={setOpenPostShare(true)}
-                  onClick={handleOpen}
-                >Ajouter un article</Nav.Link>
-                {/* <button onClick={handleOpen}
-                
-                >Nouvel article</button> */}
 
-                </Nav>
+                { tokenValid && 
+                  <Nav.Link 
+                    href="/post-share"
+                    // onClick={setOpenPostShare(true)}
+                    // onClick={handleOpen}
+                  >
+                    Ajouter un article
+                  </Nav.Link>
+                }
+  
+              </Nav>
             </Navbar.Collapse>
           </Container>
         </Navbar>
@@ -146,21 +143,12 @@ export default function Topbar () {
           setOpenLogin={setOpenLogin}
         />)}
       
-      {openPostShare && (
-        <PostShare 
-          // handleClose = {() => setOpenPostShare(false)} 
-          openPostShare = {openPostShare}
-          setOpenPostShare = {setOpenPostShare}
-        /> 
-      )} 
-
       {openSignup && (
         <Signup 
           openSignup={openSignup}
           setOpenSignup={setOpenSignup}      
         />
       )}        
-
     </>
   );
 }

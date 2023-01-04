@@ -25,6 +25,11 @@
     background-color: #65a8ff;
 }
 
+.comment-form-notconnect {
+    border-bottom: 1.5px solid #b3b0b0;
+    /* margin: 0; */
+    font-style: italic;
+}
 
 .listComment {
     display: flex;

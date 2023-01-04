@@ -12,14 +12,15 @@ import TextField from '@mui/material/TextField';
 // icones Matérial UI
 import { Cancel, PermMedia } from '@mui/icons-material'
 
-export default function PostUpdate ({id, openPosUpdate, setOpenPosUpdate, updated, setUpdated}) {
+// export default function PostUpdate ({id, openPosUpdate, setOpenPosUpdate, updated, setUpdated}) {
+export default function PostUpdate () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState(null); //Url
   const [newFile, setNewFile] = useState(null); // Binaire
 
   const navigate = useNavigate()
-  // const id = useParams().postId
+  const id = useParams().postId
   const token = localStorage.getItem("authToken")
 
  
@@ -54,7 +55,7 @@ export default function PostUpdate ({id, openPosUpdate, setOpenPosUpdate, update
             'Authorization': `Bearer ${token}` 
           },
         });
-        // navigate('/')
+        navigate('/')
       } catch (err) {
         console.log(err)
       } 
@@ -71,20 +72,21 @@ export default function PostUpdate ({id, openPosUpdate, setOpenPosUpdate, update
             'Authorization': `Bearer ${token}` 
           },
         });
-        // navigate('/')
+        navigate('/')
       } catch (err) {
         console.log(err)
       }       
     }   
-    setUpdated(!updated)
+    // setUpdated(!updated)
     // window.location.reload()
-    setOpenPosUpdate(false) 
+    // setOpenPosUpdate(false) 
 
   };
 
   return (
     <>  
-      {openPosUpdate && (
+      {/* {openPosUpdate && ( */}
+
         <div className="postUpdate-wrapper">
           <h1 className="postUpdate-title-form">Modifiez votre post ...</h1>
           <form 
@@ -147,7 +149,8 @@ export default function PostUpdate ({id, openPosUpdate, setOpenPosUpdate, update
 
             <div className="postUpdate-button-wrapper">
               <button 
-                onClick={()=>{setOpenPosUpdate(false)}}
+                // onClick={()=>{setOpenPosUpdate(false)}}
+                onClick={()=>{navigate('/')}}
                 className='postUpdate-button-cancel'
               >Annuler
               </button>
@@ -161,7 +164,7 @@ export default function PostUpdate ({id, openPosUpdate, setOpenPosUpdate, update
             </div>
           </form> 
         </div>
-      )}           
+      {/* )}            */}
     </>
   );
 }

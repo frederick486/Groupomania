@@ -11,8 +11,11 @@ import TextField from '@mui/material/TextField';
 import { Cancel } from '@mui/icons-material'
 import { PermMedia } from "@mui/icons-material";
 
+import defaultImage from '../../Assets/noAvatar.png'
 
-export default function PostShare ({openPostShare, setOpenPostShare}) {
+
+// export default function PostShare ({openPostShare, setOpenPostShare}) {
+export default function PostShare () {
 
   const token = localStorage.getItem("authToken")
   const pseudo = localStorage.getItem("pseudo")
@@ -71,20 +74,49 @@ export default function PostShare ({openPostShare, setOpenPostShare}) {
           console.log(err)          
         }
     }
-    setOpenPostShare(false)
-    // navigate('/')
-    window.location.reload('/');
+    // setOpenPostShare(false)
+    navigate('/')
+    // window.location.reload('/');
   };
 
   return (
     <>
-      {openPostShare && (  
+      {/* {openPostShare && (   */}
+       
         <div className='postshare-wrapper'>
           <h1 className="postShare-title-form">Nouveau post</h1>
           <form 
               onSubmit={submitHandler}
               className="postShare-container-form"
             >
+
+            <div className="postShare-wrapper-preview-Img">
+              {(file === null) 
+                ? ( <img className='postShare-preview-Img' src={defaultImage} alt="Image par défaut" />)                  
+                : ( <img className='postShare-preview-Img' src={URL.createObjectURL(file) } alt="Prévisualisation" />)
+              }
+
+              <Cancel 
+                className='postShare-preview-Img-cancel-icone' 
+                onClick={() => setFile(null)} 
+              />
+            </div>
+
+            <label 
+              className='postShare-label-choseFile'
+              htmlFor="file" // <<< associé à l'id de <input/>
+            >
+              <PermMedia htmlColor='blue'/>
+              <span className='postShare-label-choseFile-text'>Importer une image</span>
+              <input 
+                style={{ display:"none" }} // <<< à revoir
+                type="file" 
+                id="file" // <<< associé au HtmlFor de <label/>
+                accept=".png,.jpeg,.jpg" 
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </label> 
+                        
             <TextField
               placeholder="Placeholdker"
               // multiline
@@ -106,37 +138,12 @@ export default function PostShare ({openPostShare, setOpenPostShare}) {
               onChange={(e) => { setDesc(e.target.value) }}     
             />        
 
-            <label 
-              className='postShare-label-choseFile'
-              htmlFor="file" // <<< associé à l'id de <input/>
-            >
-              <PermMedia htmlColor='blue'/>
-              <span className='postShare-label-choseFile-text'>Ajouter une image</span>
-              <input 
-                style={{ display:"none" }} // <<< à revoir
-                type="file" 
-                id="file" // <<< associé au HtmlFor de <label/>
-                accept=".png,.jpeg,.jpg" 
-                onChange={(e) => setFile(e.target.files[0])}
-              />
-            </label> 
-
-            {/* -------------------------- preview -------------------------- */}
-            {file && (
-              <div className="postShare-wrapper-preview-Img">
-                <img className='postShare-preview-Img' src={URL.createObjectURL(file)} alt="" />
-                <Cancel 
-                  className='postShare-preview-Img-cancel-icone' 
-                  onClick={() => setFile(null)} 
-                />
-              </div>
-            )} 
-
             <div className="postShare-button-wrapper">
               <button 
                 // to="/"
                 // onClick={handleClose}
-                onClick={()=>{setOpenPostShare(false)}}
+                // onClick={()=>{setOpenPostShare(false)}}
+                onClick={()=>{navigate('/')}}
                 className='postShare-button-cancel'
               >Annuler
               </button>
@@ -150,7 +157,7 @@ export default function PostShare ({openPostShare, setOpenPostShare}) {
             </div>
           </form>   
         </div>
-      )} 
+      {/* )}  */}
     </>
   );
 }

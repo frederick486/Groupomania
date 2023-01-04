@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       {/* <Navbar /> */}
-      <div className="homeContainer">
+      <div className="homeContainer" id="homeContainer">
         <Posts/>
       </div>
     </>

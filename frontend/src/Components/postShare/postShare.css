@@ -32,7 +32,8 @@
 .postShare-label-choseFile {
     margin-bottom: 20px !important;
     cursor: pointer;
-    width:fit-content
+    width:fit-content;
+    margin:auto
 }
 
 .postShare-label-choseFile-text {

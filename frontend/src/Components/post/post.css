@@ -26,29 +26,100 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 65px;
-    border-top: 1.5px solid #b3b0b0;
-    border-bottom: 1.5px solid #b3b0b0;
+    flex-wrap: wrap;
+    min-height: 80px;
+    margin-top: 15px;
+    padding-bottom: 15px;
+}
+
+.comment-anchor {
+    text-decoration: none;
+    color: black;
+}
+
+/* .commentIcon {
+    font-size: large;
+} */
+
+.post-header-avatar {
+    display: flex;
+}
+
+.post-header-text {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-header-text-pseudo {
+    font-weight: 500;
 }
 
 .post-action-allUsers {
     display: flex;
-    min-width: 100px;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: space-between;    
+    /* min-width: 200px; */
+    height: 40px;
+    /* border: 1px solid #b3b0b0; */
+    background-color: whitesmoke;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    /* padding-left: 20px;
+    padding-right: 20px; */
 }
 
+.post-action-allUsers-hr {
+    width: 2px;
+    height: 85%;
+    /* border: 1px solid #b3b0b0; */
+    background-color: #b3b0b0;
+}
+
+.button-like {
+    height: 50px;
+    border: none;
+    background-color: transparent;
+    margin-left: 20px;
+    margin-right: 20px;
+    /* display: flex;
+    justify-content: flex-start;
+    align-items: center; */
+}
+
+/* .button-inactive-like {
+    position: relative;
+} */
+
 .button-active-like {
-    color: #65a8ff
+    color: #65a8ff;
+}
+
+.button-active-like-to-fly-over {
+    position: absolute;
+    color: #65a8ff;
+    opacity: 0;
+    transition: all 0.25s ease-in-out !important;
+}
+
+.button-active-like-to-fly-over:hover {
+    color: #65a8ff;
+    opacity: 1
 }
 
 .button-active-dislike {
     color: #b9d0d3;
 }
 
+.button-inactive-like {
+    color: #b3b0b0;
+}
+
 .post-action-owner {
     display: flex;
-    justify-content: flex-end;
-    width: 10%;
+    justify-content: space-between;
+    min-width: 100px;
 }
 
 .buttonDelette {
@@ -58,4 +129,9 @@
 
 .deleteIcon {
     margin-right: 3px;
+}
+
+.post-desc {
+    border-top: 1.5px solid #b3b0b0;
+    border-bottom: 1.5px solid #b3b0b0;
 }

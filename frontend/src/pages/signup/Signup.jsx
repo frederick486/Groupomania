@@ -5,62 +5,61 @@ import React, { useState, useRef } from "react"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// icones Matérial UI
+import { Cancel } from '@mui/icons-material'
+import { PermMedia } from "@mui/icons-material";
+
+
+import defaultImage from '../../Assets/noAvatar.png'
+
+
 export default function Signup ({openSignup, setOpenSignup}) {
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
-    const [pseudo, setPseudo] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [profileImgUrl, setprofileImgUrl] = useState(null);
+  const [pseudo, setPseudo] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [file, setfile] = useState(null);
 
-    console.log("email : ", email)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append("pseudo", pseudo);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("profileImgUrl", file);
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      let formData = new FormData();
-      formData.append("pseudo", pseudo);
-      formData.append("email", email);
-      formData.append("password", password);
-      formData.append("profileImgUrl", profileImgUrl);
-
-      try {
+    try {
       await axios.post( "http://localhost:4000/api/user/signup" , formData, { 
-          headers: { 
-          "Content-Type": "multipart/form-data", 
-          // 'Authorization': `Bearer ${token}`  
-          },
+        headers: { 
+        "Content-Type": "multipart/form-data", 
+        },
       })
       .then((res) => {
         console.log("res", res)
-          window.localStorage.setItem("authToken", res.data.token)
-          window.localStorage.setItem("userId", res.data.userId)
-          window.localStorage.setItem("pseudo", res.data.pseudo) 
-          window.localStorage.setItem("profileImgUrl", res.data.profileImgUrl) 
-          // window.location.reload()
-          setOpenSignup(false)
-          navigate('/')
+        window.localStorage.setItem("authToken", res.data.token)
+        window.localStorage.setItem("userId", res.data.userId)
+        window.localStorage.setItem("pseudo", res.data.pseudo) 
+        window.localStorage.setItem("profileImgUrl", res.data.profileImgUrl) 
+        setOpenSignup(false)
+        navigate('/')
       })
-      } catch (err) {
-      console.log(err)      
-      }
-
+    } catch (err) {
+    console.log(err)      
     }
+  }
           
   return (
     <>      
       {openSignup && (
-        <div className="Auth-form-container">
-          <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/>
-          <form onSubmit={handleSubmit} className="Auth-form">
-            <div className="Auth-form-content">
-              <h3 className="Auth-form-title">Sign Up</h3>
-              <div className="text-center">
-                Already registered?{" "}
-                <span className="link-primary">
-                  Sign In
-                </span>
-              </div>
+        <div className="signup-form-container">
+          {/* <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/> */}
+          <img className="signup-form-logo" src={logo} alt="Groupomania"/>
+          <h3 className="signup-form-title">Créez votre compte</h3>
+
+          <form onSubmit={handleSubmit} className="signup-form">
+            <div className="signup-form-content">
               <div className="form-group mt-3">
                 <label>Full Name</label>
                   <input
@@ -88,12 +87,7 @@ export default function Signup ({openSignup, setOpenSignup}) {
                   placeholder="Password"
                 />
               </div>
-              <label htmlFor="avatar">Ajoutez une image</label> 
-              <input 
-                label="Select a File"
-                type="file"
-                onChange={(e) => { setprofileImgUrl(e.target.files[0]) }}          
-              />            
+          
               <div className="d-grid gap-2 mt-3">
                 <button type="submit" className="btn btn-primary">
                   Submit
@@ -103,6 +97,43 @@ export default function Signup ({openSignup, setOpenSignup}) {
                 Forgot <a href="#">password?</a>
               </p>
             </div>
+
+            <div className="signup-form-profilImg-wrapper">
+            <div className="signup-wrapper-preview-Img">
+              {(file === null) 
+                ? ( <img className='signup-preview-Img' src={defaultImage} alt="Image par défaut" />)                  
+                : ( <img className='signup-preview-Img' src={URL.createObjectURL(file) } alt="Prévisualisation" />)
+              }
+               
+              <Cancel 
+                className='signup-preview-Img-cancel-icone' 
+                onClick={() => setfile(null)} 
+              />
+             </div>              
+
+              <label 
+                className='signup-label-choseFile'
+                htmlFor="avatar"
+              >
+                
+                <PermMedia htmlColor='blue'/>
+                <span className='signup-label-choseFile-text'>Importer une image</span>
+                <input 
+                  style={{ display:"none" }} // <<< à revoir
+                  label="Select a File"
+                  type="file"
+                  id="avatar"
+                  accept=".png,.jpeg,.jpg" 
+                  onChange={(e) => { setfile(e.target.files[0]) }}          
+                />  
+              </label> 
+            </div>
+              {/* <div className="text-center">
+                Already registered?{" "}
+                <span className="link-primary">
+                  Sign In
+                </span>
+              </div> */}            
           </form>
         </div>
       )}
