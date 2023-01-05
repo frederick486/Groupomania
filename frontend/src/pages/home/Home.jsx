@@ -7,7 +7,7 @@ import Navbar from "../../Components/navbar/Navbar"
 export default function Home() {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <div className="homeContainer" id="homeContainer">
         <Posts/>
       </div>

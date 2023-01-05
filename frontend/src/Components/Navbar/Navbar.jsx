@@ -10,10 +10,6 @@ import jwtDecode from "jwt-decode"
 import { API_URL_USER } from '../../config';
 import axios from 'axios';
 
-// Components
-import Login from '../../pages/login/Login';
-import Signup from '../../pages/signup/Signup'
-
 // Components Matérial UI
 import Avatar from '@mui/material/Avatar';
 
@@ -21,12 +17,6 @@ import Avatar from '@mui/material/Avatar';
 export default function Topbar () {
 
   const navigate = useNavigate()
-
-  const [openLogin, setOpenLogin] = useState(false);
-  const [openSignup, setOpenSignup] = useState(false);
-
-  const connection = () => {setOpenLogin(true); setOpenSignup(false)};
-  const register = () => {setOpenSignup(true); setOpenLogin(false)};
 
   const [token, setToken] = useState(null) 
   const [tokenValid, setTokenValid] = useState(false) 
@@ -46,7 +36,7 @@ export default function Topbar () {
         setTokenValid(true) 
       }
     }
-  }, [token, openLogin, openSignup])
+  }, [token])
 
   const deconnexion = (e) => {
     e.preventDefault();
@@ -81,28 +71,26 @@ export default function Topbar () {
             <div className="navbar-avatar-wrapper">
               <Avatar 
                 alt="Utilisateur" 
-                // src="/static/images/avatar/1.jpg" 
-                // src={avatar 
                 src={tokenValid
                       ? avatar
                       : "../../Assets/noAvatar.png" 
                     }
               />
               
-                {tokenValid
-                  ? (<>
-                      <div className="navbar-avatar-text">
-                        <span className='navbar-avatar-pseudo' >Connecté en tant que <b>"{pseudo}"</b></span>
-                        <button 
-                          className='navbar-avatar-button-delete'
-                          onClick={deleteUser}>Supprimer mon compte
-                        </button>
-                      </div>
+              {tokenValid
+                ? (<>
+                    <div className="navbar-avatar-text">
+                      <span className='navbar-avatar-pseudo' >Connecté en tant que <b>"{pseudo}"</b></span>
+                      <button 
+                        className='navbar-avatar-button-delete'
+                        onClick={deleteUser}>Supprimer mon compte
+                      </button>
+                    </div>
 
-                    </>
-                  )
-                  : <span className='navbar-avatar-pseudo' >Non connecté</span>
-                }
+                  </>
+                )
+                : <span className='navbar-avatar-pseudo' >Non connecté</span>
+              }
             </div>
 
             <Navbar.Toggle aria-controls="navbarScroll" />
@@ -114,41 +102,20 @@ export default function Topbar () {
               >
                 { tokenValid 
                   ? <Nav.Link onClick={deconnexion}>Déconnexion</Nav.Link>
-                  // : <Nav.Link href="/login">Connection</Nav.Link>
-                  : <Nav.Link onClick={connection}>Connection</Nav.Link>
-                  // : <Nav.Link href="/login" onClick={connection}>Connection</Nav.Link>
+                  : <Nav.Link href="/login">Connection</Nav.Link>
                 }                
-                <Nav.Link onClick={register}>Enregistrement</Nav.Link>
+                
+                { !tokenValid && <Nav.Link href='/signup'>Enregistrement</Nav.Link> }
+            
                 <Nav.Link href="/">Page d'acceuil</Nav.Link>
 
-                { tokenValid && 
-                  <Nav.Link 
-                    href="/post-share"
-                    // onClick={setOpenPostShare(true)}
-                    // onClick={handleOpen}
-                  >
-                    Ajouter un article
-                  </Nav.Link>
-                }
+                { tokenValid && <Nav.Link href="/post-share"> Ajouter un article </Nav.Link> }
   
               </Nav>
             </Navbar.Collapse>
           </Container>
         </Navbar>
-      </div>
-      
-      {setOpenLogin && 
-        (<Login
-          openLogin={openLogin}
-          setOpenLogin={setOpenLogin}
-        />)}
-      
-      {openSignup && (
-        <Signup 
-          openSignup={openSignup}
-          setOpenSignup={setOpenSignup}      
-        />
-      )}        
+      </div>             
     </>
   );
 }

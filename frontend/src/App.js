@@ -12,11 +12,11 @@ import Login from "./pages/login/Login"
 function App() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path='/' element={<Home />}/>
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />          
+        <Route path="/signup" element={<Signup />} />
         <Route path='/post-share' element={<PostShare />}/>
         <Route path='/post-update/:postId' element={<PostUpdate />}/>
         <Route path='/post/:postId' element={<Post />}/>

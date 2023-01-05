@@ -4,6 +4,7 @@ import logo from "../../Assets/icon-left-font-monochrome-black.png"
 import React, { useState, useRef } from "react"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_URL_USER_SIGNUP } from '../../config'
 
 // icones Matérial UI
 import { Cancel } from '@mui/icons-material'
@@ -13,7 +14,7 @@ import { PermMedia } from "@mui/icons-material";
 import defaultImage from '../../Assets/noAvatar.png'
 
 
-export default function Signup ({openSignup, setOpenSignup}) {
+export default function Signup () {
 
   const navigate = useNavigate()
 
@@ -31,7 +32,7 @@ export default function Signup ({openSignup, setOpenSignup}) {
     formData.append("profileImgUrl", file);
 
     try {
-      await axios.post( "http://localhost:4000/api/user/signup" , formData, { 
+      await axios.post( API_URL_USER_SIGNUP , formData, { 
         headers: { 
         "Content-Type": "multipart/form-data", 
         },
@@ -42,7 +43,6 @@ export default function Signup ({openSignup, setOpenSignup}) {
         window.localStorage.setItem("userId", res.data.userId)
         window.localStorage.setItem("pseudo", res.data.pseudo) 
         window.localStorage.setItem("profileImgUrl", res.data.profileImgUrl) 
-        setOpenSignup(false)
         navigate('/')
       })
     } catch (err) {
@@ -52,7 +52,7 @@ export default function Signup ({openSignup, setOpenSignup}) {
           
   return (
     <>      
-      {openSignup && (
+
         <div className="signup-form-container">
           {/* <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/> */}
           <img className="signup-form-logo" src={logo} alt="Groupomania"/>
@@ -136,7 +136,7 @@ export default function Signup ({openSignup, setOpenSignup}) {
               </div> */}            
           </form>
         </div>
-      )}
+      
     </>
   )
   

@@ -4,17 +4,13 @@ import logo from "../../Assets/icon-left-font-monochrome-black.png"
 import React, { useState, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Signup from '../signup/Signup'
 import { API_URL_USER_LOGIN } from '../../config'
 
-export default function Login ({openLogin, setOpenLogin}) {
+export default function Login () {
   const navigate = useNavigate()
 
   const email = useRef();
   const password = useRef();
-
-  // const [openSignup, setOpenSignup] = useState(false);
-  // const register = () => {setOpenSignup(true); setOpenLogin(false) };
 
   const connection = async (e) => {
     e.preventDefault();
@@ -35,7 +31,6 @@ export default function Login ({openLogin, setOpenLogin}) {
         // axios.defaults.headers["Authorization"] = "Bearer" + res.data.token
 
         navigate('/')
-        setOpenLogin(false)              
       })            
     } catch (err) {
       console.log(err)        
@@ -44,60 +39,52 @@ export default function Login ({openLogin, setOpenLogin}) {
 
   return (
     <>
-      {openLogin && (
       
-        <div className="Auth-form-container">
-          <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/>
-          {/* <button 
-            className="Login-button-register"
-            onClick={register}
-          >
-            Enregister vous
-          </button> */}
-          <form onSubmit={connection} className="Auth-form">
-            <div className="Auth-form-content">
-              <h3 className="Auth-form-title">Sign In</h3>
-              <div className="text-center">
-                Pas encore membre ?{" "}
-                {/* <button className="link-primary"> */}
+      <div className="Auth-form-container">
+        <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/>
+        {/* <button 
+          className="Login-button-register"
+          onClick={register}
+        >
+          Enregister vous
+        </button> */}
+        <form onSubmit={connection} className="Auth-form">
+          <div className="Auth-form-content">
+            <h3 className="Auth-form-title">Sign In</h3>
+            <div className="text-center">
+              Pas encore membre ?{" "}
+              {/* <button className="link-primary"> */}
 
-              </div>
-              <div className="form-group mt-3">
-                <label>Email address</label>
-                <input
-                  ref={email}
-                  type="email"
-                  className="form-control mt-1"
-                  placeholder="Enter email"
-                />
-              </div>
-              <div className="form-group mt-3">
-                <label>Password</label>
-                <input
-                  ref={password}
-                  type="password"
-                  className="form-control mt-1"
-                  placeholder="Enter password"
-                />
-              </div>
-              <div className="d-grid gap-2 mt-3">
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-              </div>
-              <p className="text-center mt-2">
-                Forgot <a href="#">password?</a>
-              </p>
             </div>
-          </form>
-        </div>
-      )} 
-
-    {/* {openSignup 
-      && (<Signup 
-        openSignup={openSignup}
-        setOpenSignup={setOpenSignup}      
-      />)}     */}
+            <div className="form-group mt-3">
+              <label>Email address</label>
+              <input
+                ref={email}
+                type="email"
+                className="form-control mt-1"
+                placeholder="Enter email"
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>Password</label>
+              <input
+                ref={password}
+                type="password"
+                className="form-control mt-1"
+                placeholder="Enter password"
+              />
+            </div>
+            <div className="d-grid gap-2 mt-3">
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
+            <p className="text-center mt-2">
+              Forgot <a href="#">password?</a>
+            </p>
+          </div>
+        </form>
+      </div>
      
     </>
   )

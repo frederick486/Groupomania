@@ -8,6 +8,7 @@ import jwtDecode from "jwt-decode"
 // Components
 import PostComment from '../postComment/PostComment';
 import Avatar from '@mui/material/Avatar';
+import Navbar from '../navbar/Navbar'
 
 
 // icônes Matérial UI
@@ -191,6 +192,7 @@ export default function Post () {
 
   return(
     <> 
+      <Navbar/>
       {loaded 
         ? (  
             <>
