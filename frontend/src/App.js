@@ -3,8 +3,8 @@ import Navbar from "../src/Components/navbar/Navbar"
 import Home from "../src/pages/home/Home"
 import Post from "../src/Components/post/Post"
 import { Routes, Route } from 'react-router-dom'
-import PostUpdate from "./Components/postUpdate/PostUpdate"
-import PostShare from "./Components/postShare/PostShare"
+import PostUpdate from "./pages/postUpdate/PostUpdate"
+import PostShare from './pages/postShare/PostShare'
 import Signup from "./pages/signup/Signup"
 import Login from "./pages/login/Login"
 
