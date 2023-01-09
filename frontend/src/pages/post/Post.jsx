@@ -6,10 +6,9 @@ import axios from 'axios'
 import jwtDecode from "jwt-decode"
 
 // Components
-import PostComment from '../postComment/PostComment';
-import Avatar from '@mui/material/Avatar';
-import Navbar from '../navbar/Navbar'
-
+import PostComment from '../../Components/postComment/PostComment';
+import Navbar from '../../Components/navbar/Navbar'
+import Loader from '../../Components/Loader/Loader';
 
 // icônes Matérial UI
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
@@ -19,12 +18,13 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import CommentIcon from '@mui/icons-material/Comment';
+// Components Matérial UI
+import Avatar from '@mui/material/Avatar';
 
 // Components timeago
 import TimeAgo from 'react-timeago'
 import frenchStrings from 'react-timeago/lib/language-strings/fr'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
-import Loader from '../Loader/Loader';
 
 
 export default function Post () {
@@ -43,6 +43,8 @@ export default function Post () {
   const [loaded, setLoaded] = useState(false)
   const [tokenValid, setTokenValid] = useState(false) 
 
+  // let admin = false;
+  const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -62,10 +64,17 @@ export default function Post () {
             setTokenValid(true) 
           }
         }        
+
+        if(localStorage.getItem("pseudo") === "administrateur" ) {
+          setAdmin(true);
+        }
+        console.log("admin :", admin)
     })();
   }, [click]);
 
   console.log("data :", data)
+  console.log("admin :", admin)
+  console.log("localStorage.getItem(pseudo) :", localStorage.getItem("pseudo"))
 
   let owner = false;
   if(data.userId === localStorage.getItem("userId")) {
@@ -139,8 +148,6 @@ export default function Post () {
         if(localStorage.getItem("userId") === userId) {
 
           navigate(`/post-update/${id}`)   
-          // setOpenPosUpdate(true)  
-          // setLoaded(false)   
 
         } else { 
           alert("Vous devez être l'auteur de ce post pour pouvoir le modifier") 
@@ -162,7 +169,7 @@ export default function Post () {
 
       if(exp * 1000 > new Date().getTime()) {
 
-        if(localStorage.getItem("userId") === userId) {
+        if( localStorage.getItem("userId") === userId || admin) {
 
           if(window.confirm("êtes vous sur de vouloir supprimer ce post ?")) {
 
@@ -225,7 +232,8 @@ export default function Post () {
                   </div> 
 
                   <div className="post-action-owner">
-                    {(owner && tokenValid) && (
+                    {((owner && tokenValid) || admin) && (
+                    
                       <>
                         <button 
                           style={{ border:"none", backgroundColor:"transparent" }}              
@@ -243,7 +251,8 @@ export default function Post () {
                           <DeleteOutlinedIcon fontSize='large' titleAccess='supprimer ce post'/>
                         </button> 
                       </>
-                    )}
+                    )} 
+  
                   </div>  
 
                   <div className="post-action-infos-comments">
@@ -255,7 +264,6 @@ export default function Post () {
                   <div className="post-action-allUsers">
                     <button className='button-like'
                       onClick={likePost} 
-                      // style={{ border:"none", backgroundColor:"transparent" }}
                     >
                       <ThumbUpAltIcon className='button-active-like-to-fly-over' fontSize='large'/>
                       { isLiked 
@@ -267,7 +275,6 @@ export default function Post () {
                     <hr className='post-action-allUsers-hr'/>
                     <button className='button-like'            
                       onClick={dislikePost} 
-                      // style={{ border:"none", backgroundColor:"transparent" }}
                     >
                       { isDiLiked 
                         ? <ThumbDownAltIcon className='button-active-dislike' fontSize='large'/> 

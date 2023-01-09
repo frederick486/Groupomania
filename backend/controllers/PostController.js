@@ -186,10 +186,11 @@ module.exports.updatePost = async (req, res) => {
 module.exports.deletePost = async (req, res) => {
   const id = req.params.id;
   const userId = req.auth.userId;
+  const isAdmin = req.auth.isAdmin;
 
   try {
     const post = await PostModel.findById(id);
-    if (post.userId === userId) {
+    if (post.userId === userId || isAdmin) {
       const filename = post.postImgUrl.split('/images/post/')[1]
       fs.unlink(`images/post/${filename}`, async () => {
         await post.deleteOne();

@@ -15,6 +15,11 @@ export default function Login () {
   const connection = async (e) => {
     e.preventDefault();
 
+    // const isAdmin = false;
+    // if(email === "administrateur@gmail.com" && password === "password@1234" ) {
+    //   isAdmin = true
+    // }    
+
     try {
       await axios.post( API_URL_USER_LOGIN,
         {
@@ -28,6 +33,7 @@ export default function Login () {
         window.localStorage.setItem("userId", res.data.userId)
         window.localStorage.setItem("pseudo", res.data.pseudo)
         window.localStorage.setItem("profileImgUrl", res.data.profileImgUrl)
+        // window.localStorage.setItem("isAdmin", isAdmin)
         // axios.defaults.headers["Authorization"] = "Bearer" + res.data.token
 
         navigate('/')

@@ -8,12 +8,14 @@ exports.signup = (req, res, next) => {
     const url = req.protocol + '://' + req.get('host')
 
     bcrypt.hash(req.body.password, 10)
-    .then(hash => {
+    .then(hash => {        
         const user = new User({
             pseudo: req.body.pseudo,
             email: req.body.email,
             password: hash,
-            profileImgUrl: url + '/images/profile/' + req.file.filename,
+            profileImgUrl:  req.file != null ?
+             url + '/images/profile/' + req.file.filename : 
+             url + '/images/default/noAvatar.png'
         });
         user.save()
             .then(() => res.status(201).json( 

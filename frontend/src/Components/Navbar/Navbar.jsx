@@ -77,7 +77,7 @@ export default function Topbar () {
                     }
               />
               
-              {tokenValid
+              { tokenValid
                 ? (<>
                     <div className="navbar-avatar-text">
                       <span className='navbar-avatar-pseudo' >Connecté en tant que <b>"{pseudo}"</b></span>
@@ -86,7 +86,6 @@ export default function Topbar () {
                         onClick={deleteUser}>Supprimer mon compte
                       </button>
                     </div>
-
                   </>
                 )
                 : <span className='navbar-avatar-pseudo' >Non connecté</span>
