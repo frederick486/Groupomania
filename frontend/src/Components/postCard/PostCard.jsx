@@ -5,6 +5,11 @@ import { Link } from 'react-router-dom'
 // Components Matérial UI
 import Avatar from '@mui/material/Avatar';
 
+// Icones Matérial UI
+import CommentIcon from '@mui/icons-material/Comment';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 // Components Matérial UI (timeago)
 import TimeAgo from 'react-timeago'
 import frenchStrings from 'react-timeago/lib/language-strings/fr'
@@ -41,6 +46,18 @@ export default function PostCard(props) {
                                 formatter={formatter} 
                             />
                         </div>
+                    </div>
+
+                    <div className='postCard-header-infos'>
+                        <span><CommentIcon 
+                            // className='commentIcon' 
+                            color='darkgrey' 
+                            fontSize='small' 
+                        /> {props.card.comments.length}</span>
+
+                        {/* <FontAwesomeIcon icon="fas-messages" /> */}
+
+                        <span><ThumbUpAltIcon fontSize='small' /> {props.card.likers.length}</span>
                     </div>
                 </div>
 

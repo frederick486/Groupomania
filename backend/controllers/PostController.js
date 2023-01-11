@@ -28,11 +28,14 @@ let mongoose = require('mongoose')
 //   }
 // }
 
+
+
 // //create a post
-module.exports.createPost = (req, res) => {
+module.exports.createPost = async (req, res) => {
   const url = req.protocol + '://' + req.get('host')
 
-  const post = new PostModel({
+  try {
+    const post = new PostModel({
       _id: new mongoose.Types.ObjectId(),
       userId: req.auth.userId,
       pseudo: req.body.pseudo,
@@ -40,48 +43,25 @@ module.exports.createPost = (req, res) => {
       profileImgUrl: req.body.profileImgUrl,
       title: req.body.title,
       desc: req.body.desc,
-      postImgUrl: url + '/images/post/' + req.file.filename,
+      postImgUrl: req.file != null
+        ? url + '/images/post/' + req.file.filename
+        : url + '/images/default/noAvatar.png',
       likers:[],
       comments: [],
     });
-  post.save().then(result => {
-      res.status(201).json({
-          message: "Post registered successfully!",   
-      })
-  }).catch(err => {
-      console.log(err),
-          res.status(500).json({
-              error: err
-          });
-  })
-}
 
-// //create a post without post img
-module.exports.createPostWwithoutPostImg = (req, res) => {
-  const url = req.protocol + '://' + req.get('host')
+    // await post.save().then(result => {
+    //   res.status(201).json({ message: "Post registered successfully!", })
+    // })
 
-  const post = new PostModel({
-      _id: new mongoose.Types.ObjectId(),
-      userId: req.auth.userId,
-      pseudo: req.body.pseudo,
-      email: req.body.email,
-      profileImgUrl: req.body.profileImgUrl,
-      title: req.body.title,
-      desc: req.body.desc,
-      postImgUrl: url + "/images/default/noAvatar.png",
-      likers:[],
-      comments: [],
-    });
-  post.save().then(result => {
-      res.status(201).json({
-          message: "Post registered successfully!",   
-      })
-  }).catch(err => {
-      console.log(err),
-          res.status(500).json({
-              error: err
-          });
-  })
+    await post.save();
+    res.status(201).json({ message: "Post registered successfully!", })
+    
+    
+  } catch (error) {
+    res.status(500).json(error);
+  }
+
 }
 
 
@@ -107,28 +87,38 @@ module.exports.getAllPost = async (req, res) => {
   }
 };
 
-// update post
-module.exports.updatePostWithoutImg = async (req, res) => {
-  const postId = req.params.id;
-  const userId = req.auth.userId;
- 
-  try {
-    const post = await PostModel.findById(postId);
-    if (post.userId === userId) {
-      await post.updateOne(
-        { 
-          $set: req.body
-        }
-      );
-      res.status(200).json("Post modifié avec updatePostWithoutImg");
-    } else {
-      res.status(403).json("Authentication failed");
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
 
+// // update post
+// module.exports.updatePost = async (req, res) => {
+//   const postId = req.params.id;
+//   const userId = req.auth.userId;
+//   const url = req.protocol + '://' + req.get('host')
+
+//   try {
+//     const post = await PostModel.findById(postId);
+//     if (post.userId === userId) {        
+
+//       if (req.file != null) {
+//         const oldFilename = post.postImgUrl.split('/images/post/')[1]
+//         fs.unlink(`images/post/${oldFilename}`, ()=> {}) 
+//       }
+        
+//       await post.updateOne(
+//           { 
+//             $set: req.body,
+//             postImgUrl: req.file != null
+//             ? url + '/images/post/' + req.file.filename
+//             : url + '/images/default/noAvatar.png',
+//           }
+//         );
+//         res.status(200).json("Post mis à jour");
+//     } else {
+//       res.status(403).json("Echec Authentication");
+//     }
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// };
 
 // update post
 module.exports.updatePost = async (req, res) => {
@@ -140,16 +130,28 @@ module.exports.updatePost = async (req, res) => {
     const post = await PostModel.findById(postId);
     if (post.userId === userId) {        
 
-      const oldFilename = post.postImgUrl.split('/images/post/')[1]
-      fs.unlink(`images/post/${oldFilename}`, ()=> {}) 
+      if (req.file != null) {
+        const oldFilename = post.postImgUrl.split('/images/post/')[1]
+        fs.unlink(`images/post/${oldFilename}`, ()=> {}) 
 
-      await post.updateOne(
+        await post.updateOne(
           { 
             $set: req.body,
-            postImgUrl: url + '/images/post/' + req.file.filename,
+            postImgUrl: url + '/images/post/' + req.file.filename
           }
         );
-        res.status(200).json("Post mis à jour");
+        res.status(200).json("Post mis à jour");        
+
+      } else {
+        await post.updateOne(
+          { 
+            // $set: req.body,
+            title: req.body.title,
+            desc: req.body.desc
+          }
+        );
+        res.status(200).json("Post mis à jour");   
+      }        
     } else {
       res.status(403).json("Echec Authentication");
     }

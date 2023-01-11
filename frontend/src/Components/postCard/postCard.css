@@ -14,14 +14,21 @@
     background-color: white;
     border-radius: 10px;
     gap: 1rem;
+    transition: transform .2s;
+}
+
+.postCard:hover{
+    transform: scale(1.02);
 }
 
 .postCard-header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     padding-left: 30px;
     padding-top: 30px;
+    padding-right: 30px;
     padding-bottom: 15px;
+    justify-content: space-between;
 }
 
 .postCard-header-avatar {
@@ -43,6 +50,12 @@
     color: grey;
 }
 
+.postCard-header-infos {
+    /* margin-left: 50px; */
+    display: flex;
+    flex-direction: column;
+}
+
 .postCard-img-wrapper {
     display: flex;
     position: relative;
@@ -52,14 +65,13 @@
 .postCard-img {    
     width: 100%;
     max-height: 300px;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .postCard-desc {
     max-height: 150px;
     overflow-y: hidden;
-    /* padding-bottom: 10px; */
-    margin-bottom: 20px;
+    margin: 15px
 }
 
 @media screen and (min-width: 768px) {
@@ -68,15 +80,27 @@
         flex-direction: row;
         justify-content: flex-start;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.544);
-        height: 200px;
+        height: 300px;
+        margin-bottom: 35px;
     }
 
     .postCard-header {
-        padding-bottom: 30px;
-        width: 25%;
-        height: 200px;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        /* width: 20%; */
+        width: 115px;
+        /* height: 200px; */
     }
 
+    .postCard-header-infos {
+        /* margin-left: 50px; */
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        color: #343a40;
+    }
+ 
     .postCard-header-avatar {
         display: flex;
         flex-direction: column;
@@ -84,28 +108,29 @@
 
     .postCard-header-text {
         margin-left: 0;
+        font-size: smaller;
+        margin-top: 40px;
     }
 
     .postCard-img-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 25%;
+        width: 40%;
+        /* width: 500px; */
     }
 
     .postCard-img {    
-        height: 200px;
+        height: 100%;
         object-fit: cover;
     }
 
     .postCard-desc {
-        max-height: 185px;
-        width: 45%;
+        max-height: none;
+        width: 40%;
         overflow-y: hidden;
-        padding-top: 15px;
-        padding-bottom: 30px;
+        /* padding-top: 15px;
+        padding-bottom: 30px; */
     }
-
-  
 
 }

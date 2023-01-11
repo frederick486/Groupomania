@@ -30,52 +30,34 @@ export default function PostUpdate () {
         setDesc(response.data.desc)
         setFile(response.data.postImgUrl)
     })();
-  }, []);  
+  }, [newFile]);  
 
+  console.log("File :", file)
   console.log("newFile :", newFile)
 
-  useEffect(() => {
-    setFile("")
-  }, [newFile])
+  // useEffect(() => {
+  //   setFile("")
+  // }, [newFile])
 
   const submitHandler = async (e) => {
     e.preventDefault(); 
 
-    if(newFile != null) {
-      let formData = new FormData();
-      formData.append("title", title);
-      formData.append("desc", desc);
-      formData.append("postImgUrl", newFile);
-   
-      try {
-        await axios.put( API_URL + '/' + id, formData, {        
-          headers: { 
-            "Content-Type": "multipart/form-data", 
-            'Authorization': `Bearer ${token}` 
-          },
-        });
-        navigate('/')
-      } catch (err) {
-        console.log(err)
-      } 
-    } else {
-   
-      try {
-        await axios.put( API_URL + '/updatePostWithoutImg/' + id, 
-        {
-          title:title,
-          desc:desc
-        }, 
-        {        
-          headers: { 
-            'Authorization': `Bearer ${token}` 
-          },
-        });
-        navigate('/')
-      } catch (err) {
-        console.log(err)
-      }       
-    }   
+    let formData = new FormData();
+    formData.append("title", title);
+    formData.append("desc", desc);
+    formData.append("postImgUrl", newFile);
+ 
+    try {
+      await axios.put( API_URL + '/' + id, formData, {        
+        headers: { 
+          "Content-Type": "multipart/form-data", 
+          'Authorization': `Bearer ${token}` 
+        },
+      });
+      navigate('/')
+    } catch (err) {
+      console.log(err)
+    } 
   };
 
   return (
@@ -87,21 +69,18 @@ export default function PostUpdate () {
           className="postUpdate-container-form"
         >
 
-          <span className='postUpdate-textSaizure-object'>Modifiez votre titre</span>
-          <textarea
-            className='postUpdate-textfield-title'
-            defaultValue={title}
-            onChange={(e) => { setTitle(e.target.value) }}   
-          >         
-          </textarea>
+          <div className="postUpdate-wrapper-preview-Img">
+            {(newFile === null)
+              ? ( <img className='postUpdate-preview-Img' src={file} alt="" /> )
+              : ( <img className='postUpdate-preview-Img' src={URL.createObjectURL(newFile)} alt="" /> )
+            }
 
-          <span className='postUpdate-textSaizure-object'>Modifiez votre description</span>
-          <textarea          
-            className='postUpdate-textfield-desc'  
-            defaultValue={desc}
-            onChange={(e) => { setDesc(e.target.value) }}     
-          ></textarea>
-          
+            <Cancel 
+              className='postUpdate-preview-Img-cancel-icone' 
+              onClick={(e) => setNewFile(null)} 
+            />
+          </div>
+
           <label 
             htmlFor="file" // <<< associé à l'id de <input/>
             className='postUpdate-label-choseFile'
@@ -118,28 +97,21 @@ export default function PostUpdate () {
             />
           </label>
 
-          {/* ------------------------- preview ------------------------ */}
-          {file && (
-            <div className="postUpdate-wrapper-preview-Img">
-              <img className='postUpdate-preview-Img' src={file} alt="" />
-              <Cancel 
-                className='postUpdate-preview-Img-cancel-icone' 
-                onClick={(e) => setFile(null)} 
-              />
-            </div>
-          )}                       
+          <span className='postUpdate-textSaizure-object'>Modifiez votre titre</span>
+          <textarea
+            className='postUpdate-textfield-title'
+            defaultValue={title}
+            onChange={(e) => { setTitle(e.target.value) }}   
+          >         
+          </textarea>
 
-          {/* ------------------------- preview ------------------------ */}
-          {newFile && (
-            <div className="postUpdate-wrapper-preview-Img">
-              <img className='postUpdate-preview-Img' src={URL.createObjectURL(newFile)} alt="" />
-              <Cancel 
-                className='postUpdate-preview-Img-cancel-icone' 
-                onClick={(e) => setNewFile(null)} 
-              />
-            </div>
-          )}           
-
+          <span className='postUpdate-textSaizure-object'>Modifiez votre description</span>
+          <textarea          
+            className='postUpdate-textfield-desc'  
+            defaultValue={desc}
+            onChange={(e) => { setDesc(e.target.value) }}     
+          ></textarea>
+          
           <div className="postUpdate-button-wrapper">
             <button 
               onClick={()=>{navigate('/')}}

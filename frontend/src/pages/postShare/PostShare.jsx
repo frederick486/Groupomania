@@ -1,6 +1,6 @@
 import './postShare.css'
-import { useEffect, useState } from "react";
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../config' 
 import axios from 'axios'
 
@@ -30,45 +30,24 @@ export default function PostShare () {
   const submitHandler = async (e) => {
     e.preventDefault(); 
 
-    if(file) {
+    let formData = new FormData();
+    formData.append("pseudo", pseudo);
+    formData.append("profileImgUrl", profileImgUrl);
+    formData.append("title", title);
+    formData.append("desc", desc);
+    formData.append("postImgUrl", file);
 
-      let formData = new FormData();
-      formData.append("pseudo", pseudo);
-      formData.append("profileImgUrl", profileImgUrl);
-      formData.append("title", title);
-      formData.append("desc", desc);
-      formData.append("postImgUrl", file);
-  
-      try {
-        await axios.post( API_URL , formData, { 
-          headers: { 
-            "Content-Type": "multipart/form-data", 
-            'Authorization': `Bearer ${token}`  
-          },
-        }); 
-      } catch (err) {
-        console.log(err)      
-      }
-
-    } else {
-
-        try {
-          await axios.post( API_URL + '/createPostWwithoutPostImg', 
-          {
-            pseudo:pseudo,
-            profileImgUrl:profileImgUrl,
-            title:title,
-            desc:desc
-          }, 
-          {        
-            headers: { 
-              'Authorization': `Bearer ${token}` 
-            },
-          });
-        } catch (err) {
-          console.log(err)          
-        }
+    try {
+      await axios.post( API_URL , formData, { 
+        headers: { 
+          "Content-Type": "multipart/form-data", 
+          'Authorization': `Bearer ${token}`  
+        },
+      }); 
+    } catch (err) {
+      console.log(err)      
     }
+
     navigate('/')
   };
 

@@ -37,9 +37,9 @@
     color: black;
 }
 
-/* .commentIcon {
-    font-size: large;
-} */
+.commentIcon {
+    color: #343a40;;
+}
 
 .post-header-avatar {
     display: flex;
@@ -93,7 +93,7 @@
 } */
 
 .button-active-like {
-    color: #65a8ff;
+    color: #0d6efd;
 }
 
 .button-active-like-to-fly-over {
@@ -125,6 +125,7 @@
 .buttonDelette {
     border: none;
     background-color: transparent;
+    color: #343a40;
 }
 
 .deleteIcon {

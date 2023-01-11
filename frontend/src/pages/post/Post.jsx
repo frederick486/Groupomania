@@ -236,7 +236,7 @@ export default function Post () {
                     
                       <>
                         <button 
-                          style={{ border:"none", backgroundColor:"transparent" }}              
+                          style={{ border:"none", backgroundColor:"transparent", color:"#343a40" }}              
                           onClick={async () => { await uptdatePost(data.userId)}}                        
                         >
                           <EditOutlinedIcon fontSize='large' titleAccess='modifier ce post'/>

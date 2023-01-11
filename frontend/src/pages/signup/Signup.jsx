@@ -93,9 +93,17 @@ export default function Signup () {
                   Submit
                 </button>
               </div>
-              <p className="text-center mt-2">
+              <div className="d-grid gap-2 mt-3">
+                <button 
+                  onClick={()=>{navigate('/')}}
+                  className="btn btn-primary"
+                >
+                  Annuler
+                </button>
+              </div>
+              {/* <p className="text-center mt-2">
                 Forgot <a href="#">password?</a>
-              </p>
+              </p> */}
             </div>
 
             <div className="signup-form-profilImg-wrapper">
