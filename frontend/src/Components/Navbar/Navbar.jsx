@@ -74,11 +74,16 @@ export default function Topbar () {
     <>
       <div className='groupomania-navbar' >
 
-        <button 
-          className='groupomania-navbar-toggle-button' 
-          onClick={toggleNav}>
-            <TuneIcon/>
-        </button>
+        <div className="groupomania-navbar-menu">
+          <Link to="/" style={{textDecoration:"none", color:"black"} }>Page d'acceuil</Link>
+          { tokenValid && <Link to="/post-share" style={{textDecoration:"none", color:"black"}}> Ajouter un article </Link> }  
+
+          <button 
+            className='groupomania-navbar-toggle-button' 
+            onClick={toggleNav}>
+              <Avatar alt="Utilisateur" src={tokenValid ? avatar : "../../Assets/noAvatar.png" } />
+          </button>
+        </div>      
 
         {toggleMenu && (
           <div className='groupomania-navbar-toggle-menu'>
@@ -130,10 +135,6 @@ export default function Topbar () {
                   </Link> }    
           </div>
         )}
-
-        <Link to="/" style={{textDecoration:"none", color:"black"} }>Page d'acceuil</Link>
-        { tokenValid && <Link to="/post-share" style={{textDecoration:"none", color:"black"}}> Ajouter un article </Link> }  
-        <Avatar alt="Utilisateur" src={tokenValid ? avatar : "../../Assets/noAvatar.png" } />
 
       </div>             
     </>
