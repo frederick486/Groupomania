@@ -9,7 +9,6 @@ import jwtDecode from "jwt-decode"
 // Formulaire
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import SendIcon from '@mui/icons-material/Send';
 
 // Affichage
 import List from '@mui/material/List';
@@ -20,14 +19,11 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
 // Icônes
-import DeleteIcon from '@mui/icons-material/Delete';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import Stack from '@mui/joy/Stack';
-import Add from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 
@@ -43,7 +39,8 @@ export default function PostComment ({props}) {
     const [send, setSend] = useState(false);
     const [commentId, setCommentId] = useState();
     const [tokenValid, setTokenValid] = useState(false) 
-
+    const [admin, setAdmin] = useState(false);
+    const [click, setClick] = useState(false);
 
     const id = useParams().postId
     const token = localStorage.getItem("authToken")
@@ -63,14 +60,19 @@ export default function PostComment ({props}) {
                     if(exp * 1000 > new Date().getTime()) {
                       setTokenValid(true) 
                     }
+                }
+                
+                if(localStorage.getItem("pseudo") === "administrateur" ) {
+                    setAdmin(true);
                 }                
 
             } catch (err) {
                 console.log(err)            
             }
         })();
-    }, [send]);        
+    }, [send, click]);        
 
+    console.log("click", click)
     // let owner = false;
 
     // if(response.data.userId == localStorage.getItem("userId")) {
@@ -95,12 +97,10 @@ export default function PostComment ({props}) {
                             commentatorProfilImgUrl: avatar,
                             text: comment        
                         }, 
-                        setComment("")
-                    )
-
-                    const response = await axios.get( API_URL + '/' + id  );
-                    setComments(response.data.comments);
-
+                        { headers: { 'Authorization': `Bearer ${token}`  }},   
+                    );
+                    setComment("");
+                    setClick(!click)
                 } catch (err) {
                     console.log(err)
                 }                           
@@ -110,7 +110,6 @@ export default function PostComment ({props}) {
         } else { 
             alert("Vous devez être connecté pour laisser un commentaire")
         }        
-
     }
 
     const deleteComment = async (commentId, commenterId) => {
@@ -120,18 +119,15 @@ export default function PostComment ({props}) {
 
             if(exp * 1000 > new Date().getTime()) {
 
-                if(commenterId === localStorage.getItem("userId")) {
+                if(commenterId === localStorage.getItem("userId") || admin) {
 
                     if(window.confirm("êtes vous sur de vouloir supprimer ce commentaire ?")) {
                         try {
                             await axios.put( API_URL + '/delete-comment-post/' + id, 
                                 { commentId: commentId },
                                 { headers: { 'Authorization': `Bearer ${token}`  }}
-                            ) 
-    
-                            const response = await axios.get( API_URL + '/' + id  );
-                            setComments(response.data.comments); 
-    
+                            ); 
+                            setClick(!click)    
                         } catch (err) {
                             console.log(err)            
                         }  
@@ -173,7 +169,6 @@ export default function PostComment ({props}) {
         } else {
             alert("Vous devez être connecté pour supprimer un commentaire")
         }           
-
     }
 
     const modifComment = async (text) => {
@@ -183,10 +178,8 @@ export default function PostComment ({props}) {
                     commentId: commentId,
                     text: text
                 },
-                // { headers: { 'Authorization': `Bearer ${token}`  }}
-            ) 
-            // const response = await axios.get( API_URL + '/' + id  );
-            // setComments(response.data.comments); 
+                { headers: { 'Authorization': `Bearer ${token}`  }}
+            ); 
             setSend(false);
         } catch (err) {
             console.log(err)            
@@ -277,26 +270,29 @@ export default function PostComment ({props}) {
                                 }
                             />
                             
-                            {(comment.commentatorUserId == localStorage.getItem("userId")) && (
                                 <div className="commentFieldIcones">
-                                    <button
-                                        onClick={async () => { await deleteComment(comment._id, comment.commentatorUserId);} }
-                                        style={{ border:"none", backgroundColor:"transparent" }}
-                                        // id={comment._id}
-                                        // value={comment.commenterId}                            
-                                    >
-                                        <DeleteOutlinedIcon fontSize='small'/>
-                                    </button>
+                                    {(comment.commentatorUserId === localStorage.getItem("userId")  || admin) && (
+                                        <button
+                                            onClick={async () => { await deleteComment(comment._id, comment.commentatorUserId);} }
+                                            style={{ border:"none", backgroundColor:"transparent" }}
+                                            // id={comment._id}
+                                            // value={comment.commenterId}                            
+                                        >
+                                            <DeleteOutlinedIcon fontSize='small'/>
+                                        </button>
+                                    )}
 
-                                    <button
-                                        onClick={async () => { await updateComment(comment._id, comment.commentatorUserId, comment.text);} }
-                                        // onClick={async () => { await openModal(comment._id, comment.commentatorUserId);} }
-                                        style={{ border:"none", backgroundColor:"transparent" }}
-                                    >
-                                        <EditOutlinedIcon fontSize='small'/>
-                                    </button> 
+                                    {(comment.commentatorUserId === localStorage.getItem("userId")) && (
+                                        <button
+                                            onClick={async () => { await updateComment(comment._id, comment.commentatorUserId, comment.text);} }
+                                            // onClick={async () => { await openModal(comment._id, comment.commentatorUserId);} }
+                                            style={{ border:"none", backgroundColor:"transparent" }}
+                                        >
+                                            <EditOutlinedIcon fontSize='small'/>
+                                        </button> 
+                                    )}  
                                 </div>
-                            )}                       
+                                             
                         </ListItem>   
                     )
                 })}                      

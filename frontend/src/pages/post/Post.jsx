@@ -91,16 +91,13 @@ export default function Post () {
 
         try {
           await axios.put( API_URL + '/like-post/' + id, 
-          { 
-            userId: localStorage.getItem("userId"), 
-            like : 1
-          } );
-          setClick(!click)
-
+            { like : 1 },
+            { headers: { 'Authorization': `Bearer ${token}`  }},
+          );
+          setClick(!click) // <<< relance le useEffect()
         } catch (err) {
           console.log(err)
         }
-
       } else {
         alert("Veuillez vous connecter à nouveau")
       }
@@ -119,12 +116,10 @@ export default function Post () {
 
         try {
           await axios.put( API_URL + '/like-post/' + id, 
-          { 
-            userId: localStorage.getItem("userId"), 
-            like : -1
-          } );
-          setClick(!click)
-
+            { like : -1 },
+            { headers: { 'Authorization': `Bearer ${token}`  }},
+          );
+          setClick(!click) // <<< relance le useEffect()
         } catch (err) {
           console.log(err)
         }
@@ -134,7 +129,6 @@ export default function Post () {
     } else {
       alert("Veuillez vous connecter pour liker ce post")
     }
-
   }  
  
 

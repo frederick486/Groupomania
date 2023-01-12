@@ -1,13 +1,63 @@
-.navbar-complement {
+.groupomania-navbar {
     position: fixed;
     z-index: 1;
     top: 0;
     width: 100%;
-    background-color: whitesmoke;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 15px;
+    padding-left: 15px;
+    background-color: white;
+    border-bottom: solid 1px #c2b1b1;
+    /* color: white; */
+    /* background-color: #212529; */
 }
 
-.navbar-background {
-    background-color: whitesmoke;
+/* .groupomania-navbar-toggle {
+    display: flex;
+    flex-direction: column;
+} */
+
+.groupomania-navbar-toggle-button {
+    background-color: transparent;
+    border: none;
+    /* position: absolute; */
+}
+
+.groupomania-navbar-toggle-menu {
+    /* margin-top: 150px; */
+    /* z-index: 1; */
+    /* position: relative; */
+    top: 50px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background-color: white;
+    /* width: 50%; */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.544);
+    align-items: flex-start;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.groupomania-navbar-link-hr {
+    width: 100%;
+    background-color: #b3b0b0;
+    margin: 0;
+}
+
+.groupomania-navbar-button-menu {
+    background-color: transparent;
+    border: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+}
+
+.groupomania-navbar-button-menu-text {
+    margin-left: 10px;
 }
 
 .navbar-avatar-wrapper {
@@ -23,23 +73,23 @@
     margin-left: 10px;
 }
 
-.navbar-avatar-button-delete {
-    margin-left: 25px;
-    margin-right: 25px;
-    background-color: transparent;
-    border: none;
-    border-radius: 18px;    
-    font-weight: 100;
-    font-size: small;
-    color: black;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
+.warning {
     transition: all 0.25s ease-in-out;
 }
 
-.navbar-avatar-button-delete:hover {
-    background-color: #e82525;
+.warning:hover {
+    background: #fd1c1c;
+    margin-left: 25px;
+    /* margin-right: 25px; */
+}
+
+.overview {
+    transition: all 0.25s ease-in-out;
+}
+
+.overview:hover {
+    margin-left: 25px;
+    /* margin-right: 25px; */
 }
 
 .logo {
@@ -48,4 +98,3 @@
     /* height: 3rem; */
     object-fit: cover;
 }
-

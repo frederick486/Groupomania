@@ -1,6 +1,3 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import './navbar.css'
 import Logo from '../../Assets/icon-left-font-monochrome-black.png'
 import { useState } from 'react';
@@ -9,10 +6,15 @@ import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode"
 import { API_URL_USER } from '../../config';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 // Components Matérial UI
 import Avatar from '@mui/material/Avatar';
-
+import TuneIcon from '@mui/icons-material/Tune';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import InfoIcon from '@mui/icons-material/Info';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 
 export default function Topbar () {
 
@@ -23,6 +25,11 @@ export default function Topbar () {
 
   const [pseudo, setPseudo] = useState("")
   const [avatar, setAvatar] = useState("")
+  const [toggleMenu, setToggleMenu] = useState(false);
+
+  const toggleNav = () => {
+    setToggleMenu(!toggleMenu);
+}
 
   useEffect(()=> {
     setPseudo(localStorage.getItem("pseudo"))
@@ -65,55 +72,69 @@ export default function Topbar () {
 
   return (
     <>
-      <div className='navbar-complement' >
-        <Navbar bg="light" expand="lg">
-          <Container fluid>
-            <div className="navbar-avatar-wrapper">
-              <Avatar 
-                alt="Utilisateur" 
-                src={tokenValid
-                      ? avatar
-                      : "../../Assets/noAvatar.png" 
-                    }
-              />
-              
-              { tokenValid
-                ? (<>
-                    <div className="navbar-avatar-text">
-                      <span className='navbar-avatar-pseudo' >Connecté en tant que <b>"{pseudo}"</b></span>
-                      <button 
-                        className='navbar-avatar-button-delete'
-                        onClick={deleteUser}>Supprimer mon compte
-                      </button>
-                    </div>
-                  </>
-                )
-                : <span className='navbar-avatar-pseudo' >Non connecté</span>
-              }
-            </div>
+      <div className='groupomania-navbar' >
 
-            <Navbar.Toggle aria-controls="navbarScroll" />
-            <Navbar.Collapse id="navbarScroll">
-              <Nav
-                className="me-auto my-2 my-lg-0"
-                style={{ maxHeight: '100px' }}
-                navbarScroll
-              >
-                { tokenValid 
-                  ? <Nav.Link onClick={deconnexion}>Déconnexion</Nav.Link>
-                  : <Nav.Link href="/login">Connection</Nav.Link>
-                }                
+        <button 
+          className='groupomania-navbar-toggle-button' 
+          onClick={toggleNav}>
+            <TuneIcon/>
+        </button>
+
+        {toggleMenu && (
+          <div className='groupomania-navbar-toggle-menu'>
+            { tokenValid
+              ? (<>
+                  <button 
+                    className='groupomania-navbar-button-menu' 
+                  >
+                    <InfoOutlinedIcon/>
+                    <span className='groupomania-navbar-button-menu-text'>
+                      Connecté en tant que <b>"{pseudo}"</b>
+                    </span>
+                  </button>
+
+                  <hr className='groupomania-navbar-link-hr'/>
+
+                  <button 
+                    className='groupomania-navbar-button-menu warning' 
+                    onClick={deleteUser}
+                  >
+                    <DeleteOutlineIcon/>
+                    <span className='groupomania-navbar-button-menu-text'>Supprimer mon compte</span>
+                  </button>
+
+                  <hr className='groupomania-navbar-link-hr'/>
+                </>
+              )
+              : <span className='groupomania-navbar-button-menu-text' >Non connecté</span>
+            }
+
+            { tokenValid 
+              ? <button 
+                  className='groupomania-navbar-button-menu overview'  
+                  onClick={deconnexion}>
+                    <PowerSettingsNewIcon/><span className='groupomania-navbar-button-menu-text'>Déconnexion</span>
+                  </button>
+              : <Link 
+                  style={{textDecoration:"none", color:"black"} } 
+                  to="/login">
+                    Connection
+                </Link>
+            }                
                 
-                { !tokenValid && <Nav.Link href='/signup'>Enregistrement</Nav.Link> }
-            
-                <Nav.Link href="/">Page d'acceuil</Nav.Link>
+            { !tokenValid 
+              && <Link 
+                  style={{textDecoration:"none", color:"black"} } 
+                  to='/signup'>
+                    Enregistrement
+                  </Link> }    
+          </div>
+        )}
 
-                { tokenValid && <Nav.Link href="/post-share"> Ajouter un article </Nav.Link> }
-  
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
+        <Link to="/" style={{textDecoration:"none", color:"black"} }>Page d'acceuil</Link>
+        { tokenValid && <Link to="/post-share" style={{textDecoration:"none", color:"black"}}> Ajouter un article </Link> }  
+        <Avatar alt="Utilisateur" src={tokenValid ? avatar : "../../Assets/noAvatar.png" } />
+
       </div>             
     </>
   );

@@ -209,7 +209,8 @@ module.exports.deletePost = async (req, res) => {
 // like / dislike a post
 module.exports.likePost = async (req, res) => {
   const id = req.params.id;
-  const { userId } = req.body;
+  // const { userId } = req.body;
+  const userId = req.auth.userId;
   const like = req.body.like;
   
   try {
@@ -297,30 +298,29 @@ module.exports.commentPost = async (req, res) => {
 // delete a comment post
 module.exports.deleteCommentPost = async (req, res) => {
   const id = req.params.id;
+  const userId = req.auth.userId;
+  const isAdmin = req.auth.isAdmin;
   // console.log("req.auth.userId :", req.auth.userId)
 
   try {
     const post = await PostModel.findById(id)
 
-    await post.updateOne (
-      {        
-        $pull: {
-          comments: {
-            _id: req.body.commentId,
-          },
-        },
-      },
-    );
+    if (post.userId === userId || isAdmin) {
+      await post.updateOne( { $pull: { comments: { _id: req.body.commentId } } } );
     res.status(200).json("Commentaire supprimé");  
+    } else {
+      res.status(403).json("Action interdite");
+    }
   } catch (err) {    
     res.status(500).json(err)
   }
-
 };
 
 
 // update a comment post
 module.exports.updateCommentPost = (req, res) => {
+  // const id = req.params.id;
+  const userId = req.auth.userId;
 
   try {
     return PostModel.findById(req.params.id, (err, docs) => {
@@ -329,7 +329,12 @@ module.exports.updateCommentPost = (req, res) => {
       );
 
       if (!theComment) return res.status(404).send("Comment not found");
-      theComment.text = req.body.text;
+
+      if(theComment.commentatorUserId === userId) {
+        theComment.text = req.body.text;
+      } else {
+        res.status(403).json("Action interdite");
+      }
 
       return docs.save((err) => {
         if (!err) return res.status(200).send(docs);
