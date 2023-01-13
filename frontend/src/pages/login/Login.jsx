@@ -39,7 +39,8 @@ export default function Login () {
         navigate('/')
       })            
     } catch (err) {
-      console.log(err)        
+      console.log(err)
+      alert("identifiant ou mot de passe incorrecte")        
     }
   }
 
@@ -85,9 +86,9 @@ export default function Login () {
                 Submit
               </button>
             </div>
-            <p className="text-center mt-2">
+            {/* <p className="text-center mt-2">
               Forgot <a href="#">password?</a>
-            </p>
+            </p> */}
           </div>
         </form>
       </div>

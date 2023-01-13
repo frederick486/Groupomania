@@ -15,6 +15,10 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import InfoIcon from '@mui/icons-material/Info';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import InputOutlinedIcon from '@mui/icons-material/InputOutlined';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
+import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 
 export default function Topbar () {
 
@@ -75,13 +79,17 @@ export default function Topbar () {
       <div className='groupomania-navbar' >
 
         <div className="groupomania-navbar-menu">
-          <Link to="/" style={{textDecoration:"none", color:"black"} }>Page d'acceuil</Link>
-          { tokenValid && <Link to="/post-share" style={{textDecoration:"none", color:"black"}}> Ajouter un article </Link> }  
+          {/* <Link to="/" style={{textDecoration:"none", color:"black"} }>Page d'acceuil</Link> */}
+          <Link to="/" style={{textDecoration:"none", color:"black"} }>
+            <img className='groupomania-navbar-logo' alt='logo Groupomania' src={Logo}/>
+          </Link>
+          {/* { tokenValid && <Link to="/post-share" style={{textDecoration:"none", color:"black"}}> Ajouter un article </Link> }   */}
 
           <button 
             className='groupomania-navbar-toggle-button' 
             onClick={toggleNav}>
               <Avatar alt="Utilisateur" src={tokenValid ? avatar : "../../Assets/noAvatar.png" } />
+              <ExpandMoreIcon/>
           </button>
         </div>      
 
@@ -111,27 +119,42 @@ export default function Topbar () {
                   <hr className='groupomania-navbar-link-hr'/>
                 </>
               )
-              : <span className='groupomania-navbar-button-menu-text' >Non connecté</span>
+              : (<><button className='groupomania-navbar-button-menu'>
+                    <InfoOutlinedIcon/>
+                    <span className='groupomania-navbar-button-menu-text'>Non connecté</span> 
+                  </button>
+                  <hr className='groupomania-navbar-link-hr'/>
+                </>)
             }
 
             { tokenValid 
               ? <button 
                   className='groupomania-navbar-button-menu overview'  
                   onClick={deconnexion}>
-                    <PowerSettingsNewIcon/><span className='groupomania-navbar-button-menu-text'>Déconnexion</span>
+                    <PowerSettingsNewIcon/>
+                    <span className='groupomania-navbar-button-menu-text'>Déconnexion</span>
                   </button>
-              : <Link 
-                  style={{textDecoration:"none", color:"black"} } 
+              : (
+                <>
+              <Link 
+                  className='groupomania-navbar-button-menu link'
+                  // style={{textDecoration:"none", color:"black"} } 
                   to="/login">
-                    Connection
+                  <InputOutlinedIcon/>
+                  <span className='groupomania-navbar-button-menu-text'>Connection</span> 
                 </Link>
+                <hr className='groupomania-navbar-link-hr'/>
+
+                </>)
             }                
                 
             { !tokenValid 
               && <Link 
-                  style={{textDecoration:"none", color:"black"} } 
+                  className='groupomania-navbar-button-menu link'
+                  // style={{textDecoration:"none", color:"black"} } 
                   to='/signup'>
-                    Enregistrement
+                    <AppRegistrationOutlinedIcon/>
+                    <span className='groupomania-navbar-button-menu-text'>Enregistrement</span>                     
                   </Link> }    
           </div>
         )}

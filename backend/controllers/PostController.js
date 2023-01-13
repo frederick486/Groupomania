@@ -45,7 +45,7 @@ module.exports.createPost = async (req, res) => {
       desc: req.body.desc,
       postImgUrl: req.file != null
         ? url + '/images/post/' + req.file.filename
-        : url + '/images/default/noAvatar.png',
+        : url + '/images/default/no-picture.png',
       likers:[],
       comments: [],
     });

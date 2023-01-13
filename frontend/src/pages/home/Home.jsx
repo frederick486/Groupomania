@@ -3,9 +3,32 @@ import "./home.css"
 import Posts from "../../Components/posts/Posts";
 import Navbar from "../../Components/navbar/Navbar"
 import logo from "../../Assets/icon-left-font-monochrome-black.png"
+import { useNavigate } from "react-router-dom";
+import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import jwtDecode from "jwt-decode"
 
 
 export default function Home() {
+
+  const navigate = useNavigate()
+
+  const [token, setToken] = useState(null) 
+  const [tokenValid, setTokenValid] = useState(false) 
+
+  useEffect(()=> {
+    setToken(localStorage.getItem("authToken"))
+
+    if(token) {
+      const {exp} = jwtDecode(token)
+  
+      if(exp * 1000 > new Date().getTime()) {
+        setTokenValid(true) 
+      }
+    }
+  }, [token])  
+
   return (
     <>
       <Navbar />
@@ -16,9 +39,18 @@ export default function Home() {
         </span>
      </a>
 
-      <img className="home-logo" src={logo} alt="Groupomania"/>
+      <div className="groupomania-home-cards-container" id="homeContainer">
 
-      <div className="homeContainer" id="homeContainer">
+        {tokenValid &&         
+          <button 
+            onClick={()=>{navigate('/post-share')}}
+            className="groupomania-home-button-addPost"
+          >
+            <PostAddOutlinedIcon/>
+            Ajouter un post
+          </button>    
+        }
+
         <Posts/>
       </div>
     </>

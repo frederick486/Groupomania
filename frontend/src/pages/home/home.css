@@ -1,10 +1,38 @@
-.home-logo {
+/* .home-logo {
     display: flex;
     align-self: center;
     object-fit: cover;
     width: 250px;
     height: 50px;
     margin: 75px auto 25px;
+} */
+
+
+.groupomania-home-button-addPost {
+    /* margin: 85px auto 25px; */
+    /* margin-top: 85px; */
+    margin-bottom: 25px;
+    width: 100%;
+    height: 35px;
+    /* margin: auto; */
+    background-color: lightskyblue;
+    /* background-color: #2b86fd; */
+    border: none;
+    /* border: solid 1px #c2b1b1; */
+    /* border-radius: 18px; */
+    /* margin-top: 10px;
+    margin-bottom: 10px; */
+    font-weight: 500;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.25s ease-in-out;
+}
+
+.groupomania-home-button-addPost:hover {
+    background-color: #65a8ff;
 }
 
 .home-top-button {
@@ -38,4 +66,8 @@
 .home-top-button-icone:hover{
     /* color: #ccc; */
     color: #ccc;
+}
+
+.groupomania-home-cards-container {
+    padding-top: 95px;
 }

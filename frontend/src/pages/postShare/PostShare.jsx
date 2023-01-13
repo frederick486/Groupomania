@@ -82,7 +82,8 @@ export default function PostShare () {
               style={{ display:"none" }} // <<< à revoir
               type="file" 
               id="file" // <<< associé au HtmlFor de <label/>
-              accept=".png,.jpeg,.jpg" 
+              // accept=".png,.jpeg,.jpg" 
+              accept=".png,.jpeg,.jpg,.gif" 
               onChange={(e) => setFile(e.target.files[0])}
             />
           </label> 

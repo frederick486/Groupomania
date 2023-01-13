@@ -47,6 +47,7 @@ export default function Signup () {
       })
     } catch (err) {
     console.log(err)      
+    alert("cet identifiant est déja pris")
     }
   }
           

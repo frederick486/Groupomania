@@ -6,6 +6,7 @@
 
 body, html {
   /* font-family: Arial, Helvetica, sans-serif; */
-  background-color: whitesmoke !important;
+  /* background-color: whitesmoke !important; */
+  background-color: #fafafa !important;
   font-family: 'Lato', sans-serif !important;
 }
