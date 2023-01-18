@@ -76,11 +76,23 @@ module.exports.deleteUser = async (req, res) => {
     try {
         const user = await User.findById(req.auth.userId);
 
-        const filename = user.profileImgUrl.split('/images/profile/')[1]
-        fs.unlink(`images/profile/${filename}`, async () => {
-            await User.findByIdAndDelete(req.auth.userId);
-            res.status(200).json("Account has been deleted succefuly")
-        })
+        // const userId = user._id.toString()
+        const userId = user._id.valueOf()
+
+        console.log("req.auth.isAdmin => ", req.auth.isAdmin)
+        console.log("req.auth.userId => ", req.auth.userId)
+        console.log("userId => ", userId)
+        
+        if(userId === req.auth.userId || req.auth.isAdmin) {
+            const filename = user.profileImgUrl.split('/images/profile/')[1]
+            fs.unlink(`images/profile/${filename}`, async () => {
+                await User.findByIdAndDelete(req.auth.userId);
+                res.status(200).json("Account has been deleted succefuly")
+            })
+        } else {
+            res.status(403).json("Action interdite");
+        }
+
     } catch (error) {
       res.status(500).json(error);
     }

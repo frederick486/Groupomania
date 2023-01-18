@@ -10,14 +10,11 @@ import { Link } from 'react-router-dom';
 
 // Components Matérial UI
 import Avatar from '@mui/material/Avatar';
-import TuneIcon from '@mui/icons-material/Tune';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import InfoIcon from '@mui/icons-material/Info';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InputOutlinedIcon from '@mui/icons-material/InputOutlined';
-import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 
 export default function Topbar () {

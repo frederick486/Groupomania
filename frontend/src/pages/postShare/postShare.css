@@ -21,12 +21,23 @@
     margin: 30px auto 0;
 }
 
-.postShare-textfield-title {
-    margin-bottom: 20px !important;
+.postShare-wrapper-preview-Img {
+    padding: 0 20px 10px 20px;
+    position: relative;
 }
 
-.postShare-textfield-desc {
-    margin-bottom: 20px !important;
+.postShare-preview-Img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+}
+
+.postShare-preview-Img-cancel-icone {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    cursor: pointer;
+    opacity: 0.7;
 }
 
 .postShare-label-choseFile {
@@ -41,26 +52,16 @@
     margin-left: 10px;
 }
 
+.postShare-textfield-title {
+    margin-bottom: 20px !important;
+}
+
+.postShare-textfield-desc {
+    margin-bottom: 20px !important;
+}
+
 .postShare-button-wrapper {
     display: flex;
-}
-
-.postShare-button-send {
-    width: 40%;
-    height: 35px;
-    margin: auto;
-    background-color: #2b86fd;
-    border: none;
-    border-radius: 18px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-weight: 500;
-    /* font-family: Arial, Helvetica, sans-serif; */
-    transition: all 0.25s ease-in-out;
-}
-
-.postShare-button-send:hover {
-    background-color: #65a8ff;
 }
 
 .postShare-button-cancel {
@@ -85,27 +86,22 @@
     background-color: #dbe4e7;
 }
 
-.postShareBox {
-    background-color:aliceblue !important;
-    width: 80% !important;
-    max-width: 800px !important;
+.postShare-button-send {
+    width: 40%;
+    height: 35px;
+    margin: auto;
+    background-color: #2b86fd;
+    border: none;
+    border-radius: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    /* font-family: Arial, Helvetica, sans-serif; */
+    transition: all 0.25s ease-in-out;
 }
 
-.postShare-wrapper-preview-Img {
-    padding: 0 20px 10px 20px;
-    position: relative;
+.postShare-button-send:hover {
+    background-color: #65a8ff;
 }
 
-.postShare-preview-Img {
-    width: 100%;
-    max-height: 300px;
-    object-fit: contain;
-}
-
-.postShare-preview-Img-cancel-icone {
-    position: absolute;
-    top: 0;
-    right: 20px;
-    cursor: pointer;
-    opacity: 0.7;
-}
+/* --------------------------------------- */

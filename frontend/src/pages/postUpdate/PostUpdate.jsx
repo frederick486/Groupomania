@@ -4,11 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { API_URL } from '../../config' 
 import axios from 'axios'
 
-import { Link } from 'react-router-dom';
-
-// Components Matérial UI
-import TextField from '@mui/material/TextField';
-
 // icones Matérial UI
 import { Cancel, PermMedia } from '@mui/icons-material'
 
@@ -30,7 +25,7 @@ export default function PostUpdate () {
         setDesc(response.data.desc)
         setFile(response.data.postImgUrl)
     })();
-  }, [newFile]);  
+  }, [file, newFile]);  
 
   console.log("File :", file)
   console.log("newFile :", newFile)

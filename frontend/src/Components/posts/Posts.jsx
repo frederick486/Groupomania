@@ -20,8 +20,6 @@ export default function Posts () {
 
   return (
     <>
-      {/* <h1 className='home-title'>dernières nouvelles : </h1> */}
-
       <div className="container-cards">
 
         {data.map(item => {

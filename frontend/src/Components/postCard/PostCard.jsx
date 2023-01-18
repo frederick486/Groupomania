@@ -8,7 +8,6 @@ import Avatar from '@mui/material/Avatar';
 // Icones Matérial UI
 import CommentIcon from '@mui/icons-material/Comment';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // Components Matérial UI (timeago)
 import TimeAgo from 'react-timeago'
@@ -54,8 +53,6 @@ export default function PostCard(props) {
                             color='darkgrey' 
                             fontSize='small' 
                         /> {props.card.comments.length}</span>
-
-                        {/* <FontAwesomeIcon icon="fas-messages" /> */}
 
                         <span><ThumbUpAltIcon fontSize='small' /> {props.card.likers.length}</span>
                     </div>

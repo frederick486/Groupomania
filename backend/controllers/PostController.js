@@ -4,31 +4,6 @@ let mongoose = require('mongoose')
 
 // const { json } = require("express");
 
-// // creating a post
-
-// module.exports.createPost = async (req, res) => {
-//   const newPost = new PostModel(req.body);
-
-//   try {
-//     await newPost.save();
-//     res.status(200).json(newPost);
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
-
-// //create a post
-// module.exports.createPost = async (req, res) => {
-//   const newPost = new PostModel(req.body)
-//   try {
-//       const savedPost = await newPost.save();
-//       res.status(200).json(savedPost);
-//   } catch (err) {
-//       res.status(500).json(err);
-//   }
-// }
-
-
 
 // //create a post
 module.exports.createPost = async (req, res) => {
@@ -56,8 +31,7 @@ module.exports.createPost = async (req, res) => {
 
     await post.save();
     res.status(201).json({ message: "Post registered successfully!", })
-    
-    
+       
   } catch (error) {
     res.status(500).json(error);
   }
@@ -87,38 +61,6 @@ module.exports.getAllPost = async (req, res) => {
   }
 };
 
-
-// // update post
-// module.exports.updatePost = async (req, res) => {
-//   const postId = req.params.id;
-//   const userId = req.auth.userId;
-//   const url = req.protocol + '://' + req.get('host')
-
-//   try {
-//     const post = await PostModel.findById(postId);
-//     if (post.userId === userId) {        
-
-//       if (req.file != null) {
-//         const oldFilename = post.postImgUrl.split('/images/post/')[1]
-//         fs.unlink(`images/post/${oldFilename}`, ()=> {}) 
-//       }
-        
-//       await post.updateOne(
-//           { 
-//             $set: req.body,
-//             postImgUrl: req.file != null
-//             ? url + '/images/post/' + req.file.filename
-//             : url + '/images/default/noAvatar.png',
-//           }
-//         );
-//         res.status(200).json("Post mis à jour");
-//     } else {
-//       res.status(403).json("Echec Authentication");
-//     }
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
 
 // update post
 module.exports.updatePost = async (req, res) => {
@@ -160,29 +102,6 @@ module.exports.updatePost = async (req, res) => {
   }
 };
 
-// // update post
-// module.exports.updatePost = async (req, res) => {
-//   const postObject = req.file ? {
-//       ...JSON.parse(req.body.post),
-//       postImgUrl: url + '/images/post/' + req.file.filename,
-//     } : { ...req.body };
-
-//   delete postObject._userId;
-
-//   PostModel.findOne({_id: req.params.id})
-//       .then((post) => {
-//           if (post.userId != req.auth.userId) {
-//               res.status(403).json({ message : 'unauthorized request'});
-//           } else {
-//               post.updateOne({ _id: req.params.id}, { ...postObject, _id: req.params.id})
-//               .then(() => res.status(200).json({message : 'post modifié !'}))
-//               .catch(error => res.status(401).json({ error }));
-//           }
-//       })
-//       .catch((error) => {
-//           res.status(400).json({ error });
-//       });
-// };
 
 // delete a post
 module.exports.deletePost = async (req, res) => {

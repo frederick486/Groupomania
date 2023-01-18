@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/UserController');
-const multer = require('../middleware/userMulter')
-const auth = require('../middleware/authMiddleware')
+const multer = require('../middleware/multer-user')
+const auth = require('../middleware/auth')
 
 router.post('/signup', multer, userController.signup);
 router.delete('/', auth, userController.deleteUser);

@@ -13,7 +13,7 @@
     cursor: pointer;
     background-color: white;
     border-radius: 10px;
-    gap: 1rem;
+    /* gap: 1rem; */
     transition: transform .2s;
 }
 
@@ -24,11 +24,11 @@
 .postCard-header {
     display: flex;
     flex-direction: row;
-    padding-left: 30px;
-    padding-top: 30px;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-top: 15px;
     padding-right: 30px;
     padding-bottom: 15px;
-    justify-content: space-between;
 }
 
 .postCard-header-avatar {

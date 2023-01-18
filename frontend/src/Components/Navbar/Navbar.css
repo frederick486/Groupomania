@@ -3,27 +3,24 @@
     z-index: 1;
     top: 0;
     width: 100%;
-    /* height: 50px; */
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
     padding-right: 15px;
     padding-left: 15px;
     padding-top: 5px;
     padding-bottom: 5px;
-    /* background-color: white; */
     background-color: #ffffff;
     border-bottom: solid 1px #c2b1b1;
 }
 
+.groupomania-navbar-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .groupomania-navbar-logo {
-    /* display: flex;
-    align-self: center; */
     object-fit: cover;
-    /* width: 250px; */
     width: 200px;
     height: 50px;
-    /* margin: 75px auto 25px; */
 }
 
 .groupomania-navbar-toggle-button {
@@ -36,20 +33,12 @@
     padding: 2px;
     width: 80px;
     transition: all 0.25s ease-in-out;
-
-    /* position: absolute; */
 }
 
 .groupomania-navbar-toggle-button:hover {
     background-color: rgba(116, 81, 235, 0.16);
 }
 
-.groupomania-navbar-menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* margin: 5px 0; */
-}
 
 .groupomania-navbar-toggle-menu {
     top: 57px;
@@ -66,12 +55,6 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.544);
 }
 
-.groupomania-navbar-link-hr {
-    width: 100%;
-    background-color: #b3b0b0;
-    margin: 0;
-}
-
 .groupomania-navbar-button-menu {
     background-color: transparent;
     border: none;
@@ -80,26 +63,14 @@
     display: flex;
 }
 
-.link {
-    text-decoration: none;
-    color: black;
-}
-
 .groupomania-navbar-button-menu-text {
     margin-left: 10px;
 }
 
-.navbar-avatar-wrapper {
-    display: flex;
-}
-
-.navbar-avatar-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.navbar-avatar-pseudo {
-    margin-left: 10px;
+.groupomania-navbar-link-hr {
+    width: 100%;
+    background-color: #b3b0b0;
+    margin: 0;
 }
 
 .warning {
@@ -109,7 +80,6 @@
 .warning:hover {
     background: #fd1c1c;
     margin-left: 25px;
-    /* margin-right: 25px; */
 }
 
 .overview {
@@ -118,12 +88,9 @@
 
 .overview:hover {
     margin-left: 25px;
-    /* margin-right: 25px; */
 }
 
-.logo {
-    width: 15rem;
-    max-height: 3rem;
-    /* height: 3rem; */
-    object-fit: cover;
+.link {
+    text-decoration: none;
+    color: black;
 }

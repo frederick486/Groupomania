@@ -49,12 +49,12 @@ export default function Login () {
       
       <div className="Auth-form-container">
         <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/>
-        {/* <button 
+        <button 
           className="Login-button-register"
-          onClick={register}
+          onClick={()=>{navigate('/signup')}}
         >
           Enregister vous
-        </button> */}
+        </button>
         <form onSubmit={connection} className="Auth-form">
           <div className="Auth-form-content">
             <h3 className="Auth-form-title">Sign In</h3>

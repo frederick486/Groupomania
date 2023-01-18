@@ -17,6 +17,8 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+
 
 // Icônes
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -243,57 +245,60 @@ export default function PostComment ({props}) {
             >  
                 {comments.map((comment) => {
                     return(
-                        <ListItem 
-                            alignItems="flex-start"
-                            key={comment._id}
-                        >
-                            <ListItemAvatar>
-                                <Avatar 
-                                    alt="Remy Sharp" 
-                                    // src="/static/images/avatar/1.jpg" 
-                                    src={comment.commentatorProfilImgUrl}
+                        <>
+                            <Divider variant="inset" component="li" />
+                            <ListItem 
+                                alignItems="flex-start"
+                                key={comment._id}
+                            >
+                                <ListItemAvatar>
+                                    <Avatar 
+                                        alt="Remy Sharp" 
+                                        // src="/static/images/avatar/1.jpg" 
+                                        src={comment.commentatorProfilImgUrl}
+                                    />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={comment.commentatorPseudo}
+                                    secondary={
+                                    <React.Fragment>
+                                        <Typography
+                                        sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                                        >
+                                        </Typography>
+                                        {comment.text}
+                                    </React.Fragment>
+                                    }
                                 />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={comment.commentatorPseudo}
-                                secondary={
-                                <React.Fragment>
-                                    <Typography
-                                    sx={{ display: 'inline' }}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                    >
-                                    </Typography>
-                                    {comment.text}
-                                </React.Fragment>
-                                }
-                            />
-                            
-                                <div className="commentFieldIcones">
-                                    {(comment.commentatorUserId === localStorage.getItem("userId")  || admin) && (
-                                        <button
-                                            onClick={async () => { await deleteComment(comment._id, comment.commentatorUserId);} }
-                                            style={{ border:"none", backgroundColor:"transparent" }}
-                                            // id={comment._id}
-                                            // value={comment.commenterId}                            
-                                        >
-                                            <DeleteOutlinedIcon fontSize='small'/>
-                                        </button>
-                                    )}
+                                
+                                    <div className="commentFieldIcones">
+                                        {(comment.commentatorUserId === localStorage.getItem("userId")  || admin) && (
+                                            <button
+                                                onClick={async () => { await deleteComment(comment._id, comment.commentatorUserId);} }
+                                                style={{ border:"none", backgroundColor:"transparent" }}
+                                                // id={comment._id}
+                                                // value={comment.commenterId}                            
+                                            >
+                                                <DeleteOutlinedIcon fontSize='small'/>
+                                            </button>
+                                        )}
 
-                                    {(comment.commentatorUserId === localStorage.getItem("userId")) && (
-                                        <button
-                                            onClick={async () => { await updateComment(comment._id, comment.commentatorUserId, comment.text);} }
-                                            // onClick={async () => { await openModal(comment._id, comment.commentatorUserId);} }
-                                            style={{ border:"none", backgroundColor:"transparent" }}
-                                        >
-                                            <EditOutlinedIcon fontSize='small'/>
-                                        </button> 
-                                    )}  
-                                </div>
-                                             
-                        </ListItem>   
+                                        {(comment.commentatorUserId === localStorage.getItem("userId")) && (
+                                            <button
+                                                onClick={async () => { await updateComment(comment._id, comment.commentatorUserId, comment.text);} }
+                                                // onClick={async () => { await openModal(comment._id, comment.commentatorUserId);} }
+                                                style={{ border:"none", backgroundColor:"transparent" }}
+                                            >
+                                                <EditOutlinedIcon fontSize='small'/>
+                                            </button> 
+                                        )}                                      
+                                    </div>
+            
+                            </ListItem>  
+                        </>                
                     )
                 })}                      
             </List> 

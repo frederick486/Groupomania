@@ -1,18 +1,15 @@
-import "./App.css"
-// import Navbar from "../src/Components/navbar/Navbar"
-import Home from "../src/pages/home/Home"
-import Post from './pages/post/Post'
 import { Routes, Route } from 'react-router-dom'
-import PostUpdate from "./pages/postUpdate/PostUpdate"
-import PostShare from './pages/postShare/PostShare'
-import Signup from "./pages/signup/Signup"
+import Home from "../src/pages/home/Home"
 import Login from "./pages/login/Login"
+import Signup from "./pages/signup/Signup"
+import PostShare from './pages/postShare/PostShare'
+import PostUpdate from "./pages/postUpdate/PostUpdate"
+import Post from './pages/post/Post'
 
 
 function App() {
   return (
     <>
-      {/* <Navbar /> */}
       <Routes>
         <Route path='/' element={<Home />}/>
         <Route path="/login" element={<Login />} />

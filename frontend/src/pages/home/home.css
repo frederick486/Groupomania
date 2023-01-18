@@ -1,33 +1,32 @@
-/* .home-logo {
+.groupomania-home-button-addPost-wrapper {
     display: flex;
-    align-self: center;
-    object-fit: cover;
-    width: 250px;
-    height: 50px;
-    margin: 75px auto 25px;
-} */
-
+    justify-content: center;
+    /* align-items: center; */
+    /* margin-bottom: 25px; */
+    max-width: 1200px;
+    margin: auto;
+    /* width: 100%; */
+    /* height: 35px; */
+    margin-top: 20px;
+}
 
 .groupomania-home-button-addPost {
-    /* margin: 85px auto 25px; */
-    /* margin-top: 85px; */
-    margin-bottom: 25px;
+    /* margin-top: 10px; */
+    margin-bottom: 10px;
+    margin-right: 15px;
+    margin-left: 15px;
     width: 100%;
-    height: 35px;
-    /* margin: auto; */
-    background-color: lightskyblue;
-    /* background-color: #2b86fd; */
+    height: 50px;   
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.544);
+    border-radius: 10px;
     border: none;
-    /* border: solid 1px #c2b1b1; */
-    /* border-radius: 18px; */
-    /* margin-top: 10px;
-    margin-bottom: 10px; */
     font-weight: 500;
     text-decoration: none;
     color: black;
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     transition: all 0.25s ease-in-out;
 }
 
@@ -69,5 +68,18 @@
 }
 
 .groupomania-home-cards-container {
-    padding-top: 95px;
+    padding-top: 60px;
 }
+
+@media screen and (min-width: 768px) {
+    .groupomania-home-button-addPost{
+        margin-bottom: 35px;
+    }
+
+    .groupomania-home-button-addPost-wrapper{
+        margin-top: 45px;
+    }
+
+}
+
+/* -------------------------------------------------- */

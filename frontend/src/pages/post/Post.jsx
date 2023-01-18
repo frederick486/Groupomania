@@ -17,7 +17,8 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
-import CommentIcon from '@mui/icons-material/Comment';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 // Components Matérial UI
 import Avatar from '@mui/material/Avatar';
 
@@ -36,14 +37,11 @@ export default function Post () {
   const [data, setData] = useState([])
   const [like, setLike] = useState(Number)
   const [dislike, setDisLike] = useState(Number)
-  const [commentLength, setCommentLength] = useState(Number)
   const [click, setClick] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
   const [isDiLiked, setisDiLiked] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [tokenValid, setTokenValid] = useState(false) 
-
-  // let admin = false;
   const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
@@ -52,7 +50,6 @@ export default function Post () {
         setData(response.data);
         setLike(response.data.likers.length)
         setDisLike(response.data.unLikers.length)
-        setCommentLength(response.data.comments.length)
         setIsLiked(response.data.likers.includes(localStorage.getItem("userId")))
         setisDiLiked(response.data.unLikers.includes(localStorage.getItem("userId")))
         setLoaded(true)
@@ -198,12 +195,24 @@ export default function Post () {
         ? (  
             <>
               <div className="post-wrapper">
-                
+
+              <button 
+                onClick={()=>{navigate('/')}}
+                className="post-button-return-posts"
+              >
+                <ArrowBackIcon/>
+                Retour aux posts
+              </button>                 
+
                 <img 
                   className='post-img'
                   src={data.postImgUrl} 
                   alt="" 
                 />
+                <h3 className='post-title'>{data.title}</h3>
+
+                {/* <hr className='post-horizontale-hr'/> */}
+
                 <div className="post-action">
                   <div className="post-header-avatar">
                     <Avatar 
@@ -214,7 +223,7 @@ export default function Post () {
                     />
 
                     <div className="post-header-text">
-                      <span className="postCard-header-text-pseudo">
+                      <span className="post-header-text-pseudo">
                           Post de {data.pseudo}
                       </span>
                       <TimeAgo 
@@ -225,7 +234,48 @@ export default function Post () {
                     </div>
                   </div> 
 
-                  <div className="post-action-owner">
+                  {/* <div className="post-action-infos-comments">
+                    <a className='comment-anchor' href='#commentaires'>
+                     <CommentIcon className='commentIcon' fontSize='large'/> */}
+                     {/* {commentLength} */}
+                     {/* <span>Voir les commentaires</span>
+                    </a>
+                  </div>                       */}
+              
+                  <div className="post-action-allUsers">
+                    <button className='button-like'
+                      onClick={likePost} 
+                    >
+                      <ThumbUpAltIcon className='button-active-like-to-fly-over' fontSize='large'/>
+                      { isLiked 
+                        ? <ThumbUpAltIcon className='button-active-like' fontSize='large'/>                           
+                        : <ThumbUpOffAltIcon className='button-inactive-like' fontSize='large'/> 
+                      }
+                      {like}
+                    </button>
+                    <hr className='post-action-allUsers-hr'/>
+                    <button className='button-like'            
+                      onClick={dislikePost} 
+                    >
+                      <ThumbDownAltIcon className='button-active-dislike-to-fly-over' fontSize='large' />
+                      { isDiLiked 
+                        ? <ThumbDownAltIcon className='button-active-dislike' fontSize='large'/> 
+                        : <ThumbDownOffAltIcon fontSize='large'/> 
+                      }
+                      {dislike}
+                    </button>
+                  </div>
+
+                 
+       
+                </div> 
+                {/* <div className="post-desc"> */}
+                  {/* <h3 className='post-title'>{data.title}</h3> */}
+                  {/* <p className='post-article'>{data.desc}</p> */}
+                {/* </div>                  */}
+
+
+                <div className="post-action-owner">
                     {((owner && tokenValid) || admin) && (
                     
                       <>
@@ -247,42 +297,8 @@ export default function Post () {
                       </>
                     )} 
   
-                  </div>  
-
-                  <div className="post-action-infos-comments">
-                    <a className='comment-anchor' href='#commentaires'>
-                     <CommentIcon className='commentIcon' fontSize='large'/>{commentLength}
-                    </a>
-                  </div>                      
-              
-                  <div className="post-action-allUsers">
-                    <button className='button-like'
-                      onClick={likePost} 
-                    >
-                      <ThumbUpAltIcon className='button-active-like-to-fly-over' fontSize='large'/>
-                      { isLiked 
-                        ? <ThumbUpAltIcon className='button-active-like' fontSize='large'/>                           
-                        : <ThumbUpOffAltIcon className='button-inactive-like' fontSize='large'/> 
-                      }
-                      {like}
-                    </button>
-                    <hr className='post-action-allUsers-hr'/>
-                    <button className='button-like'            
-                      onClick={dislikePost} 
-                    >
-                      { isDiLiked 
-                        ? <ThumbDownAltIcon className='button-active-dislike' fontSize='large'/> 
-                        : <ThumbDownOffAltIcon fontSize='large'/> 
-                      }
-                      {dislike}
-                    </button>
-                  </div>
-       
-                </div> 
-                <div className="post-desc">
-                  <h3 className='post-title'>{data.title}</h3>
-                  <p className='post-article'>{data.desc}</p>
-                </div>                 
+                  </div>   
+                <p className='post-article'>{data.desc}</p>
       
                 <span id='commentaires'/>
                 <PostComment />              

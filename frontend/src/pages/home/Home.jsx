@@ -2,7 +2,6 @@
 import "./home.css"
 import Posts from "../../Components/posts/Posts";
 import Navbar from "../../Components/navbar/Navbar"
-import logo from "../../Assets/icon-left-font-monochrome-black.png"
 import { useNavigate } from "react-router-dom";
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import { useEffect } from 'react';
@@ -37,18 +36,29 @@ export default function Home() {
         <span className="home-top-button-icone">
             ^
         </span>
-     </a>
+      </a>
 
       <div className="groupomania-home-cards-container" id="homeContainer">
 
-        {tokenValid &&         
-          <button 
-            onClick={()=>{navigate('/post-share')}}
-            className="groupomania-home-button-addPost"
-          >
-            <PostAddOutlinedIcon/>
-            Ajouter un post
-          </button>    
+        {tokenValid 
+          ? <div className="groupomania-home-button-addPost-wrapper">
+              <button 
+                onClick={()=>{navigate('/post-share')}}
+                className="groupomania-home-button-addPost"
+              >
+                <PostAddOutlinedIcon/>
+                Ajouter un post
+              </button>  
+            </div> 
+          : <div className="groupomania-home-button-addPost-wrapper">
+              <button 
+                onClick={()=>{navigate('/login')}}
+                className="groupomania-home-button-addPost"
+              >
+                <PostAddOutlinedIcon/>
+                Connectez vous pour ajouter un post
+              </button>  
+            </div> 
         }
 
         <Posts/>

@@ -1,30 +1,3 @@
-
-//     message: {
-//       type: String,
-//       trim: true,
-//       maxlength: 500,
-//     },
-
-//     // video: {
-//     //   type: String,
-//     // },
-
-
-//     comments: {
-//       type: [
-//         {
-//           commenterId:String,
-//           commenterPseudo: String,
-//           text: String,
-//           timestamp: Number,
-//         }
-//       ],
-//       required: true,
-//     },
-//   },
-
-
-// //------------------------------------------------------------
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
