@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
-import Home from "../src/pages/home/Home"
+import Home from "../src/pages/home/Home";
+import Users from "./pages/users/Users";
 import Login from "./pages/login/Login"
 import Signup from "./pages/signup/Signup"
 import PostShare from './pages/postShare/PostShare'
@@ -12,6 +13,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<Home />}/>
+        <Route path='/users-list' element={<Users />}/>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path='/post-share' element={<PostShare />}/>

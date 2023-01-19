@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode"
-import { API_URL_USER } from '../../config';
+import { API_URL_USER_DELETE } from '../../config';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -58,9 +58,10 @@ export default function Topbar () {
     e.preventDefault();
     if(window.confirm("êtes vous sur de vouloir supprimer votre compte")){
       try {
-        await axios.delete( API_URL_USER, {
-          headers: { 'Authorization': `Bearer ${token}`  }
-        })
+        await axios.put( API_URL_USER_DELETE, 
+          { userId: localStorage.getItem("userId") },  
+          { headers: { 'Authorization': `Bearer ${token}`  }}
+        )
         localStorage.clear()
         setToken(null) // <<< relance le useEffect
         setTokenValid(false)
@@ -105,6 +106,18 @@ export default function Topbar () {
 
                   <hr className='groupomania-navbar-link-hr'/>
 
+                { pseudo === "administrateur" && (<>
+                  <Link 
+                    className='groupomania-navbar-button-menu link'
+                    // style={{textDecoration:"none", color:"black"} } 
+                    to="/users-list">
+                    <InputOutlinedIcon/>
+                    <span className='groupomania-navbar-button-menu-text'>Voir les utilisateurs</span> 
+                  </Link>
+                  <hr className='groupomania-navbar-link-hr'/>
+                </>)}
+
+                { pseudo !== "administrateur" && (<>
                   <button 
                     className='groupomania-navbar-button-menu warning' 
                     onClick={deleteUser}
@@ -112,8 +125,9 @@ export default function Topbar () {
                     <DeleteOutlineIcon/>
                     <span className='groupomania-navbar-button-menu-text'>Supprimer mon compte</span>
                   </button>
+                  <hr className='groupomania-navbar-link-hr'/>                                
+                </>)}
 
-                  <hr className='groupomania-navbar-link-hr'/>
                 </>
               )
               : (<><button className='groupomania-navbar-button-menu'>

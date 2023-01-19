@@ -69,26 +69,40 @@ exports.login = (req, res, next) => {
     })
 };
 
+// get all users
+module.exports.getAllUser = async (req, res) => {
+    try {
+      const users = await User.find();
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  };
+
 
 // delete a user
-module.exports.deleteUser = async (req, res) => {
+module.exports.deleteUser = async (req, res) => {   
+    const userId = req.body.userId;
+    const isAdmin = req.auth.isAdmin;
+    // console.log("userId", req.body.userId)
 
     try {
-        const user = await User.findById(req.auth.userId);
-
-        // const userId = user._id.toString()
-        const userId = user._id.valueOf()
-
-        console.log("req.auth.isAdmin => ", req.auth.isAdmin)
-        console.log("req.auth.userId => ", req.auth.userId)
-        console.log("userId => ", userId)
+        const user = await User.findById(userId);
+        // res.json(user)
+        // const userId-BDD = user._id.toString()
+        const userId_BDD = user._id.valueOf()
         
-        if(userId === req.auth.userId || req.auth.isAdmin) {
+        // if(userId === req.auth.userId || req.auth.isAdmin) {
+        if(isAdmin || userId === userId_BDD) {
+
+            // console.log("userId_BDD : ", userId_BDD)
+
             const filename = user.profileImgUrl.split('/images/profile/')[1]
             fs.unlink(`images/profile/${filename}`, async () => {
-                await User.findByIdAndDelete(req.auth.userId);
-                res.status(200).json("Account has been deleted succefuly")
+                await user.deleteOne();
+                res.status(200).json("Compte supprimé")
             })
+
         } else {
             res.status(403).json("Action interdite");
         }

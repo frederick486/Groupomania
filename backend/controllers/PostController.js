@@ -108,7 +108,7 @@ module.exports.deletePost = async (req, res) => {
   const id = req.params.id;
   const userId = req.auth.userId;
   const isAdmin = req.auth.isAdmin;
-
+  console.log("isAdmin", isAdmin)
   try {
     const post = await PostModel.findById(id);
     if (post.userId === userId || isAdmin) {

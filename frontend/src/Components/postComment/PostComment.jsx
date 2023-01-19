@@ -245,11 +245,12 @@ export default function PostComment ({props}) {
             >  
                 {comments.map((comment) => {
                     return(
-                        <>
-                            <Divider variant="inset" component="li" />
+                        <div key={comment._id}>
+                            {/* <Divider variant="inset" component="li" key={`divider-${comment._id}`} /> */}
+                            <Divider variant="inset" component="li" key={`divider-${comment._id}`} />
                             <ListItem 
                                 alignItems="flex-start"
-                                key={comment._id}
+                                // key={comment._id}
                             >
                                 <ListItemAvatar>
                                     <Avatar 
@@ -298,7 +299,7 @@ export default function PostComment ({props}) {
                                     </div>
             
                             </ListItem>  
-                        </>                
+                        </div>                
                     )
                 })}                      
             </List> 

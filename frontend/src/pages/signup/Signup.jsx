@@ -62,7 +62,7 @@ export default function Signup () {
           <form onSubmit={handleSubmit} className="signup-form">
             <div className="signup-form-content">
               <div className="form-group mt-3">
-                <label>Full Name</label>
+                <label>Pseudo</label>
                   <input
                   onChange={(e) => setPseudo(e.target.value)}                
                   type="text"
@@ -71,7 +71,7 @@ export default function Signup () {
                 /> 
                 </div> 
               <div className="form-group mt-3">
-                <label>Email address</label>
+                <label>Email</label>
                 <input
                   type="email"
                   className="form-control mt-1"
@@ -91,7 +91,7 @@ export default function Signup () {
           
               <div className="d-grid gap-2 mt-3">
                 <button type="submit" className="btn btn-primary">
-                  Submit
+                  Enregistrer
                 </button>
               </div>
               <div className="d-grid gap-2 mt-3">
