@@ -46,53 +46,70 @@ export default function Login () {
 
   return (
     <>
-      
-      <div className="Auth-form-container">
-        <img className="mb-4" src={logo} alt="Groupomania" width="200" height="200"/>
-        <button 
-          className="Login-button-register"
-          onClick={()=>{navigate('/signup')}}
-        >
-          Enregister vous
-        </button>
-        <form onSubmit={connection} className="Auth-form">
-          <div className="Auth-form-content">
-            <h3 className="Auth-form-title">Sign In</h3>
-            <div className="text-center">
+      <div className="login-container">
+        <div className="login-form-container">
+          <img className="login-form-logo" src={logo} alt="Groupomania"/>
+          <h3 className="login-form-title">Identifiez-vous</h3>
+          <div className="login-text-link">
               Pas encore membre ?{" "}
-              {/* <button className="link-primary"> */}
-
-            </div>
-            <div className="form-group mt-3">
-              <label>Email address</label>
-              <input
-                ref={email}
-                type="email"
-                className="form-control mt-1"
-                placeholder="Enter email"
-              />
-            </div>
-            <div className="form-group mt-3">
-              <label>Password</label>
-              <input
-                ref={password}
-                type="password"
-                className="form-control mt-1"
-                placeholder="Enter password"
-              />
-            </div>
-            <div className="d-grid gap-2 mt-3">
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
-            </div>
-            {/* <p className="text-center mt-2">
-              Forgot <a href="#">password?</a>
-            </p> */}
+              <Link 
+                className="login-Link-to-signup"
+                to={'/signup'}
+              >
+                Enregistez-vous
+              </Link>
           </div>
-        </form>
-      </div>
-     
+                
+          <form onSubmit={connection} className="login-form">
+            {/* <div className="Auth-form-content"> */}
+
+              <div className="form-group mt-3">
+                <label>Email address</label>
+                <input
+                  ref={email}
+                  type="email"
+                  className="form-control mt-1"
+                  placeholder="Enter email"
+                />
+              </div>
+              <div className="form-group mt-3">
+                <label>Password</label>
+                <input
+                  ref={password}
+                  type="password"
+                  className="form-control mt-1"
+                  placeholder="Enter password"
+                />
+              </div>
+
+              {/* <div className="d-grid gap-2 mt-3">
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+              </div> */}
+
+              <div className="login-buttons-container">
+
+                <button 
+                  onClick={()=>{navigate('/')}}
+                  className="login-button-cancel"
+                >
+                  Annuler
+                </button>
+
+                <button 
+                  className="login-button-register"
+                  type="submit" >
+                  Enregistrer
+                </button>
+
+              </div>              
+
+
+            {/* </div> */}
+          </form>
+        </div>
+      </div>    
     </>
   )
 }

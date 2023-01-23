@@ -7,24 +7,10 @@
     margin: auto;
     /* margin-top: 100px; */
     /* padding: 15px; */
-    padding-top: 90px;
+    padding-top: 60px;
     background-color: #ffffff;
     /* border: solid 1px #c2b1b1;
     border-radius: 10px; */
-}
-
-.post-button-return-posts{
-    margin-bottom: 30px;
-    /* width: 100%; */
-    height: 50px;   
-    background-color: white;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.544);
-    border-radius: 10px;
-    border: none;
-    font-weight: 500;
-    text-decoration: none;
-    color: black;
-    transition: all 0.25s ease-in-out;
 }
 
 .post-img {
@@ -69,16 +55,53 @@
 .post-action-allUsers {
     display: flex;
     align-items: center;
-    justify-content: space-between;    
+    justify-content: space-between; 
+    width: 100%;   
     /* min-width: 200px; */
-    height: 40px;
+    /* height: 40px; */
     /* border: 1px solid #b3b0b0; */
-    background-color: whitesmoke;
+    /* border-radius: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px; */
+    /* padding-left: 20px;
+    padding-right: 20px; */
+}
+
+.post-button-return-posts{
+    /* margin-bottom: 30px;  */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* width: 176px; */
+    /* padding-left: 14px; */
+    background-color: white;
+    /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.544); */
+    /* border-radius: 10px; */
+    border: none;
+    font-weight: 500;
+    text-decoration: none;
+    color: black;
+    transition: all 0.25s ease-in-out;
+    height: 40px;
     border-radius: 20px;
     margin-top: 8px;
     margin-bottom: 8px;
-    /* padding-left: 20px;
-    padding-right: 20px; */
+    background-color: whitesmoke;
+
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.post-buttons-like {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    border-radius: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: whitesmoke;
+
 }
 
 .button-like {
@@ -151,6 +174,22 @@
     background-color: whitesmoke;
     /* border: solid 1px #c2b1b1; */
     border-radius: 16px;
+}
+
+.post-article-paragraphe {
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.post-article-paragraphe-button-see {
+    border: none;
+    font-weight: bold;
+}
+
+@media screen and (min-width: 768px) {
+    .post-action-allUsers {
+        width: 48%;
+    }
 }
 
 /* ---------------------------------------------- */

@@ -21,17 +21,18 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.544);
     border-radius: 10px;
     border: none;
-    font-weight: 500;
+    font-weight: bold;
     text-decoration: none;
-    color: black;
-    /* display: flex;
+    /* color: black; */
+    display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center; */
     transition: all 0.25s ease-in-out;
 }
 
 .groupomania-home-button-addPost:hover {
-    background-color: #65a8ff;
+    /* background-color: #65a8ff; */
+    transform: scale(1.02);
 }
 
 .home-top-button {

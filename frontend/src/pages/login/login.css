@@ -1,13 +1,84 @@
-.Auth-form-container {
-    margin-top: 10%;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    flex-direction: column;
+.login-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
 }
 
-.Login-button-register {
+.login-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 500px;
+    margin: auto;
+    margin-top: 0;
+}
+
+.login-form-logo {
+    /* display: flex; */
+    align-self: center;
+    object-fit: cover;
+    width: 250px;
+    height: 150px;
+}
+
+.login-form-title {
+    display: flex;
+    justify-content: center;
+    /* margin-top: 8px; */
+    margin-bottom: 45px;
+}
+
+.login-text-link {
+    margin-bottom: 25px;
+}
+
+.login-Link-to-signup {
+    text-decoration: none;
+}
+
+/* .login-form {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap-reverse;
+} */
+
+.login-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    height: 45px;
+}
+
+.login-button-cancel {
     border: none;
-    background-color: transparent;
+    background-color: #FFD7D7;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    width: 48%;
+    font-family: 'Lato';
+    transition: all 0.25s ease-in-out;
+}
+
+.login-button-cancel:hover {
+    background-color: #FD2D01;
+}
+
+.login-button-register {
+    border: none;
+    background-color: #2b86fd;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    width: 48%;
+    font-family: 'Lato';
+    transition: all 0.25s ease-in-out;
+}
+
+.login-button-register:hover {
+    background-color: #65a8ff;
 }

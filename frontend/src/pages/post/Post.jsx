@@ -44,6 +44,14 @@ export default function Post () {
   const [tokenValid, setTokenValid] = useState(false) 
   const [admin, setAdmin] = useState(false);
 
+  const [seeDesc, setSeeDesc] = useState(false);
+
+  const funcSeeDesc = () => {
+    setSeeDesc(!seeDesc);
+  }
+
+  console.log("seeDesc", seeDesc)
+
   useEffect(() => {
     (async () => {
       const response = await axios.get( API_URL + '/' + id  );
@@ -196,14 +204,6 @@ export default function Post () {
             <>
               <div className="post-wrapper">
 
-              <button 
-                onClick={()=>{navigate('/')}}
-                className="post-button-return-posts"
-              >
-                <ArrowBackIcon/>
-                Retour aux posts
-              </button>                 
-
                 <img 
                   className='post-img'
                   src={data.postImgUrl} 
@@ -233,73 +233,76 @@ export default function Post () {
                       />
                     </div>
                   </div> 
-
-                  {/* <div className="post-action-infos-comments">
-                    <a className='comment-anchor' href='#commentaires'>
-                     <CommentIcon className='commentIcon' fontSize='large'/> */}
-                     {/* {commentLength} */}
-                     {/* <span>Voir les commentaires</span>
-                    </a>
-                  </div>                       */}
               
                   <div className="post-action-allUsers">
-                    <button className='button-like'
-                      onClick={likePost} 
+
+                    <button 
+                      onClick={()=>{navigate('/')}}
+                      className="post-button-return-posts"
                     >
-                      <ThumbUpAltIcon className='button-active-like-to-fly-over' fontSize='large'/>
-                      { isLiked 
-                        ? <ThumbUpAltIcon className='button-active-like' fontSize='large'/>                           
-                        : <ThumbUpOffAltIcon className='button-inactive-like' fontSize='large'/> 
-                      }
-                      {like}
-                    </button>
-                    <hr className='post-action-allUsers-hr'/>
-                    <button className='button-like'            
-                      onClick={dislikePost} 
-                    >
-                      <ThumbDownAltIcon className='button-active-dislike-to-fly-over' fontSize='large' />
-                      { isDiLiked 
-                        ? <ThumbDownAltIcon className='button-active-dislike' fontSize='large'/> 
-                        : <ThumbDownOffAltIcon fontSize='large'/> 
-                      }
-                      {dislike}
-                    </button>
+                      <ArrowBackIcon/>
+                      Retour aux posts
+                    </button>  
+                    <div className="post-buttons-like">
+                      <button className='button-like'
+                        onClick={likePost} 
+                      >
+                        <ThumbUpAltIcon className='button-active-like-to-fly-over' fontSize='large'/>
+                        { isLiked 
+                          ? <ThumbUpAltIcon className='button-active-like' fontSize='large'/>                           
+                          : <ThumbUpOffAltIcon className='button-inactive-like' fontSize='large'/> 
+                        }
+                        {like}
+                      </button>
+                      <hr className='post-action-allUsers-hr'/>
+                      <button className='button-like'            
+                        onClick={dislikePost} 
+                      >
+                        <ThumbDownAltIcon className='button-active-dislike-to-fly-over' fontSize='large' />
+                        { isDiLiked 
+                          ? <ThumbDownAltIcon className='button-active-dislike' fontSize='large'/> 
+                          : <ThumbDownOffAltIcon fontSize='large'/> 
+                        }
+                        {dislike}
+                      </button>
+                    </div>
+
                   </div>
-
-                 
-       
+                       
                 </div> 
-                {/* <div className="post-desc"> */}
-                  {/* <h3 className='post-title'>{data.title}</h3> */}
-                  {/* <p className='post-article'>{data.desc}</p> */}
-                {/* </div>                  */}
 
+                {((owner && tokenValid) || admin) && (
+                
+                  <div className="post-action-owner">
+                    <button 
+                      style={{ border:"none", backgroundColor:"transparent", color:"#343a40" }}              
+                      onClick={async () => { await uptdatePost(data.userId)}}                        
+                    >
+                      <EditOutlinedIcon fontSize='large' titleAccess='modifier ce post'/>
+                    </button>
 
-                <div className="post-action-owner">
-                    {((owner && tokenValid) || admin) && (
-                    
-                      <>
-                        <button 
-                          style={{ border:"none", backgroundColor:"transparent", color:"#343a40" }}              
-                          onClick={async () => { await uptdatePost(data.userId)}}                        
-                        >
-                          <EditOutlinedIcon fontSize='large' titleAccess='modifier ce post'/>
-                        </button>
-
-                        <button 
-                          className='buttonDelette' 
-                          onClick={async () => { await deletePost(data.userId)}}
-                          // value={data.userId}
-                          // onClick={deletePost}       
-                        >
-                          <DeleteOutlinedIcon fontSize='large' titleAccess='supprimer ce post'/>
-                        </button> 
-                      </>
-                    )} 
+                    <button 
+                      className='buttonDelette' 
+                      onClick={async () => { await deletePost(data.userId)}}
+                      // value={data.userId}
+                      // onClick={deletePost}       
+                    >
+                      <DeleteOutlinedIcon fontSize='large' titleAccess='supprimer ce post'/>
+                    </button> 
+                  </div>
+                )} 
   
-                  </div>   
-                <p className='post-article'>{data.desc}</p>
-      
+
+                <div className='post-article'>
+                  <p 
+                    className='post-article-paragraphe'
+                    style={{height: seeDesc ? 'auto' : '100px'}}
+                  >{data.desc}</p>                  
+                  <button className='post-article-paragraphe-button-see' onClick={ funcSeeDesc } >
+                    {seeDesc ? <span>Moins</span> : <span>Plus</span>}
+                  </button>
+                </div>     
+
                 <span id='commentaires'/>
                 <PostComment />              
               </div> 

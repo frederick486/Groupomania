@@ -11,7 +11,8 @@ import TextField from '@mui/material/TextField';
 import { Cancel } from '@mui/icons-material'
 import { PermMedia } from "@mui/icons-material";
 
-import defaultImage from '../../Assets/noAvatar.png'
+// import defaultImage from '../../Assets/noAvatar.png'
+import defaultImage from '../../Assets/no-picture.png'
 
 
 export default function PostShare () {

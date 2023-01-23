@@ -21,6 +21,7 @@ export default function PostCard(props) {
   return (
     <>
         <Link 
+            className='link-postCard-to-post'
             to={ `/post/${props.card._id}` } 
             style={{textDecoration:"none", color:"black"} }
         >
@@ -67,7 +68,7 @@ export default function PostCard(props) {
 
                 <div className="postCard-desc">
                     <h5>{props.card.title}</h5>                                                   
-                    <p>{props.card.desc}</p>
+                    <p className='postCard-desc-paragraphe'>{props.card.desc}</p>
                 </div>
 
             </div>

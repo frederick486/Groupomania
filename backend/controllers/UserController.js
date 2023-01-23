@@ -7,32 +7,36 @@ const fs = require("fs"); //<<< Permet de modifier le système de fichiers
 exports.signup = (req, res, next) => {   
     const url = req.protocol + '://' + req.get('host')
 
-    bcrypt.hash(req.body.password, 10)
-    .then(hash => {        
-        const user = new User({
-            pseudo: req.body.pseudo,
-            email: req.body.email,
-            password: hash,
-            profileImgUrl:  req.file != null ?
-             url + '/images/profile/' + req.file.filename : 
-             url + '/images/default/noAvatar.png'
-        });
-        user.save()
-            .then(() => res.status(201).json( 
-                // { message: 'Utilisateur crée !'},
-                {   userId: user._id,
-                    token: jwt.sign(
-                        { userId: user._id },
-                        'RANDOM_TOKEN_SECRET',
-                        { expiresIn: '24h' }
-                    ),
-                    pseudo: user.pseudo,
-                    profileImgUrl: user.profileImgUrl                    
-                }
-            ) )
-            .catch(error => res.status(400).json({ error }));
-    })
-    .catch(error => res.status(500).json({ error }));
+    if(req.body.password.length < 6) {
+        res.status(400).json( {message: 'le password doit contenir au moins 6 caractères'} );
+    } else {
+        bcrypt.hash(req.body.password, 10)
+        .then(hash => {        
+            const user = new User({
+                pseudo: req.body.pseudo,
+                email: req.body.email,
+                password: hash,
+                profileImgUrl:  req.file != null ?
+                 url + '/images/profile/' + req.file.filename : 
+                 url + '/images/default/noAvatar.png'
+            });
+            user.save()
+                .then(() => res.status(201).json( 
+                    // { message: 'Utilisateur crée !'},
+                    {   userId: user._id,
+                        token: jwt.sign(
+                            { userId: user._id },
+                            'RANDOM_TOKEN_SECRET',
+                            { expiresIn: '24h' }
+                        ),
+                        pseudo: user.pseudo,
+                        profileImgUrl: user.profileImgUrl                    
+                    }
+                ) )
+                .catch(error => res.status(400).json({ error }));
+        })
+        .catch(error => res.status(500).json({ error }));
+    }
 }; 
 
 

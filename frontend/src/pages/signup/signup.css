@@ -1,12 +1,18 @@
-.signup-form-container {
-    display: flex;
-    flex-direction: column;
+.signup-container {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: white;
+}
+
+.signup-form-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 900px;
+    margin: auto;
+    margin-top: 0;
 }
 
 .signup-form-logo {
@@ -20,7 +26,12 @@
 .signup-form-title {
     display: flex;
     justify-content: center;
-    margin-top: 10%;
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.signup-Link-to-login {
+    text-decoration: none;
 }
 
 .signup-form {
@@ -43,33 +54,78 @@
 }
 
 .signup-preview-Img {
-    /* width: 100%; */
-    border-radius: 100px;
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
+    width: 145px;
+    height: 145px;
+    border-radius: 50%;
+    object-fit: cover;
     border: solid;
 }
 
 .signup-preview-Img-cancel-icone {
     position: absolute;
     top: 0;
-    right: 20px;
+    right: 0;
     cursor: pointer;
     opacity: 0.7;
 }
 
 .signup-label-choseFile {
     display: flex;
-    width:fit-content;
-    margin:auto;
-    margin-bottom: 20px !important;
+    justify-content: center;
     cursor: pointer;
 }
 
 .signup-label-choseFile-text {
     font-weight:500;
     margin-left: 10px;
+}
+
+.signup-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    height: 45px;
+}
+
+.signup-button-cancel {
+    border: none;
+    background-color: #FFD7D7;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    width: 48%;
+    font-family: 'Lato';
+    transition: all 0.25s ease-in-out;
+}
+
+.signup-button-cancel:hover {
+    background-color: #FD2D01;
+}
+
+.signup-button-register {
+    border: none;
+    background-color: #2b86fd;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    width: 48%;
+    font-family: 'Lato';
+    transition: all 0.25s ease-in-out;
+}
+
+.signup-button-register:hover {
+    background-color: #65a8ff;
+}
+
+.signup-form-profilImg-wrapper {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@media screen and (min-width: 768px) {
+    .signup-form-container {
+        margin-top: 50px;
+    }
 }
 
 /* ----------------------------------------------- */
