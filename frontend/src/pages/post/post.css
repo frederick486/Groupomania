@@ -181,6 +181,18 @@
     margin-bottom: 0;
 }
 
+.post-article-paragraphe-hidden {
+    overflow: hidden;
+    margin-bottom: 0;
+    height: 100px;;
+}
+
+.post-article-paragraphe-seeDesc {
+    margin-bottom: 0;
+    min-height: 100px;
+    height: auto;
+}
+
 .post-article-paragraphe-button-see {
     border: none;
     font-weight: bold;

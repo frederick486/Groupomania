@@ -294,10 +294,16 @@ export default function Post () {
   
 
                 <div className='post-article'>
-                  <p 
+                  {/* <p 
                     className='post-article-paragraphe'
-                    style={{height: seeDesc ? 'auto' : '100px'}}
-                  >{data.desc}</p>                  
+                    // style={{height: seeDesc ? 'auto' : '100px'}}
+                    className={seeDesc ? 'post-article-paragraphe-seeDesc' : 'post-article-paragraphe-hidden'}
+                  >{data.desc}</p>               */}
+
+                  {seeDesc 
+                    ? <p className='post-article-paragraphe-seeDesc'>{data.desc}</p>
+                    : <p className='post-article-paragraphe-hidden'>{data.desc}</p>
+                  }    
                   <button className='post-article-paragraphe-button-see' onClick={ funcSeeDesc } >
                     {seeDesc ? <span>Moins</span> : <span>Plus</span>}
                   </button>

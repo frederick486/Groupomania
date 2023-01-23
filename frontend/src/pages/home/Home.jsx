@@ -1,31 +1,46 @@
 // import React from 'react'  // <<< plus nécessaire depuis React V17
 import "./home.css"
-import Posts from "../../Components/posts/Posts";
-import Navbar from "../../Components/navbar/Navbar"
-import { useNavigate } from "react-router-dom";
-import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
 import jwtDecode from "jwt-decode"
+import { API_URL } from '../../config'
+import {v4 as uuidv4} from 'uuid'
+import axios from 'axios'
+
+import Navbar from "../../Components/navbar/Navbar"
+import PostCard from '../../Components/postCard/PostCard'
+import Loader from '../../Components/Loader/Loader';
+import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 
 
-export default function Home() {
-
-  const navigate = useNavigate()
-
+export default function Home () {
+  const [data, setData]= useState([]);
+  const [loaded, setLoaded] = useState(false)
   const [token, setToken] = useState(null) 
   const [tokenValid, setTokenValid] = useState(false) 
 
-  useEffect(()=> {
-    setToken(localStorage.getItem("authToken"))
+  const navigate = useNavigate()
 
-    if(token) {
-      const {exp} = jwtDecode(token)
-  
-      if(exp * 1000 > new Date().getTime()) {
-        setTokenValid(true) 
+  useEffect(()=> {
+
+    (async () => {
+      const response = await axios.get( API_URL );
+      setData(response.data);
+      setLoaded(true)    
+
+      setToken(localStorage.getItem("authToken"))
+      
+      if(token) {
+        const {exp} = jwtDecode(token)
+    
+        if(exp * 1000 > new Date().getTime()) {
+          setTokenValid(true) 
+        }
       }
-    }
+    })();
+
   }, [token])  
 
   return (
@@ -40,7 +55,7 @@ export default function Home() {
 
       <div className="groupomania-home-cards-container" id="homeContainer">
 
-        {tokenValid 
+        { tokenValid 
           ? <div className="groupomania-home-button-addPost-wrapper">
               <button 
                 onClick={()=>{navigate('/post-share')}}
@@ -61,7 +76,14 @@ export default function Home() {
             </div> 
         }
 
-        <Posts/>
+        { loaded 
+          ? ( <div className="container-cards"> 
+                { data.map(item => { return <PostCard key={uuidv4()} card={item} /> } ) } 
+              </div>
+            )
+          : ( <><Loader/></>)
+        } 
+
       </div>
     </>
   )
