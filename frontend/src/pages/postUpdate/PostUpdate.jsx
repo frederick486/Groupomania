@@ -33,17 +33,15 @@ export default function PostUpdate () {
   console.log("File :", file)
   console.log("newFile :", newFile)
 
-  // useEffect(() => {
-  //   setFile("")
-  // }, [newFile])
 
-  const submitHandler = async (e) => {
+  const updatePost = async (e) => {
     e.preventDefault(); 
-
+  
     let formData = new FormData();
     formData.append("title", title);
     formData.append("desc", desc);
     formData.append("postImgUrl", newFile);
+    // formData.append("postImgUrl", file);
  
     try {
       await axios.put( API_URL + '/' + id, formData, {        
@@ -63,7 +61,7 @@ export default function PostUpdate () {
       <div className="postUpdate-wrapper">
         <h1 className="postUpdate-title-form">Modifiez votre post ...</h1>
         <form 
-          onSubmit={submitHandler}
+          onSubmit={ updatePost }
           className="postUpdate-container-form"
         >
 
@@ -72,7 +70,7 @@ export default function PostUpdate () {
             {
               (file === null && newFile === null)
                 ? ( <img className='postUpdate-preview-Img' src={noPicture} alt="" /> )
-                : (newFile === null && file !== null)
+                : (newFile === null && file !== null)  
                   ? ( <img className='postUpdate-preview-Img' src={file} alt="" /> )
                   : ( <img className='postUpdate-preview-Img' src={URL.createObjectURL(newFile)} alt="" /> )
             }

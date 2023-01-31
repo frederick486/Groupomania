@@ -85,15 +85,15 @@ module.exports.updatePost = async (req, res) => {
 
       } else {
 
-        const oldFilename = post.postImgUrl.split('/images/post/')[1]
-        fs.unlink(`images/post/${oldFilename}`, ()=> {}) 
+        // const oldFilename = post.postImgUrl.split('/images/post/')[1]
+        // fs.unlink(`images/post/${oldFilename}`, ()=> {}) 
 
         await post.updateOne(
           { 
             // $set: req.body,
             title: req.body.title,
             desc: req.body.desc,
-            postImgUrl : url + '/images/default/no-picture.png',
+            // postImgUrl : url + '/images/default/no-picture.png',
 
           }
         );
@@ -113,7 +113,7 @@ module.exports.deletePost = async (req, res) => {
   const id = req.params.id;
   const userId = req.auth.userId;
   const isAdmin = req.auth.isAdmin;
-  console.log("isAdmin", isAdmin)
+
   try {
     const post = await PostModel.findById(id);
     if (post.userId === userId || isAdmin) {
@@ -133,7 +133,6 @@ module.exports.deletePost = async (req, res) => {
 // like / dislike a post
 module.exports.likePost = async (req, res) => {
   const id = req.params.id;
-  // const { userId } = req.body;
   const userId = req.auth.userId;
   const like = req.body.like;
   
@@ -204,9 +203,9 @@ module.exports.commentPost = async (req, res) => {
       { 
         $push: {
           comments: {
-            commentatorUserId: req.body.commentatorUserId,
-            commentatorPseudo: req.body.commentatorPseudo,
-            commentatorProfilImgUrl:req.body.commentatorProfilImgUrl,
+            commenterUserId: req.body.commenterUserId,
+            commenterPseudo: req.body.commenterPseudo,
+            commenterProfilImgUrl:req.body.commenterProfilImgUrl,
             text: req.body.text,
             timestamp: new Date().getTime(),
           },
@@ -226,19 +225,14 @@ module.exports.deleteCommentPost = async (req, res) => {
   const isAdmin = req.auth.isAdmin;
 
   const commentIdToDelete = req.body.commentId;
-  console.log("req.body.commentId :", req.body.commentId)
 
   try {
     const post = await PostModel.findById(id)
     const {comments} = post;
 
-    // const comment = await post.comments.findById(commentIdToDelete);
     const comment = comments.find(c => c._id == commentIdToDelete );
 
-    console.log("comment", comment)
-    // console.log("comment._id", comment._id)
-
-    if (comment.commentatorUserId === userId || isAdmin) {
+    if (comment.commenterUserId === userId || isAdmin) {
 
       await post.updateOne( { $pull: { comments: { _id: commentIdToDelete } } } );
     res.status(200).json("Commentaire supprimé");  
@@ -265,7 +259,7 @@ module.exports.updateCommentPost = (req, res) => {
 
       if (!theComment) return res.status(404).send("Comment not found");
 
-      if(theComment.commentatorUserId === userId) {
+      if(theComment.commenterUserId === userId) {
         theComment.text = req.body.text;
       } else {
         res.status(403).json("Action interdite");

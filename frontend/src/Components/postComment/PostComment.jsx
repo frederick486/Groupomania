@@ -93,9 +93,9 @@ export default function PostComment ({props}) {
                 try {
                     await axios.put( API_URL + '/comment-post/' + id, 
                         { 
-                            commentatorUserId: userId,
-                            commentatorPseudo: pseudo,
-                            commentatorProfilImgUrl: avatar,
+                            commenterUserId: userId,
+                            commenterPseudo: pseudo,
+                            commenterProfilImgUrl: avatar,
                             text: comment        
                         }, 
                         { headers: { 'Authorization': `Bearer ${token}`  }},   
@@ -257,11 +257,11 @@ export default function PostComment ({props}) {
                                 <ListItemAvatar>
                                     <Avatar 
                                         alt="Avatar utilisateur" 
-                                        src={comment.commentatorProfilImgUrl}
+                                        src={comment.commenterProfilImgUrl}
                                     />
                                 </ListItemAvatar>
                                 <ListItemText
-                                    primary={comment.commentatorPseudo}
+                                    primary={comment.commenterPseudo}
                                     secondary={
                                     <React.Fragment>
                                         <Typography
@@ -276,11 +276,11 @@ export default function PostComment ({props}) {
                                     }
                                 />
                                 
-                                {(comment.commentatorUserId === localStorage.getItem("userId")  || admin) && (   
+                                {(comment.commenterUserId === localStorage.getItem("userId")  || admin) && (   
                                     <div className="commentFieldIcones">    
 
                                         <button
-                                            onClick={async () => { await deleteComment(comment._id, comment.commentatorUserId);} }
+                                            onClick={async () => { await deleteComment(comment._id, comment.commenterUserId);} }
                                             style={{ border:"none", backgroundColor:"transparent" }}
                                             // id={comment._id}
                                             // value={comment.commenterId}                            
@@ -289,7 +289,7 @@ export default function PostComment ({props}) {
                                         </button>
             
                                         <button
-                                            onClick={async () => { await modalModifComment(comment._id, comment.commentatorUserId, comment.text);} }
+                                            onClick={async () => { await modalModifComment(comment._id, comment.commenterUserId, comment.text);} }
                                             style={{ border:"none", backgroundColor:"transparent" }}
                                         >
                                             <EditOutlinedIcon fontSize='small'/>
