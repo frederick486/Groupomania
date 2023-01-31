@@ -88,25 +88,17 @@ module.exports.getAllUser = async (req, res) => {
 module.exports.deleteUser = async (req, res) => {   
     const userId = req.body.userId;
     const isAdmin = req.auth.isAdmin;
-    // console.log("userId", req.body.userId)
 
     try {
         const user = await User.findById(userId);
-        // res.json(user)
-        // const userId-BDD = user._id.toString()
         const userId_BDD = user._id.valueOf()
         
-        // if(userId === req.auth.userId || req.auth.isAdmin) {
-        if(isAdmin || userId === userId_BDD) {
-
-            // console.log("userId_BDD : ", userId_BDD)
-
+        if(isAdmin || userId === userId_BDD) {        
             const filename = user.profileImgUrl.split('/images/profile/')[1]
             fs.unlink(`images/profile/${filename}`, async () => {
                 await user.deleteOne();
                 res.status(200).json("Compte supprimé")
             })
-
         } else {
             res.status(403).json("Action interdite");
         }

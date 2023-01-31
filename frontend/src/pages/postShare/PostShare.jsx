@@ -11,7 +11,6 @@ import TextField from '@mui/material/TextField';
 import { Cancel } from '@mui/icons-material'
 import { PermMedia } from "@mui/icons-material";
 
-// import defaultImage from '../../Assets/noAvatar.png'
 import defaultImage from '../../Assets/no-picture.png'
 
 
@@ -25,8 +24,6 @@ export default function PostShare () {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState(null);
-
-  // console.log("state de file : ", file)
 
   const submitHandler = async (e) => {
     e.preventDefault(); 
@@ -83,7 +80,6 @@ export default function PostShare () {
               style={{ display:"none" }} // <<< à revoir
               type="file" 
               id="file" // <<< associé au HtmlFor de <label/>
-              // accept=".png,.jpeg,.jpg" 
               accept=".png,.jpeg,.jpg,.gif" 
               onChange={(e) => setFile(e.target.files[0])}
             />

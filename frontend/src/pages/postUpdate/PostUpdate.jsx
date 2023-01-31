@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { API_URL } from '../../config' 
 import axios from 'axios'
 
+import noPicture from '../../Assets/no-picture.png'
+
 // icones Matérial UI
 import { Cancel, PermMedia } from '@mui/icons-material'
 
@@ -25,7 +27,8 @@ export default function PostUpdate () {
         setDesc(response.data.desc)
         setFile(response.data.postImgUrl)
     })();
-  }, [file, newFile]);  
+  // }, [file, newFile]);  
+  }, [newFile]);  
 
   console.log("File :", file)
   console.log("newFile :", newFile)
@@ -65,14 +68,19 @@ export default function PostUpdate () {
         >
 
           <div className="postUpdate-wrapper-preview-Img">
-            {(newFile === null)
-              ? ( <img className='postUpdate-preview-Img' src={file} alt="" /> )
-              : ( <img className='postUpdate-preview-Img' src={URL.createObjectURL(newFile)} alt="" /> )
+
+            {
+              (file === null && newFile === null)
+                ? ( <img className='postUpdate-preview-Img' src={noPicture} alt="" /> )
+                : (newFile === null && file !== null)
+                  ? ( <img className='postUpdate-preview-Img' src={file} alt="" /> )
+                  : ( <img className='postUpdate-preview-Img' src={URL.createObjectURL(newFile)} alt="" /> )
             }
 
             <Cancel 
               className='postUpdate-preview-Img-cancel-icone' 
-              onClick={(e) => setNewFile(null)} 
+              onClick={(e) => {setFile(null); setNewFile(null)} } 
+              // onClick={(e) => {setNewFile(null)} } 
             />
           </div>
 

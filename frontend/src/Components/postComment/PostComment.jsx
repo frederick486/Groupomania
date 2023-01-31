@@ -6,11 +6,11 @@ import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 import jwtDecode from "jwt-decode"
 
-// Formulaire
+// Formulaires
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-// Affichage
+// Composents Matérial UI
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -19,14 +19,14 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 
-
-// Icônes
+// Icônes Matérial UI
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
+// Composents Modal Matérial UI
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import Stack from '@mui/joy/Stack';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 
 export default function PostComment ({props}) {
@@ -37,7 +37,7 @@ export default function PostComment ({props}) {
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
     const [open, setOpen] = React.useState(false);
-    const [text, setText] = useState("");
+    const [text, setText] = useState(null);
     const [send, setSend] = useState(false);
     const [commentId, setCommentId] = useState();
     const [tokenValid, setTokenValid] = useState(false) 
@@ -74,16 +74,15 @@ export default function PostComment ({props}) {
         })();
     }, [send, click]);        
 
-    console.log("click", click)
-    // let owner = false;
+    useEffect(()=> {
+        setOpen(false)
+    }, [send])
 
-    // if(response.data.userId == localStorage.getItem("userId")) {
-    //     owner = true;
-    //   }    
+    // console.log("click", click)
+    // console.log("state de text : ", text)
 
-    // console.log("owner : ", owner)
 
-    const submitHandler = async (e) => {
+    const createComment = async (e) => {
         e.preventDefault()
 
         if(token) {
@@ -145,13 +144,8 @@ export default function PostComment ({props}) {
         }     
     }
 
-    useEffect(()=> {
-        setOpen(false)
-    }, [send])
 
-    console.log("state de text : ", text)
-
-    const updateComment = async (commentId, commenterId, comment) => {
+    const modalModifComment = async (commentId, commenterId, comment) => {
 
         if(token) {
             const {exp} = jwtDecode(token)
@@ -162,6 +156,7 @@ export default function PostComment ({props}) {
                     setOpen(true)
                     setCommentId(commentId);
                     setComment(comment)
+
                 } else {
                     alert("vous devez être l'auteur de ce commentaire pour pouvoir le modifier")
                 }
@@ -174,18 +169,29 @@ export default function PostComment ({props}) {
     }
 
     const modifComment = async (text) => {
-        try {
-            await axios.patch( API_URL + '/edit-comment-post/' + id, 
-                { 
-                    commentId: commentId,
-                    text: text
-                },
-                { headers: { 'Authorization': `Bearer ${token}`  }}
-            ); 
+
+        if(text !== null) {
+            try {
+
+                await axios.patch( API_URL + '/edit-comment-post/' + id, 
+                    { 
+                        commentId: commentId,
+                        text: text
+                    },
+                    { headers: { 'Authorization': `Bearer ${token}`  }}
+                ); 
+                setText(null); // <<< !!!!!
+                setSend(false);
+            } catch (err) {
+                console.log(err)            
+            }  
+
+        } else {
+            setText(null); // <<< !!!!!
             setSend(false);
-        } catch (err) {
-            console.log(err)            
-        }       
+            setOpen(false) 
+        }
+     
     }
 
   return (
@@ -194,14 +200,13 @@ export default function PostComment ({props}) {
             { tokenValid 
                 ?   <form 
                         className='commentFom' 
-                        onSubmit={submitHandler}
+                        onSubmit={ createComment }
                     >
                         <span className='commentHeader'>Commenter en tant que</span>
 
                         <div className="commentHeaderAvatarPseudo">
                             <Avatar 
                                 alt="Auteur du post" 
-                                // src="/static/images/avatar/1.jpg" 
                                 src={ tokenValid
                                     ? avatar
                                     : "../../Assets/noAvatar.png" 
@@ -211,8 +216,7 @@ export default function PostComment ({props}) {
                                 {tokenValid 
                                     ? pseudo
                                     : "non connecté"
-                                }
-                                    {/* {pseudo} */}
+                                }                
                             </span>                            
                         </div>
 
@@ -236,8 +240,7 @@ export default function PostComment ({props}) {
                         </button>
 
                     </form>
-                :   <span className='comment-form-notconnect'>Connectez vous pour laisser un commentaire</span>
-                // : <Link to='/login'>Connectez vous pour laisser un commentaire</Link>
+                : <Link className='comment-form-notconnect' to='/login'>Connectez vous pour laisser un commentaire</Link>
             }
 
             <List
@@ -246,16 +249,14 @@ export default function PostComment ({props}) {
                 {comments.map((comment) => {
                     return(
                         <div key={comment._id}>
-                            {/* <Divider variant="inset" component="li" key={`divider-${comment._id}`} /> */}
-                            <Divider variant="inset" component="li" key={`divider-${comment._id}`} />
+                            <Divider variant="inset" component="li"/>
                             <ListItem 
                                 alignItems="flex-start"
                                 // key={comment._id}
                             >
                                 <ListItemAvatar>
                                     <Avatar 
-                                        alt="Remy Sharp" 
-                                        // src="/static/images/avatar/1.jpg" 
+                                        alt="Avatar utilisateur" 
                                         src={comment.commentatorProfilImgUrl}
                                     />
                                 </ListItemAvatar>
@@ -264,10 +265,10 @@ export default function PostComment ({props}) {
                                     secondary={
                                     <React.Fragment>
                                         <Typography
-                                        sx={{ display: 'inline' }}
-                                        component="span"
-                                        variant="body2"
-                                        color="text.primary"
+                                            sx={{ display: 'inline' }}
+                                            component="span"
+                                            variant="body2"
+                                            color="text.primary"
                                         >
                                         </Typography>
                                         {comment.text}
@@ -275,28 +276,28 @@ export default function PostComment ({props}) {
                                     }
                                 />
                                 
-                                    <div className="commentFieldIcones">
-                                        {(comment.commentatorUserId === localStorage.getItem("userId")  || admin) && (
-                                            <button
-                                                onClick={async () => { await deleteComment(comment._id, comment.commentatorUserId);} }
-                                                style={{ border:"none", backgroundColor:"transparent" }}
-                                                // id={comment._id}
-                                                // value={comment.commenterId}                            
-                                            >
-                                                <DeleteOutlinedIcon fontSize='small'/>
-                                            </button>
-                                        )}
+                                {(comment.commentatorUserId === localStorage.getItem("userId")  || admin) && (   
+                                    <div className="commentFieldIcones">    
 
-                                        {(comment.commentatorUserId === localStorage.getItem("userId")) && (
-                                            <button
-                                                onClick={async () => { await updateComment(comment._id, comment.commentatorUserId, comment.text);} }
-                                                // onClick={async () => { await openModal(comment._id, comment.commentatorUserId);} }
-                                                style={{ border:"none", backgroundColor:"transparent" }}
-                                            >
-                                                <EditOutlinedIcon fontSize='small'/>
-                                            </button> 
-                                        )}                                      
-                                    </div>
+                                        <button
+                                            onClick={async () => { await deleteComment(comment._id, comment.commentatorUserId);} }
+                                            style={{ border:"none", backgroundColor:"transparent" }}
+                                            // id={comment._id}
+                                            // value={comment.commenterId}                            
+                                        >
+                                            <DeleteOutlinedIcon fontSize='small'/>
+                                        </button>
+            
+                                        <button
+                                            onClick={async () => { await modalModifComment(comment._id, comment.commentatorUserId, comment.text);} }
+                                            style={{ border:"none", backgroundColor:"transparent" }}
+                                        >
+                                            <EditOutlinedIcon fontSize='small'/>
+                                        </button> 
+                                                            
+                                    </div> 
+                                )}
+                  
             
                             </ListItem>  
                         </div>                
@@ -307,7 +308,10 @@ export default function PostComment ({props}) {
 
         <React.Fragment>
 
-        <Modal open={open} onClose={() => {setComment(""); setOpen(false); }}>
+        <Modal 
+            open={open} 
+            onClose={() => {setOpen(false); setComment(""); }}
+        >
             <ModalDialog
             aria-labelledby="basic-modal-dialog-title"
             aria-describedby="basic-modal-dialog-description"
@@ -318,15 +322,6 @@ export default function PostComment ({props}) {
                 boxShadow: 'lg',
             }}
             >
-            {/* <Typography
-                id="basic-modal-dialog-title"
-                component="h2"
-                level="inherit"
-                fontSize="1.25em"
-                mb="0.25em"
-            >
-                Create new project
-            </Typography> */}
             <Typography
                 id="basic-modal-dialog-description"
                 mt={0.5}
@@ -339,18 +334,22 @@ export default function PostComment ({props}) {
                     event.preventDefault();
                     setSend(true);
                     modifComment(text);
-                    setComment("")
-
+                    setComment("");
+                    // setText(""); // <<< comment modifié
+                    setText(null); // <<< comment modifié
                 }}
             >
                 <Stack spacing={2}>
                 <TextField 
-                    label="Description" 
-                    required 
+                    // label="Description" 
+                    // required 
+                    multiline
+                    rows={4}
                     defaultValue={comment}
                     onChange={ (e) => { setText(e.target.value); } }                     
+                    // onInput={ (e) => { setText(e.target.value); } }                     
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Modifier</Button>
                 </Stack>
             </form>
             </ModalDialog>

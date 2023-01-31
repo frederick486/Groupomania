@@ -1,7 +1,6 @@
 const PostModel = require('../models/postModel');
 const fs = require("fs"); //<<< Permet de modifier le système de fichiers
 let mongoose = require('mongoose')
-
 // const { json } = require("express");
 
 
@@ -85,11 +84,17 @@ module.exports.updatePost = async (req, res) => {
         res.status(200).json("Post mis à jour");        
 
       } else {
+
+        const oldFilename = post.postImgUrl.split('/images/post/')[1]
+        fs.unlink(`images/post/${oldFilename}`, ()=> {}) 
+
         await post.updateOne(
           { 
             // $set: req.body,
             title: req.body.title,
-            desc: req.body.desc
+            desc: req.body.desc,
+            postImgUrl : url + '/images/default/no-picture.png',
+
           }
         );
         res.status(200).json("Post mis à jour");   
@@ -219,14 +224,25 @@ module.exports.deleteCommentPost = async (req, res) => {
   const id = req.params.id;
   const userId = req.auth.userId;
   const isAdmin = req.auth.isAdmin;
-  // console.log("req.auth.userId :", req.auth.userId)
+
+  const commentIdToDelete = req.body.commentId;
+  console.log("req.body.commentId :", req.body.commentId)
 
   try {
     const post = await PostModel.findById(id)
+    const {comments} = post;
 
-    if (post.userId === userId || isAdmin) {
-      await post.updateOne( { $pull: { comments: { _id: req.body.commentId } } } );
+    // const comment = await post.comments.findById(commentIdToDelete);
+    const comment = comments.find(c => c._id == commentIdToDelete );
+
+    console.log("comment", comment)
+    // console.log("comment._id", comment._id)
+
+    if (comment.commentatorUserId === userId || isAdmin) {
+
+      await post.updateOne( { $pull: { comments: { _id: commentIdToDelete } } } );
     res.status(200).json("Commentaire supprimé");  
+
     } else {
       res.status(403).json("Action interdite");
     }

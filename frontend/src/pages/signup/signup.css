@@ -58,7 +58,7 @@
     height: 145px;
     border-radius: 50%;
     object-fit: cover;
-    border: solid;
+    /* border: solid; */
 }
 
 .signup-preview-Img-cancel-icone {

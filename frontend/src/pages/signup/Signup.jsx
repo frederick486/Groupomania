@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { API_URL_USER_SIGNUP } from '../../config'
-// import defaultImage from '../../Assets/noAvatar.png'
 import defaultImage from '../../Assets/no-avatar.png'
 
 // icones Matérial UI
@@ -23,7 +22,7 @@ export default function Signup () {
   const [password, setPassword] = useState("");
   const [file, setfile] = useState(null);
 
-  const handleSubmit = async (e) => {
+  const register = async (e) => {
     e.preventDefault();
     let formData = new FormData();
     formData.append("pseudo", pseudo);
@@ -65,7 +64,7 @@ export default function Signup () {
               </Link>          
             </div> 
 
-            <form onSubmit={handleSubmit} className="signup-form">
+            <form onSubmit={register} className="signup-form">
               <div className="signup-form-content">
                 <div className="form-group mt-3">
                   <label>Pseudo</label>
@@ -90,7 +89,7 @@ export default function Signup () {
                 <div className="form-group mt-3">
                   <label>Password</label>
                   <input
-                    onChange={(e) => setPassword(e.target.value)}                
+                    onChange={(e) => setPassword(e.target.value)} 
                     type="password"
                     className="form-control mt-1"
                     placeholder="Password"

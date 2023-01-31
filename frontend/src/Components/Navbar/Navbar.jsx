@@ -30,7 +30,7 @@ export default function Topbar () {
 
   const toggleNav = () => {
     setToggleMenu(!toggleMenu);
-}
+  }
 
   useEffect(()=> {
     setPseudo(localStorage.getItem("pseudo"))
@@ -77,11 +77,9 @@ export default function Topbar () {
       <div className='groupomania-navbar' >
 
         <div className="groupomania-navbar-menu">
-          {/* <Link to="/" style={{textDecoration:"none", color:"black"} }>Page d'acceuil</Link> */}
-          <Link to="/" style={{textDecoration:"none", color:"black"} }>
+          <Link to="/">
             <img className='groupomania-navbar-logo' alt='logo Groupomania' src={Logo}/>
           </Link>
-          {/* { tokenValid && <Link to="/post-share" style={{textDecoration:"none", color:"black"}}> Ajouter un article </Link> }   */}
 
           <button 
             className='groupomania-navbar-toggle-button' 
@@ -106,27 +104,26 @@ export default function Topbar () {
 
                   <hr className='groupomania-navbar-link-hr'/>
 
-                { pseudo === "administrateur" && (<>
-                  <Link 
-                    className='groupomania-navbar-button-menu link'
-                    // style={{textDecoration:"none", color:"black"} } 
-                    to="/users-list">
-                    <InputOutlinedIcon/>
-                    <span className='groupomania-navbar-button-menu-text'>Voir les utilisateurs</span> 
-                  </Link>
-                  <hr className='groupomania-navbar-link-hr'/>
-                </>)}
+                  { pseudo === "administrateur" && (<>
+                    <Link 
+                      className='groupomania-navbar-button-menu link'
+                      to="/users-list">
+                      <InputOutlinedIcon/>
+                      <span className='groupomania-navbar-button-menu-text'>Voir les utilisateurs</span> 
+                    </Link>
+                    <hr className='groupomania-navbar-link-hr'/>
+                  </>)}
 
-                { pseudo !== "administrateur" && (<>
-                  <button 
-                    className='groupomania-navbar-button-menu warning' 
-                    onClick={deleteUser}
-                  >
-                    <DeleteOutlineIcon/>
-                    <span className='groupomania-navbar-button-menu-text'>Supprimer mon compte</span>
-                  </button>
-                  <hr className='groupomania-navbar-link-hr'/>                                
-                </>)}
+                  { pseudo !== "administrateur" && (<>
+                    <button 
+                      className='groupomania-navbar-button-menu warning' 
+                      onClick={deleteUser}
+                    >
+                      <DeleteOutlineIcon/>
+                      <span className='groupomania-navbar-button-menu-text'>Supprimer mon compte</span>
+                    </button>
+                    <hr className='groupomania-navbar-link-hr'/>                                
+                  </>)}
 
                 </>
               )
@@ -147,9 +144,8 @@ export default function Topbar () {
                   </button>
               : (
                 <>
-              <Link 
+                <Link 
                   className='groupomania-navbar-button-menu link'
-                  // style={{textDecoration:"none", color:"black"} } 
                   to="/login">
                   <InputOutlinedIcon/>
                   <span className='groupomania-navbar-button-menu-text'>Connection</span> 
@@ -162,7 +158,6 @@ export default function Topbar () {
             { !tokenValid 
               && <Link 
                   className='groupomania-navbar-button-menu link'
-                  // style={{textDecoration:"none", color:"black"} } 
                   to='/signup'>
                     <AppRegistrationOutlinedIcon/>
                     <span className='groupomania-navbar-button-menu-text'>Enregistrement</span>                     

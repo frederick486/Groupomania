@@ -14,7 +14,8 @@
   position: absolute;
   width: 6px;
   height: 6px;
-  background: rgb(126, 124, 124);
+  /* background: rgb(126, 124, 124); */
+  background: var(--color-tertiary);
   border-radius: 50%;
   animation: lds-default 1.2s linear infinite;
 }

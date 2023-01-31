@@ -61,52 +61,43 @@ export default function Login () {
           </div>
                 
           <form onSubmit={connection} className="login-form">
-            {/* <div className="Auth-form-content"> */}
 
-              <div className="form-group mt-3">
-                <label>Email address</label>
-                <input
-                  ref={email}
-                  type="email"
-                  className="form-control mt-1"
-                  placeholder="Enter email"
-                />
-              </div>
-              <div className="form-group mt-3">
-                <label>Password</label>
-                <input
-                  ref={password}
-                  type="password"
-                  className="form-control mt-1"
-                  placeholder="Enter password"
-                />
-              </div>
+            <div className="form-group mt-3">
+              <label>Email address</label>
+              <input
+                ref={email}
+                type="email"
+                className="form-control mt-1"
+                placeholder="Enter email"
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>Password</label>
+              <input
+                ref={password}
+                type="password"
+                className="form-control mt-1"
+                placeholder="Enter password"
+              />
+            </div>
 
-              {/* <div className="d-grid gap-2 mt-3">
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-              </div> */}
+            <div className="login-buttons-container">
 
-              <div className="login-buttons-container">
+              <button 
+                onClick={()=>{navigate('/')}}
+                className="login-button-cancel"
+              >
+                Annuler
+              </button>
 
-                <button 
-                  onClick={()=>{navigate('/')}}
-                  className="login-button-cancel"
-                >
-                  Annuler
-                </button>
+              <button 
+                className="login-button-register"
+                type="submit" >
+                Enregistrer
+              </button>
 
-                <button 
-                  className="login-button-register"
-                  type="submit" >
-                  Enregistrer
-                </button>
+            </div>              
 
-              </div>              
-
-
-            {/* </div> */}
           </form>
         </div>
       </div>    

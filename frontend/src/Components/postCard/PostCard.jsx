@@ -31,9 +31,8 @@ export default function PostCard(props) {
                     <div className="postCard-header-avatar">
                         <Avatar 
                             sx={{ width: 56, height: 56 }}
-                            alt="Auteur du post" 
-                            // src="/static/images/avatar/1.jpg" 
-                            src={props.card.profileImgUrl}
+                            alt="Auteur du post"        
+                            src={props.card.profileImgUrl}                                                      
                         />
 
                         <div className="postCard-header-text">
@@ -49,8 +48,7 @@ export default function PostCard(props) {
                     </div>
 
                     <div className='postCard-header-infos'>
-                        <span><CommentIcon 
-                            // className='commentIcon' 
+                        <span><CommentIcon     
                             color='darkgrey' 
                             fontSize='small' 
                         /> {props.card.comments.length}</span>
