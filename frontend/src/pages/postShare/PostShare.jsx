@@ -25,7 +25,7 @@ export default function PostShare () {
   const [desc, setDesc] = useState("")
   const [file, setFile] = useState(null);
 
-  const submitHandler = async (e) => {
+  const createPost = async (e) => {
     e.preventDefault(); 
 
     let formData = new FormData();
@@ -54,7 +54,7 @@ export default function PostShare () {
       <div className='postshare-wrapper'>
         <h1 className="postShare-title-form">Nouveau post</h1>
         <form 
-            onSubmit={submitHandler}
+            onSubmit={ createPost }
             className="postShare-container-form"
           >
 

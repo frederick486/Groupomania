@@ -59,7 +59,8 @@
 .postCard-img-wrapper {
     display: flex;
     position: relative;
-    /* background-color: black; */
+    background-color: var(--color-secondary);
+    /* background-color: #29292b; */
 }
 
 .postCard-img {    

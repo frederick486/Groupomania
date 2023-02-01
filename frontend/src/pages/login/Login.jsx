@@ -93,7 +93,7 @@ export default function Login () {
               <button 
                 className="login-button-register"
                 type="submit" >
-                Enregistrer
+                Connexion
               </button>
 
             </div>              
