@@ -1,7 +1,6 @@
 const PostModel = require('../models/postModel');
 const fs = require("fs"); //<<< Permet de modifier le système de fichiers
 let mongoose = require('mongoose')
-// const { json } = require("express");
 
 
 // //create a post
@@ -23,18 +22,11 @@ module.exports.createPost = async (req, res) => {
       likers:[],
       comments: [],
     });
-
-    // await post.save().then(result => {
-    //   res.status(201).json({ message: "Post registered successfully!", })
-    // })
-
     await post.save();
-    res.status(201).json({ message: "Post registered successfully!", })
-       
+    res.status(201).json({ message: "Post créé avec succès !", })       
   } catch (error) {
     res.status(500).json(error);
   }
-
 }
 
 
@@ -85,16 +77,10 @@ module.exports.updatePost = async (req, res) => {
 
       } else {
 
-        // const oldFilename = post.postImgUrl.split('/images/post/')[1]
-        // fs.unlink(`images/post/${oldFilename}`, ()=> {}) 
-
         await post.updateOne(
           { 
-            // $set: req.body,
             title: req.body.title,
             desc: req.body.desc,
-            // postImgUrl : url + '/images/default/no-picture.png',
-
           }
         );
         res.status(200).json("Post mis à jour");   
@@ -235,7 +221,7 @@ module.exports.deleteCommentPost = async (req, res) => {
     if (comment.commenterUserId === userId || isAdmin) {
 
       await post.updateOne( { $pull: { comments: { _id: commentIdToDelete } } } );
-    res.status(200).json("Commentaire supprimé");  
+      res.status(200).json("Commentaire supprimé");  
 
     } else {
       res.status(403).json("Action interdite");
@@ -248,11 +234,11 @@ module.exports.deleteCommentPost = async (req, res) => {
 
 // update a comment post
 module.exports.updateCommentPost = (req, res) => {
-  // const id = req.params.id;
+  const id = req.params.id;
   const userId = req.auth.userId;
 
   try {
-    return PostModel.findById(req.params.id, (err, docs) => {
+    return PostModel.findById(id, (err, docs) => {
       const theComment = docs.comments.find((comment) =>
         comment._id.equals(req.body.commentId)
       );
