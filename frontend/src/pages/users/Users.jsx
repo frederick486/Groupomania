@@ -17,8 +17,6 @@ export default function Users () {
     })();
   }, []);
 
-  console.log("data : ", data)
-
   return (
     <>
       <Navbar/>

@@ -51,7 +51,8 @@ export default function Topbar () {
     localStorage.clear()
     setToken(null)
     setTokenValid(false)
-    navigate('/')
+    // navigate('/')
+    window.location.reload();
   }
 
   const deleteUser = async (e) => {
@@ -144,14 +145,13 @@ export default function Topbar () {
                   </button>
               : (
                 <>
-                <Link 
-                  className='groupomania-navbar-button-menu link'
-                  to="/login">
-                  <InputOutlinedIcon/>
-                  <span className='groupomania-navbar-button-menu-text'>Connection</span> 
-                </Link>
-                <hr className='groupomania-navbar-link-hr'/>
-
+                  <Link 
+                    className='groupomania-navbar-button-menu link'
+                    to="/login">
+                    <InputOutlinedIcon/>
+                    <span className='groupomania-navbar-button-menu-text'>Connection</span> 
+                  </Link>
+                  <hr className='groupomania-navbar-link-hr'/>
                 </>)
             }                
                 

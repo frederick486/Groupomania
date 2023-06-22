@@ -22,7 +22,7 @@ export default function PostShare () {
   const navigate = useNavigate()
 
   const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("")
+  const [desc, setDesc] = useState("");
   const [file, setFile] = useState(null);
 
   const createPost = async (e) => {
@@ -87,7 +87,6 @@ export default function PostShare () {
                       
           <TextField
             placeholder="Placeholdker"
-            // multiline
             className='postShare-textfield-title'
             id="outlined-basic" 
             label="Titre" 
@@ -101,8 +100,6 @@ export default function PostShare () {
             label="Description"
             multiline
             rows={4}
-            // defaultValue="Ajouter une description!"
-            // placeholder="Ajouter une description!"
             onChange={(e) => { setDesc(e.target.value) }}     
           />        
 

@@ -8,17 +8,11 @@ import { API_URL_USER_LOGIN } from '../../config'
 
 export default function Login () {
   const navigate = useNavigate()
-
   const email = useRef();
   const password = useRef();
 
   const connection = async (e) => {
     e.preventDefault();
-
-    // const isAdmin = false;
-    // if(email === "administrateur@gmail.com" && password === "password@1234" ) {
-    //   isAdmin = true
-    // }    
 
     try {
       await axios.post( API_URL_USER_LOGIN,
@@ -28,18 +22,14 @@ export default function Login () {
         },
       )
       .then((res) => {    
-        console.log("res : ", res)
         window.localStorage.setItem("authToken", res.data.token)
         window.localStorage.setItem("userId", res.data.userId)
         window.localStorage.setItem("pseudo", res.data.pseudo)
         window.localStorage.setItem("profileImgUrl", res.data.profileImgUrl)
-        // window.localStorage.setItem("isAdmin", isAdmin)
-        // axios.defaults.headers["Authorization"] = "Bearer" + res.data.token
 
         navigate('/')
       })            
     } catch (err) {
-      console.log(err)
       alert("identifiant ou mot de passe incorrecte")        
     }
   }

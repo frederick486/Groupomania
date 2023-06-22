@@ -43,14 +43,11 @@ export default function Post () {
   const [loaded, setLoaded] = useState(false)
   const [tokenValid, setTokenValid] = useState(false) 
   const [admin, setAdmin] = useState(false);
-
   const [seeDesc, setSeeDesc] = useState(false);
 
   const funcSeeDesc = () => {
     setSeeDesc(!seeDesc);
   }
-
-  console.log("seeDesc", seeDesc)
 
   useEffect(() => {
     (async () => {
@@ -73,13 +70,9 @@ export default function Post () {
         if(localStorage.getItem("pseudo") === "administrateur" ) {
           setAdmin(true);
         }
-        console.log("admin :", admin)
     })();
   }, [click]);
 
-  console.log("data :", data)
-  console.log("admin :", admin)
-  console.log("localStorage.getItem(pseudo) :", localStorage.getItem("pseudo"))
 
   let owner = false;
   if(data.userId === localStorage.getItem("userId")) {
@@ -211,14 +204,11 @@ export default function Post () {
                 />
                 <h3 className='post-title'>{data.title}</h3>
 
-                {/* <hr className='post-horizontale-hr'/> */}
-
                 <div className="post-action">
                   <div className="post-header-avatar">
                     <Avatar 
                       sx={{ width: 56, height: 56 }}
                       alt="Votre avatar" 
-                      // src="/static/images/avatar/1.jpg" 
                       src={data.profileImgUrl}
                     />
 
@@ -283,9 +273,7 @@ export default function Post () {
 
                     <button 
                       className='buttonDelette' 
-                      onClick={async () => { await deletePost(data.userId)}}
-                      // value={data.userId}
-                      // onClick={deletePost}       
+                      onClick={async () => { await deletePost(data.userId)}}   
                     >
                       <DeleteOutlinedIcon fontSize='large' titleAccess='supprimer ce post'/>
                     </button> 

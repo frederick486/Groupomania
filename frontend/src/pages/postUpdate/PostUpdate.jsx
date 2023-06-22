@@ -27,11 +27,7 @@ export default function PostUpdate () {
         setDesc(response.data.desc)
         setFile(response.data.postImgUrl)
     })();
-  // }, [file, newFile]);  
   }, [newFile]);  
-
-  console.log("File :", file)
-  console.log("newFile :", newFile)
 
 
   const updatePost = async (e) => {
@@ -41,7 +37,6 @@ export default function PostUpdate () {
     formData.append("title", title);
     formData.append("desc", desc);
     formData.append("postImgUrl", newFile);
-    // formData.append("postImgUrl", file);
  
     try {
       await axios.put( API_URL + '/' + id, formData, {        
@@ -78,7 +73,6 @@ export default function PostUpdate () {
             <Cancel 
               className='postUpdate-preview-Img-cancel-icone' 
               onClick={(e) => {setFile(null); setNewFile(null)} } 
-              // onClick={(e) => {setNewFile(null)} } 
             />
           </div>
 

@@ -91,7 +91,6 @@
 
 .button-active-like-to-fly-over {
     position: absolute;
-    /* color: #0d6efd; */
     color: var(--color-like);
     opacity: 0;
     transition: all 0.25s ease-in-out !important;
@@ -102,7 +101,6 @@
 }
 
 .button-active-like {
-    /* color: #0d6efd; */
     color: var(--color-like);
 }
 
@@ -175,5 +173,3 @@
         width: 48%;
     }
 }
-
-/* ---------------------------------------------- */

@@ -35,7 +35,6 @@ export default function Signup () {
         headers: { "Content-Type": "multipart/form-data", },
       })
       .then((res) => {
-        console.log("res", res)
         window.localStorage.setItem("authToken", res.data.token)
         window.localStorage.setItem("userId", res.data.userId)
         window.localStorage.setItem("pseudo", res.data.pseudo) 
@@ -43,7 +42,6 @@ export default function Signup () {
         navigate('/')
       })
     } catch (err) {
-    console.log(err)      
     alert("cet identifiant est déja pris")
     }
   }

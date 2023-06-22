@@ -1,7 +1,5 @@
 .postshare-wrapper {
     z-index: 2;
-    /* position: fixed;
-    top: 0; */
     background-color: white;
     width: 100%;
     height: 100%;
@@ -10,7 +8,6 @@
 .postShare-title-form {
     text-align: center;
     font-size: 32px;
-    /* margin: 70px 0 0; */
 }
 
 .postShare-container-form {
@@ -96,12 +93,9 @@
     margin-top: 10px;
     margin-bottom: 10px;
     font-weight: 500;
-    /* font-family: Arial, Helvetica, sans-serif; */
     transition: all 0.25s ease-in-out;
 }
 
 .postShare-button-send:hover {
     background-color: #65a8ff;
 }
-
-/* --------------------------------------- */

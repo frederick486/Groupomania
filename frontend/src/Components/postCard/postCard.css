@@ -59,14 +59,12 @@
 .postCard-img-wrapper {
     display: flex;
     position: relative;
-    /* background-color: var(--color-secondary); */
     background-color: #0d0d0e;
 }
 
 .postCard-img {    
     width: 100%;
     max-height: 300px;
-    /* object-fit: cover; */
     object-fit: contain;
 }
 
@@ -125,7 +123,6 @@
 
     .postCard-img {    
         height: 100%;
-        /* object-fit: cover; */
         object-fit: contain;
     }
 

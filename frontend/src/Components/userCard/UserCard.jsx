@@ -55,7 +55,6 @@ export default function UserCard(props) {
           <Avatar 
             sx={{ width: 56, height: 56 }}
             alt="Auteur du post" 
-            // src="/static/images/avatar/1.jpg" 
             src={props.card.profileImgUrl}
           />
 

@@ -78,9 +78,6 @@ export default function PostComment ({props}) {
         setOpen(false)
     }, [send])
 
-    // console.log("click", click)
-    // console.log("state de text : ", text)
-
 
     const createComment = async (e) => {
         e.preventDefault()
@@ -224,7 +221,6 @@ export default function PostComment ({props}) {
                             id="standard-multiline-static"
                             label="Commentaire :"
                             multiline
-                            // rows={1}
                             placeholder="Quoi de neuf ?"
                             variant="standard"
                             onChange={ (e) => { setComment(e.target.value); } }                     
@@ -252,7 +248,6 @@ export default function PostComment ({props}) {
                             <Divider variant="inset" component="li"/>
                             <ListItem 
                                 alignItems="flex-start"
-                                // key={comment._id}
                             >
                                 <ListItemAvatar>
                                     <Avatar 
@@ -281,9 +276,7 @@ export default function PostComment ({props}) {
 
                                         <button
                                             onClick={async () => { await deleteComment(comment._id, comment.commenterUserId);} }
-                                            style={{ border:"none", backgroundColor:"transparent" }}
-                                            // id={comment._id}
-                                            // value={comment.commenterId}                            
+                                            style={{ border:"none", backgroundColor:"transparent" }}                          
                                         >
                                             <DeleteOutlinedIcon fontSize='small'/>
                                         </button>
@@ -335,19 +328,15 @@ export default function PostComment ({props}) {
                     setSend(true);
                     modifComment(text);
                     setComment("");
-                    // setText(""); // <<< comment modifié
                     setText(null); // <<< comment modifié
                 }}
             >
                 <Stack spacing={2}>
                 <TextField 
-                    // label="Description" 
-                    // required 
                     multiline
                     rows={4}
                     defaultValue={comment}
                     onChange={ (e) => { setText(e.target.value); } }                     
-                    // onInput={ (e) => { setText(e.target.value); } }                     
                 />
                 <Button type="submit">Modifier</Button>
                 </Stack>
