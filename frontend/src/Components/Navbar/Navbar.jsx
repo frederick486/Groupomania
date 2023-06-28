@@ -48,10 +48,10 @@ export default function Topbar () {
 
   const deconnexion = (e) => {
     e.preventDefault();
-    localStorage.clear()
-    setToken(null)
-    setTokenValid(false)
-    // navigate('/')
+    localStorage.clear();
+    setToken(null);
+    setTokenValid(false);
+    navigate('/');
     window.location.reload();
   }
 
@@ -63,10 +63,11 @@ export default function Topbar () {
           { userId: localStorage.getItem("userId") },  
           { headers: { 'Authorization': `Bearer ${token}`  }}
         )
-        localStorage.clear()
-        setToken(null) // <<< relance le useEffect
-        setTokenValid(false)
-        navigate('/')
+        localStorage.clear();
+        setToken(null); // <<< relance le useEffect
+        setTokenValid(false);
+        navigate('/');
+        window.location.reload();
       } catch (err) {
         console.log(err)
       }
